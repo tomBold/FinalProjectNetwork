@@ -21,10 +21,13 @@
 #define SEND_MSG_TO_PEER			4
 #define SESSION_REFUSED				5
 #define SESSION_ESTABLISHED			6
+#define LOGIN						7
+#define REGISTER					8
 
 #define TEST_PEER_NAME "test"
 #define SESSION_REFUSED_MSG "Connection to peer refused, peer might be busy or disconnected, try again later"
-
+#define USER_ALREADY_EXISTS 		9
+#define LOGIN_FAILED				10
 
 
 #endif /* TCPMESSENGERPROTOCOL_H_ */

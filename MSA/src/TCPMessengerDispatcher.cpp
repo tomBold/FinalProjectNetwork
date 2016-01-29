@@ -6,7 +6,6 @@
  */
 
 #include "TCPMessengerDispatcher.h"
-#include "TCPMessengerProtocol.h"
 
 TCPMessengerDispatcher::TCPMessengerDispatcher() {
 	this->multiSocketListener = new MultipleTCPSocketsListener();
@@ -26,8 +25,16 @@ TCPMessengerDispatcher::~TCPMessengerDispatcher() {
 /*
  * Add socket to the map and the multiple tcp socket listener
  */
-void TCPMessengerDispatcher::addSocket(TCPSocket* socket) {
+void TCPMessengerDispatcher::addSocket(TCPSocket* socket, string name) {
+	this->peersIpToUser[socket->destIpAndPort()] = name;
+	this->sockets[socket->destIpAndPort()] = socket;
+	this->multiSocketListener->addSocket(socket);
+}
 
+/*
+ * Add socket to the map and the multiple tcp socket listener
+ */
+void TCPMessengerDispatcher::addSocket(TCPSocket* socket) {
 	this->sockets[socket->destIpAndPort()] = socket;
 	this->multiSocketListener->addSocket(socket);
 }
@@ -77,6 +84,7 @@ void TCPMessengerDispatcher::run() {
 void TCPMessengerDispatcher::createBroker(TCPSocket* firstSocket,
 		TCPSocket* secondSocket) {
 	Broker* b = new Broker(firstSocket, secondSocket, this);
+	this->brokers.insert(b);
 
 	// Delete sockets
 	this->deleteSocket(firstSocket);
@@ -109,8 +117,12 @@ void TCPMessengerDispatcher::handleSocket(TCPSocket* socket) {
 		return;
 	}
 
-	int command = TCPMessengerServer::readCommandFromPeer(socket);
+	this->handleSocketCommand(socket,
+			TCPMessengerServer::readCommandFromPeer(socket));
+}
 
+void TCPMessengerDispatcher::handleSocketCommand(TCPSocket* socket,
+		int command) {
 	switch (command) {
 	case (CLOSE_SESSION_WITH_PEER): {
 		cout << "Close session with peer" << endl;
@@ -199,5 +211,13 @@ void TCPMessengerDispatcher::exit(TCPSocket* socket) {
 	socket->cclose();
 	delete socket;
 	this->createMultipleTCPSocketListener();
+}
+
+void TCPMessengerDispatcher::closeBroker(Broker* broker) {
+	this->addSocket(broker->firstSocket);
+	this->addSocket(broker->secondSocket);
+	this->brokers.erase(broker);
+	delete broker;
+	cout << "Close broker" << endl;
 }
 

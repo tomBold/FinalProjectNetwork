@@ -53,54 +53,17 @@ void Broker::run() {
 
 		int command = TCPMessengerServer::readCommandFromPeer(socket);
 		switch (command) {
-		case (SEND_MSG_TO_PEER): {
-			string msg = TCPMessengerServer::readDataFromPeer(socket);
-			TCPSocket* peer;
-
-			// Find out our message destination
-			if (this->firstSocket->destIpAndPort() == socket->destIpAndPort()) {
-				peer = this->secondSocket;
-			} else {
-				peer = this->firstSocket;
-			}
-
-			// Sends a message
-			TCPMessengerServer::sendCommandToPeer(peer, SEND_MSG_TO_PEER);
-			TCPMessengerServer::sendDataToPeer(peer, msg);
-			break;
-		}
 		// when a SIG_TERM happens, the client sends 0
-		case (0): {
-			this->close();
-			this->dispatcher->deleteSocket(socket);
-
-			break;
-		}
-		case (EXIT): {
-			this->close();
-			this->dispatcher->deleteSocket(socket);
-
-			break;
-		}
 		case (CLOSE_SESSION_WITH_PEER): {
-			this->close();
+			areBothPeersConnected = false;
+			this->dispatcher->closeBroker(this);
+
 			break;
 		}
-		case (OPEN_SESSION_WITH_PEER): {
-			string peer = TCPMessengerServer::readDataFromPeer(socket);
-			this->close();
-			this->dispatcher->createSession(socket, peer);
-			break;
+		default: {
+			this->dispatcher->handleSocketCommand(socket, command);
 		}
 		}
 	}
 }
 
-/*
- * Close the broker and reattach the sockets to the dispatcher
- */
-void Broker::close() {
-	this->areBothPeersConnected = false;
-	this->dispatcher->addSocket(this->firstSocket);
-	this->dispatcher->addSocket(this->secondSocket);
-}

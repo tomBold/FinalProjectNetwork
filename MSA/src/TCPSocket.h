@@ -62,7 +62,6 @@ public:
 	 */
 	string fromAddr();
 
-	// TODO: DELETE IT
 	string destIpAndPort();
 };
 

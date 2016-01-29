@@ -18,11 +18,12 @@
 class Broker: public MThread
 {
 	TCPMessengerDispatcher* dispatcher;
-	TCPSocket* firstSocket;
-	TCPSocket* secondSocket;
 	MultipleTCPSocketsListener* multiSocketListener;
 	bool areBothPeersConnected;
 public:
+	TCPSocket* firstSocket;
+	TCPSocket* secondSocket;
+
 	Broker();
 	Broker(TCPSocket* initiativeSocket, TCPSocket* recvSocket, TCPMessengerDispatcher* dispatcher);
 	virtual ~Broker();
@@ -31,11 +32,6 @@ public:
 	 * Run the messages between peers
 	 */
 	void run();
-
-	/*
-	 * Close the broker and reattach the sockets to the dispatcher
-	 */
-	void close();
 };
 
 #endif /* BROKER_H_ */

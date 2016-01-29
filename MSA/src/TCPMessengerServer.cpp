@@ -6,6 +6,7 @@
 TCPMessengerServer::TCPMessengerServer() {
 	this->serverSocket = new TCPSocket(MSNGR_PORT);
 	this->dispatcher = new TCPMessengerDispatcher();
+	this->authDispatcher = new AuthDispatcher(this);
 	this->start();
 }
 
@@ -19,6 +20,7 @@ void TCPMessengerServer::close() {
 TCPMessengerServer::~TCPMessengerServer() {
 	delete this->serverSocket;
 	delete this->dispatcher;
+	delete this->authDispatcher;
 }
 
 /*
@@ -89,7 +91,13 @@ void TCPMessengerServer::listPeers() {
 void TCPMessengerServer::run() {
 	while (this->serverSocket != NULL) {
 		TCPSocket* listener = this->serverSocket->listenAndAccept();
-		this->dispatcher->addSocket(listener);
+		this->authDispatcher->addSocket(listener);
 	}
+}
+
+void TCPMessengerServer::userLogin(TCPSocket* peer, string name) {
+	// TODO: checl if the user is login!!!!
+
+	this->dispatcher->addSocket(peer);
 }
 

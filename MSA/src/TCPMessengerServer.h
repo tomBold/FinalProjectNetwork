@@ -5,6 +5,7 @@
 // Copyright   :
 // Description : TCP Messenger application
 //============================================================================
+#pragma once
 
 #ifndef TCPMESSENGERSERVER_H__
 #define TCPMESSENGERSERVER_H__
@@ -20,12 +21,16 @@
 #include "MultipleTCPSocketsListener.h"
 #include "TCPMessengerProtocol.h"
 #include "TCPMessengerDispatcher.h"
+#include "AuthDispatcher.h"
+
+class AuthDispatcher;
 
 using namespace std;
 
 class TCPMessengerServer : public MThread{
 	TCPSocket* serverSocket;
 	TCPMessengerDispatcher* dispatcher;
+	AuthDispatcher* authDispatcher;
 
 public:
 	/**
@@ -65,5 +70,7 @@ public:
 	static void sendDataToPeer(TCPSocket* peer, string msg);
 
 	void run();
+
+	void userLogin(TCPSocket* peer, string name);
 };
 #endif

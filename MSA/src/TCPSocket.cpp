@@ -33,7 +33,8 @@ TCPSocket::TCPSocket(int port) {
 	}
 
 	int enable = 1;
-	if (setsockopt(this->connected_sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0){
+	if (setsockopt(this->connected_sock, SOL_SOCKET, SO_REUSEADDR, &enable,
+			sizeof(int)) < 0) {
 		perror("setsockopt(SO_REUSEADDR) failed");
 	}
 
@@ -137,8 +138,10 @@ string TCPSocket::fromAddr() {
 	return inet_ntoa(this->peerAddr.sin_addr);
 }
 
-// TODO: DELETE IT
-string TCPSocket::destIpAndPort()
-{
-	return "";
+string TCPSocket::destIpAndPort() {
+	string str = fromAddr() + ":";
+	char buff[10];
+	sprintf(buff, "%d", ntohs(this->peerAddr.sin_port));
+	str.append(buff);
+	return str;
 }

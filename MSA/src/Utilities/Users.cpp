@@ -68,7 +68,7 @@ bool Users::create(string name, string password) {
 
 	return true;
 }
-//
+
 bool Users::login(string name, string password) {
 	if (!contains(name))
 	{
