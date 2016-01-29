@@ -6,8 +6,7 @@ using namespace Utilities;
 
 using namespace std;
 
-// ********** MSA *********
-int main() {
+void printInstructions() {
 	cout << "Messenger Server App (MSA)" << endl;
 	cout << "*************************" << endl;
 	cout << "lu - list all users" << endl;
@@ -16,22 +15,43 @@ int main() {
 	cout << "lr - list all rooms" << endl;
 	cout << "lru <room name> - list all users in this room" << endl;
 	cout << "x - shutdown" << endl;
-
-	string userNameAndPassword = "tom 12345";
-	int index = userNameAndPassword.find(" ");
-	string name = userNameAndPassword.substr(0, index);
-	cout << name << endl;
-	string password = userNameAndPassword.substr(index + 1);
-	cout << password << endl;
-
-	Users::create("test", "test");
-	Users::create("tom", "12");
-	vector<string> names = Users::getAllNames();
-	for (int i = 0; i < names.size(); i++)
-	{
-		cout << names[i] << endl;
-	}
-
-
-
 }
+
+// ********** MSA *********
+int main() {
+	TCPMessengerServer server;
+
+	while (true) {
+		printInstructions();
+		string command = "";
+		cin >> command;
+
+		if (command == "lu") {
+			vector<string> names = Users::getAllNames();
+			for (int i = 0; i < names.size(); i++) {
+				cout << names[i] << endl;
+			}
+		} else if (command == "lcu") {
+			cout << server.dispatcher->getConnectUsers() << endl;
+		} else if (command == "ls") {
+			cout << server.dispatcher->getAllBrokers() << endl;
+		} else if (command == "lr") {
+			cout << server.dispatcher->getRoomsNames() << endl;
+		}
+
+		else if (command == "lru") {
+			string roomName = "";
+			cin >> roomName;
+			Room* room = server.dispatcher->roomExists(roomName);
+
+			if (server.dispatcher->roomExists(roomName))
+			{
+				cout << room->getRoomsUsers() << endl;
+			}
+		} else {
+			cout << "Wrong input" << endl;
+			printInstructions();
+		}
+	}
+}
+

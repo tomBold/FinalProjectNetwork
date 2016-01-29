@@ -33,6 +33,11 @@
 #define SUCCESSFULY_JOIN_ROOM		23
 #define PRINT_ROOMS_USERS_REQ		24
 #define PRINT_ROOMS_USERS_RES		25
+#define PRIMT_ROOMS_NAMES_REQ		26
+#define PRIMT_ROOMS_NAMES_RES		27
+#define PRINT_CONNECT_USERS_REQ		28
+#define PRINT_CONNECT_USERS_RES		29
+
 
 #define TEST_PEER_NAME "test"
 #define SESSION_REFUSED_MSG "Connection to peer refused, peer might be busy or disconnected, try again later"

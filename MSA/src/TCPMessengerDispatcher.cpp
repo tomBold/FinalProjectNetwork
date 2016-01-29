@@ -124,31 +124,64 @@ void TCPMessengerDispatcher::handleSocket(TCPSocket* socket) {
 
 void TCPMessengerDispatcher::handleSocketCommand(TCPSocket* socket,
 		int command) {
+	string name = this->peersIpToUser[socket->destIpAndPort()];
+
 	switch (command) {
 	case (CLOSE_SESSION_WITH_PEER): {
+		this->forceLeaveUser(name);
 		cout << "Close session with peer" << endl;
 		break;
 	}
 	case (OPEN_SESSION_WITH_PEER): {
 		cout << "Open session with peer" << endl;
+		this->forceLeaveUser(name);
 		string peer = TCPMessengerServer::readDataFromPeer(socket);
 		createSession(socket, peer);
 		break;
 	}
 	case (0): {
+		this->forceLeaveUser(name);
 		this->exit(socket);
 		break;
 	}
 	case (EXIT): {
+		this->forceLeaveUser(name);
 		this->exit(socket);
 		break;
 	}
-	case (SESSION_REFUSED): {
-		cout << "Session refused" << endl;
+	case (JOIN_ROOM_REQ): {
+		string room = TCPMessengerServer::readDataFromPeer(socket);
+		this->forceLeaveUser(name);
+		this->joinRoom(room, socket);
 		break;
 	}
-	case (SESSION_ESTABLISHED): {
-		cout << "Session established" << endl;
+	case (PRINT_ROOMS_USERS_REQ): {
+		string roomName = TCPMessengerServer::readDataFromPeer(socket);
+		Room* room = this->roomExists(roomName);
+
+		if (room != NULL) {
+			string roomUsers = room->getRoomsUsers();
+			TCPMessengerServer::sendCommandToPeer(socket,
+			PRINT_ROOMS_USERS_RES);
+			TCPMessengerServer::sendDataToPeer(socket, roomUsers);
+		}
+
+		break;
+	}
+	case (PRIMT_ROOMS_NAMES_REQ): {
+		string roomsName = this->getRoomsNames();
+		TCPMessengerServer::sendCommandToPeer(socket,
+		PRIMT_ROOMS_NAMES_RES);
+		TCPMessengerServer::sendDataToPeer(socket, roomsName);
+
+		break;
+	}
+	case (PRINT_CONNECT_USERS_REQ): {
+		string users = this->getConnectUsers();
+		TCPMessengerServer::sendCommandToPeer(socket,
+		PRINT_CONNECT_USERS_RES);
+		TCPMessengerServer::sendDataToPeer(socket, users);
+
 		break;
 	}
 	default: {
@@ -214,9 +247,9 @@ void TCPMessengerDispatcher::closeBroker(Broker* broker) {
 	this->addSocket(broker->firstSocket);
 	this->addSocket(broker->secondSocket);
 	TCPMessengerServer::sendCommandToPeer(broker->firstSocket,
-			CLOSE_SESSION_WITH_PEER);
+	CLOSE_SESSION_WITH_PEER);
 	TCPMessengerServer::sendCommandToPeer(broker->secondSocket,
-			CLOSE_SESSION_WITH_PEER);
+	CLOSE_SESSION_WITH_PEER);
 
 	this->brokers.erase(broker);
 	delete broker;
@@ -337,5 +370,54 @@ void TCPMessengerDispatcher::forceLeaveUser(string name) {
 			return;
 		}
 	}
+}
+
+string TCPMessengerDispatcher::getRoomsNames() {
+	string roomsNames = "";
+	set<Room*>::iterator it;
+	for (it = this->rooms.begin(); it != this->rooms.end(); it++) {
+		Room* room = *it;
+		if (roomsNames != "") {
+			roomsNames += ",";
+		}
+
+		roomsNames += room->name;
+	}
+
+	return roomsNames;
+}
+
+string TCPMessengerDispatcher::getConnectUsers() {
+	string result = "";
+	for (std::map<string, string>::const_iterator it =
+			this->userToPeersIp.begin(); it != this->userToPeersIp.end();
+			it++) {
+		if (result != "") {
+			result += ",";
+		}
+		result += it->first;
+	}
+
+	return result;
+}
+
+string TCPMessengerDispatcher::getAllBrokers() {
+	string result = "";
+
+	set<Broker*>::iterator itB;
+	for (itB = this->brokers.begin(); itB != this->brokers.end(); itB++) {
+		Broker* broker = *itB;
+
+		if (result != "") {
+			result += "\n";
+		}
+
+		result += this->peersIpToUser[broker->firstSocket->destIpAndPort()]
+				+ "<>"
+				+ this->peersIpToUser[broker->secondSocket->destIpAndPort()];
+
+	}
+
+	return result;
 }
 

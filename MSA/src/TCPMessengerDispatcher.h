@@ -81,6 +81,9 @@ public:
 	Room* roomExists(string room);
 	bool isUserBusy(string name);
 	void forceLeaveUser(string name);
+	string getRoomsNames();
+	string getConnectUsers();
+	string getAllBrokers();
 };
 
 #endif /* TCPMESSENGERDISPATCHER_H_ */
