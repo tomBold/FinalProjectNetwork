@@ -1,4 +1,7 @@
 #include <iostream>
+#include "src/Utilities/Users.h"
+
+using namespace Utilities;
 
 using namespace std;
 
@@ -10,4 +13,7 @@ int main() {
 	cout << "lr - list all rooms" << endl;
 	cout << "lru <room name> - list all users in this room" << endl;
 	cout << "x - shutdown" << endl;
+
+	//Utilities::Users::H();
+
 }
