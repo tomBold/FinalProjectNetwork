@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;TCPp2pMessenger/src/UDPSocket.h&apos; to &apos;TCPSocket.h&apos;" description="Rename resource &apos;UDPSocket.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/UDPSocket.h" name="TCPSocket.h" stamp="1360188528537" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;TCPp2pMessenger/src/TCPp2pMessenger.cpp&apos; to &apos;TCPp2pMessenger.h&apos;" description="Rename resource &apos;TCPp2pMessenger.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/TCPp2pMessenger.cpp" name="TCPp2pMessenger.h" stamp="1360188629742" updateReferences="true"/>
+</session>

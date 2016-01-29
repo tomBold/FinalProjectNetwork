@@ -1,0 +1,35 @@
+
+#include "TCPMessengerServer.h"
+#include "TCPMessengerProtocol.h"
+#include "MsnServer.h"
+
+/***********************   MsnServer implementation ******************************/
+MsnServer::MsnServer(MsnDispatcher* dispatcher){
+	tcpServerSocket = new TCPSocket(MSNGR_PORT);
+	running = false;
+	this->dispatcher = dispatcher;
+	start();
+}
+
+void MsnServer::run(){
+	running = true;
+	while(running){
+		TCPSocket* peerSocket = tcpServerSocket->listenAndAccept();
+		if (peerSocket!= NULL){
+			cout<<"new peer connected: "<<peerSocket->destIpAndPort()<<endl;
+			dispatcher->addPeer(peerSocket);
+		}
+	}
+}
+
+void MsnServer::close(){
+	running = false;
+	dispatcher = NULL;
+	tcpServerSocket->cclose();
+	waitForThread();
+	delete tcpServerSocket;
+	tcpServerSocket = NULL;
+}
+
+MsnServer::~MsnServer(){
+}

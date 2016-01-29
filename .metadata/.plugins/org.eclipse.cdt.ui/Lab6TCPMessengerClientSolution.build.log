@@ -1,0 +1,20 @@
+06:40:13 **** Incremental Build of configuration Debug for project Lab6TCPMessengerClientSolution ****
+make all 
+Building file: ../src/TCPMessengerClient.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/TCPMessengerClient.d" -MT"src/TCPMessengerClient.d" -o "src/TCPMessengerClient.o" "../src/TCPMessengerClient.cpp"
+Finished building: ../src/TCPMessengerClient.cpp
+ 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: Lab6TCPMessengerClientSolution
+Invoking: GCC C++ Linker
+g++  -o "Lab6TCPMessengerClientSolution"  ./src/MThread.o ./src/MultipleTCPSocketsListener.o ./src/TCPMessengerClient.o ./src/TCPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab6TCPMessengerClientSolution
+ 
+
+06:40:19 Build Finished (took 6s.252ms)
+

@@ -1,0 +1,7 @@
+13:55:41 **** Clean-only build of configuration Debug for project Lab7-Select ****
+make clean 
+rm -rf  ./src/MThread.o ./src/MultipleTCPSocketsListener.o ./src/TCPSocket.o ./src/main.o  ./src/MThread.d ./src/MultipleTCPSocketsListener.d ./src/TCPSocket.d ./src/main.d  Lab7-Select
+ 
+
+13:55:41 Build Finished (took 126ms)
+

@@ -1,0 +1,90 @@
+/*
+ * UDPSocket.cpp
+ *
+ *  Created on: Feb 8, 2013
+ *      Author: Eliav Menachi
+ */
+
+#include "UDPSocket.h"
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+UDPSocket::UDPSocket(int port) {
+	//TODO: create a UDP socket
+	socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+	//TODO: Create an address for the socket
+	bzero((char *) &s_in, sizeof(s_in));
+	s_in.sin_family = (short) AF_INET;
+	s_in.sin_addr.s_addr = htonl(INADDR_ANY);
+	s_in.sin_port = htons(port);
+
+	//TODO: bind the socket on the specified address
+	if (bind(socket_fd, (struct sockaddr *) &s_in, sizeof(s_in)) < 0) {
+		cerr("Error naming channel");
+	}
+}
+
+int UDPSocket::recv(char* buffer, int length) {
+	//TODO: call receive from on the socket and save the address of the sender for the reply method
+
+	struct sockaddr from;
+	int n= recvfrom (socket_fd,buffer,length,0,(struct sockaddr *)&from,&fsize);
+
+
+	/*n - number of bytes read. buffer char array, 100 - maximum 100 char to read, from
+	 the remote address, fsize - form size in int.*/
+	if (n < 0) {
+		cerr("recvfrom");
+		return -1;
+	}
+
+	return n;
+}
+
+int UDPSocket::sendTo(string msg, string ip, int port) {
+	//TODO: create an address struct for the destination
+	struct sockaddr_in s_out;
+
+	bzero((char *) &s_out, sizeof(s_out));
+	s_out.sin_family = (short) AF_INET;
+	s_out.sin_addr.s_addr = ip;
+	s_out.sin_port = htons(port);
+
+	//TODO: call send to and sent the message to the destination address
+	int n = sendto(socket_fd, msg.data(), msg.length(), 0,
+			(struct sockaddr *) &s_out, sizeof(s_out));
+	if (n < 0) {
+		cerr("Sendto");
+		return -1;
+	}
+
+	return n;
+}
+
+int UDPSocket::reply(string msg) {
+	//TODO: send the message to the address of the last received message
+	int n = sendto(socket_fd, msg.data(), msg.length(), 0,
+			(struct sockaddr *) &s_fromAdrr, sizeof(&s_fromAdrr));
+	if (n < 0) {
+		cerr("Sendto");
+		return -1;
+	}
+
+	return n;
+}
+
+void UDPSocket::cclose() {
+	//TODO: shutdown and close the socket
+	shutdown(socket_fd, SHUT_RDWR);
+	close(socket_fd);
+}
+
+string UDPSocket::fromAddr() {
+	//TODO: return the IP address of the last received message as a string
+	return s_fromAdrr.sin_addr.s_addr;
+}
+

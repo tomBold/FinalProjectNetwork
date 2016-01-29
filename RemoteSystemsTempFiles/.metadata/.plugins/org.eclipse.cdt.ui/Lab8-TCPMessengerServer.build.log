@@ -1,0 +1,7 @@
+13:55:41 **** Clean-only build of configuration Debug for project Lab8-TCPMessengerServer ****
+make clean 
+rm -rf  ./src/TCPMessengerServer.o ./src/main.o  ./src/TCPMessengerServer.d ./src/main.d  Lab8-TCPMessengerServer
+ 
+
+13:55:41 Build Finished (took 84ms)
+

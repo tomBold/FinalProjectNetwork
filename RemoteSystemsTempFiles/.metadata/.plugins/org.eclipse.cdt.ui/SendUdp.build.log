@@ -1,0 +1,13 @@
+05:08:40 **** Incremental Build of configuration Debug for project SendUdp ****
+make all 
+Building target: SendUdp
+Invoking: GCC C++ Linker
+g++  -o "SendUdp"  ./src/SendUdp.o ./src/send_udp.o   
+./src/send_udp.o: In function `main':
+/home/efi/Desktop/networks/workspace/SendUdp/Debug/../src/send_udp.c:11: multiple definition of `main'
+./src/SendUdp.o:/home/efi/Desktop/networks/workspace/SendUdp/Debug/../src/SendUdp.cpp:12: first defined here
+collect2: ld returned 1 exit status
+make: *** [SendUdp] Error 1
+
+05:08:40 Build Finished (took 197ms)
+

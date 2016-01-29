@@ -1,0 +1,127 @@
+//============================================================================
+// Name        : UDPMessenger.h
+// Author      : Eliav Menachi
+// Version     :
+// Copyright   : Your copyright notice
+// Description : TCP p2p Messenger application
+//============================================================================
+
+#include "MThread.h"
+#include "TCPSocket.h"
+
+using namespace std;
+
+class TCPp2pMessenger;
+
+class TCPp2pServer: public MThread{
+	TCPSocket* tcpServerSocket;
+	TCPSocket* tcpPeerSocket;
+	bool running;
+
+public:
+	TCPp2pServer(int port);
+
+	/**
+	 * send a message on the server socket incomming connection
+	 * The message is sent in the form: [message length - 4 bytes][message data]
+	 */
+	void reply(string msg);
+
+	/**
+	 * close all resources / sockets
+	 */
+	void close();
+
+	/**
+	 * return true if there is an open incoming connection
+	 */
+	bool isActivePeerSession();
+
+	/**
+	 * This method constantly reads incoming messages from the given socket and print them on to the console
+	 */
+	void readFromSocket(TCPSocket* socket);
+
+	/**
+	 * This method constantly reads incoming messages from the server socket and print them on to the console
+	 */
+	void run();
+
+};
+
+class TCPp2pClient: public MThread{
+	TCPSocket* tcpClientSocket;
+
+public:
+	TCPp2pClient();
+
+	bool open(string peerIp, int port);
+
+	/**
+	 * This method constantly reads incoming messages from the client socket and print them on to the console
+	 */
+	void run();
+
+	/**
+	 * send a message on the client open connection
+	 * The message is sent in the form: [message length - 4 bytes][message data]
+	 */
+	void send(string msg);
+
+	/**
+	 * close all resources / sockets
+	 */
+	void close();
+
+	~TCPp2pClient();
+};
+
+class TCPp2pMessenger{
+	static const int MSNGR_PORT = 3345;
+
+	TCPp2pServer* server;
+	TCPp2pClient* client;
+
+public:
+	/**
+	 * Construct a TCP server socket, opens a thread that receive all incoming connection
+	 */
+	TCPp2pMessenger();
+
+	/**
+	 * Open a connection to the given IP address and once the connection is established it will open a thread
+	 * to read incoming messages from the socket
+	 */
+	bool open(string peerIp);
+
+	/**
+	 * send a message on the client open connection
+	 * The message is sent in the form: [message length - 4 bytes][message data]
+	 */
+	void send(string msg);
+
+	/**
+	 * send a message on the server socket incomming connection
+	 * The message is sent in the form: [message length - 4 bytes][message data]
+	 */
+	void reply(string msg);
+
+	/**
+	 * close all resources / sockets
+	 */
+	void close();
+
+	/**
+	 * return  true if the client socket is connected
+	 */
+	bool isActiveClientSession();
+
+	/**
+	 * return true if there is an open incoming connection
+	 */
+	bool isActivePeerSession();
+
+	static void readMsgs(TCPSocket* socket);
+
+};
+

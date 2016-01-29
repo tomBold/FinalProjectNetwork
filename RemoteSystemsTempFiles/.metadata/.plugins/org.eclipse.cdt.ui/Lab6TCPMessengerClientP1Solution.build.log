@@ -1,0 +1,10 @@
+06:08:26 **** Incremental Build of configuration Debug for project Lab6TCPMessengerClientP1Solution ****
+make all 
+Building target: Lab6TCPMessengerClientP1Solution
+Invoking: GCC C++ Linker
+g++  -o "Lab6TCPMessengerClientP1Solution"  ./src/MThread.o ./src/MultipleTCPSocketsListener.o ./src/TCPMessengerClient.o ./src/TCPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab6TCPMessengerClientP1Solution
+ 
+
+06:08:26 Build Finished (took 301ms)
+

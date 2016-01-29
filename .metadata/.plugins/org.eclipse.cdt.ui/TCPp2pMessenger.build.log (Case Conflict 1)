@@ -1,0 +1,15 @@
+17:06:04 **** Build of configuration Debug for project TCPP2PMessenger ****
+make all 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: TCPP2PMessenger
+Invoking: GCC C++ Linker
+g++  -o "TCPP2PMessenger"  ./src/main.o   -lpthread
+Finished building target: TCPP2PMessenger
+ 
+
+17:06:04 Build Finished (took 668ms)
+

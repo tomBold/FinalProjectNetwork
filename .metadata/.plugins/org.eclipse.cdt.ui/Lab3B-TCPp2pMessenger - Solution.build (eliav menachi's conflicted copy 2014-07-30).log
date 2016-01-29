@@ -1,0 +1,7 @@
+10:22:27 **** Clean-only build of configuration Debug for project Lab3B-TCPp2pMessenger - Solution ****
+make clean 
+rm -rf  ./src/MThread.o ./src/TCPSocket.o ./src/TCPp2pMessenger.o ./src/main.o  ./src/MThread.d ./src/TCPSocket.d ./src/TCPp2pMessenger.d ./src/main.d  Lab4TCPp2pMessengerSolution
+ 
+
+10:22:28 Build Finished (took 385ms)
+

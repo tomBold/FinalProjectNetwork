@@ -1,0 +1,6 @@
+10:46:46 **** Incremental Build of configuration Debug for project GatewayUDP ****
+make all 
+make: Nothing to be done for `all'.
+
+10:46:46 Build Finished (took 94ms)
+

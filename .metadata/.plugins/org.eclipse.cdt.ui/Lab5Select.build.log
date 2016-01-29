@@ -1,0 +1,6 @@
+06:40:01 **** Incremental Build of configuration Debug for project Lab5Select ****
+make all 
+make: Nothing to be done for `all'.
+
+06:40:06 Build Finished (took 4s.827ms)
+

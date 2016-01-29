@@ -1,0 +1,232 @@
+//============================================================================
+// Name        : TCPp2pMessenger.h
+// Author      : Eliav Menachi
+// Version     :
+// Copyright   : Your copyright notice
+// Description : TCP p2p Messenger application
+//============================================================================
+
+#include <pthread.h>
+#include "TCPSocket.h"
+#include "TCPp2pMessenger.h"
+
+using namespace std;
+
+/****** class TCPp2pServerReceiver implementation ******/
+
+/**
+ * class TCPp2pServerReceiver implementation
+ */
+TCPp2pServer::TCPp2pServer(int port){
+	tcpServerSocket = new TCPSocket(port);
+	tcpPeerSocket = NULL;
+	start();
+}
+
+/**
+ * This method constantly reads incoming messages from the server socket and print them on to the console
+ */
+void TCPp2pServer::run(){
+	running = true;
+	while(running){
+		tcpPeerSocket = tcpServerSocket->listenAndAccept();
+		TCPp2pMessenger::readMsgs(tcpPeerSocket);
+		delete tcpPeerSocket;
+		tcpPeerSocket = NULL;
+	}
+	cout<<"closing server receiver thread"<<endl;
+}
+
+void TCPp2pServer::reply(string msg){
+	int msgLen = htonl(msg.length());
+	tcpPeerSocket->send((char*)&msgLen,4);
+	tcpPeerSocket->send(msg.data(),msg.length());
+}
+
+/**
+ * close all resources / sockets
+ */
+void TCPp2pServer::close(){
+	running = false;
+	if (tcpPeerSocket != NULL){
+		tcpPeerSocket->cclose();
+	}
+
+	tcpServerSocket->cclose();
+	waitForThread();
+	delete tcpServerSocket;
+	tcpServerSocket = NULL;
+}
+
+/**
+ * return true if there is an open incoming connection
+ */
+bool TCPp2pServer::isActivePeerSession(){
+	return (tcpPeerSocket != NULL);
+}
+
+
+/****** class TCPp2pClientReceiver implementation ******/
+
+TCPp2pClient::TCPp2pClient(){
+	tcpClientSocket = NULL;
+}
+
+bool TCPp2pClient::open(string peerIp, int port){
+	if (tcpClientSocket == NULL){
+		close();
+	}
+
+	tcpClientSocket = new TCPSocket(peerIp, port);
+	if (tcpClientSocket != NULL){
+		start();
+		return true;
+	}
+	return false;
+}
+
+/**
+ * This method constantly reads incoming messages from the client socket and print them on to the console
+ */
+void TCPp2pClient::run(){
+	TCPp2pMessenger::readMsgs(tcpClientSocket);
+	cout<<"closing client reader thread"<<endl;
+}
+
+/**
+ * send a message on the client open connection
+ * The message is sent in the form: [message length - 4 bytes][message data]
+ */
+void TCPp2pClient::send(string msg){
+	int msgLen = htonl(msg.length());
+	tcpClientSocket->send((char*)&msgLen,4);
+	tcpClientSocket->send(msg.data(),msg.length());
+}
+
+/**
+ * close all resources / sockets
+ */
+void TCPp2pClient::close(){
+	if (tcpClientSocket != NULL){
+		tcpClientSocket->cclose();
+		waitForThread();
+		delete tcpClientSocket;
+		tcpClientSocket = NULL;
+	}
+}
+
+TCPp2pClient::~TCPp2pClient(){
+	close();
+}
+
+/****** class TCPp2pMessenger implementation ******/
+
+/**
+ * This method constantly reads incoming messages from the given socket and print them on to the console
+ */
+void TCPp2pMessenger::readMsgs(TCPSocket* socket){
+	char buff[1500];
+	while (true){
+		int msgLen;
+		socket->recv((char*)&msgLen,4);
+		msgLen = ntohl(msgLen);
+		int totalrc = 0;
+		int rc;
+		while (totalrc < msgLen){
+			rc = socket->recv((char*)&buff[totalrc],msgLen-totalrc);
+			if (rc>0){
+				totalrc += rc;
+			}else{
+				break;
+			}
+		}
+		if (rc > 0 && totalrc == msgLen){
+			buff[msgLen] = 0;
+			cout<<"\nreceive msg from:"<<socket->fromAddr()<<endl<<">\""<<buff<<"\""<<endl;
+		}else{
+			socket->cclose();
+			break;
+		}
+	}
+}
+
+/**
+ * Construct a TCP server socket, opens a thread that receive all incoming connection
+ */
+TCPp2pMessenger::TCPp2pMessenger(){
+	server = new TCPp2pServer(MSNGR_PORT);
+	client = NULL;
+}
+
+/**
+ * Open a connection to the given IP address and once the connection is established it will open a thread
+ * to read incoming messages from the socket
+ */
+bool TCPp2pMessenger::open(string peerIp){
+	if (client != NULL){
+		client->close();
+		delete client;
+	}
+	client = new TCPp2pClient(peerIp, MSNGR_PORT);
+	if (tcpClientSocket != NULL){
+		clientReceiver = new TCPp2pClientReceiver(this);
+		clientReceiver->start();
+		return true;
+	}
+	return false;
+}
+
+/**
+ * send a message on the client open connection
+ * The message is sent in the form: [message length - 4 bytes][message data]
+ */
+void TCPp2pMessenger::send(string msg){
+	int msgLen = htonl(msg.length());
+	tcpClientSocket->send((char*)&msgLen,4);
+	tcpClientSocket->send(msg.data(),msg.length());
+}
+
+/**
+ * send a message on the server socket incomming connection
+ * The message is sent in the form: [message length - 4 bytes][message data]
+ */
+void TCPp2pMessenger::reply(string msg){
+	int msgLen = htonl(msg.length());
+	tcpPeerSocket->send((char*)&msgLen,4);
+	tcpPeerSocket->send(msg.data(),msg.length());
+}
+
+/**
+ * close all resources / sockets
+ */
+void TCPp2pMessenger::close(){
+	running = false;
+	if (tcpPeerSocket != NULL){
+		tcpPeerSocket->cclose();
+	}
+	if (tcpClientSocket != NULL){
+		tcpClientSocket->cclose();
+		clientReceiver->waitForThread();
+		delete tcpClientSocket;
+		delete clientReceiver;
+	}
+	tcpServerSocket->cclose();
+	serverReceiver->waitForThread();
+	delete serverReceiver;
+	delete tcpServerSocket;
+}
+
+/**
+ * return  true if the client socket is connected
+ */
+bool TCPp2pMessenger::isActiveClientSession(){
+	return (tcpClientSocket != NULL);
+}
+
+/**
+ * return true if there is an open incoming connection
+ */
+bool TCPp2pMessenger::isActivePeerSession(){
+	return (tcpPeerSocket != NULL);
+}
+

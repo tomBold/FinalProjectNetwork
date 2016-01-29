@@ -1,0 +1,15 @@
+15:39:04 **** Incremental Build of configuration Debug for project Lab2-UDPMessenger - Solution ****
+make all 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: Lab2-UDPMessenger - Solution
+Invoking: GCC C++ Linker
+g++  -o "Lab2-UDPMessenger - Solution"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab2-UDPMessenger - Solution
+ 
+
+15:39:06 Build Finished (took 2s.67ms)
+

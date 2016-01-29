@@ -1,0 +1,171 @@
+//============================================================================
+// Name        : TCP Messenger Server
+// Author      : Eliav Menachi
+// Version     :
+// Copyright   :
+// Description : TCP Messenger application
+//============================================================================
+#include <strings.h>
+#include <map>
+#include <vector>
+#include "MThread.h"
+#include "TCPSocket.h"
+#include "MultipleTCPSocketsListener.h"
+#include "TCPMessengerProtocol.h"
+
+using namespace std;
+
+class TCPMessengerServer;
+
+/**
+ * The dispatcher server reads incoming commands from open peers and performs the required operations
+ */
+class MsnDispatcher: public MThread{
+	typedef map<string, TCPSocket*> tOpenedPeers;
+	tOpenedPeers openedPeers;
+	tOpenedPeers busyPeers;
+	bool running;
+
+public:
+	/**
+	 * constructor
+	 */
+	MsnDispatcher();
+
+	/**
+	 * The Dispatcher main loop
+	 */
+	void run();
+
+	void addPeer(TCPSocket* peerSocket);
+
+	void listPeers();
+
+	void close();
+
+private:
+	/**
+	 * returns the open peers in a vector
+	 */
+	vector<TCPSocket*> getPeersVec();
+
+	/**
+	 * return the open peer that matches the given name (IP:port)
+	 * returns NULL if there is no match to the given name
+	 */
+	TCPSocket* getAvailablePeerByName(string peerName);
+
+	/**
+	 * remove and delete the given peer
+	 */
+	void peerDisconnect(TCPSocket* peer);
+
+
+
+
+	vector<TCPSocket*> MsnDispatcher::getPeersVec(){
+		vector<TCPSocket*> vec;
+		tOpenedPeers::iterator iter = openedPeers.begin();
+		tOpenedPeers::iterator endIter = openedPeers.end();
+		for(;iter != endIter;iter++){
+			vec.push_back((*iter).second);
+		}
+		return vec;
+	}
+
+	TCPSocket* MsnDispatcher::getAvailablePeerByName(string peerName){
+		tOpenedPeers::iterator iter = openedPeers.find(peerName);
+		tOpenedPeers::iterator endIter = openedPeers.end();
+		if (iter == endIter){
+			return NULL;
+		}
+		return (*iter).second;
+	}
+
+	void MsnDispatcher::peerDisconnect(TCPSocket* peer){
+		openedPeers.erase(peer->destIpAndPort());
+		busyPeers.erase(peer->destIpAndPort());
+		peer->cclose();
+		delete peer;
+	}
+
+	void MsnDispatcher::markPeerAsUnavailable(TCPSocket* peer){
+		openedPeers.erase(peer->destIpAndPort());
+		busyPeers[peer->destIpAndPort()] = peer;
+	}
+
+	void MsnDispatcher::markPeerAsAvailable(TCPSocket* peer){
+		busyPeers.erase(peer->destIpAndPort());
+		openedPeers[peer->destIpAndPort()] = peer;
+	}
+};
+
+class MsnServer: public MThread{
+
+	MsnDispatcher* dispatcher;
+	TCPSocket* tcpServerSocket;
+	bool running;
+
+public:
+	/**
+	 * Construct the msn server and connect it to the dispatcher
+	 */
+	MsnServer(MsnDispatcher* dispatcher);
+
+	/**
+	 * the server main loop- this loop waits for incoming clients connection,
+	 * once a connection is established the new connection is moved to the
+	 * dispatcher handle further communication
+	 */
+	void run();
+
+	/**
+	 * close the server
+	 */
+	void close();
+
+
+};
+
+class TCPMessengerServer: public MThread{
+	MsnServer* server;
+	MsnDispatcher* dispatcher;
+	TCPSocket* tcpServerSocket;
+	bool running;
+
+public:
+	/**
+	 * Build the Messenger server
+	 */
+	TCPMessengerServer();
+
+	/**
+	 * print out the list of connected clients (for debug)
+	 */
+	void listPeers();
+
+	/**
+	 * close the server
+	 */
+	void close();
+
+	/**
+	 * read command from peer
+	 */
+	static int readCommandFromPeer(TCPSocket* peer);
+
+	/**
+	 * read data from peer
+	 */
+	static string readDataFromPeer(TCPSocket* peer);
+
+	/**
+	 * send command to peer
+	 */
+	static void sendCommandToPeer(TCPSocket* peer, int command);
+
+	/**
+	 * send data to peer
+	 */
+	static void sendDataToPeer(TCPSocket* peer, string msg);
+};

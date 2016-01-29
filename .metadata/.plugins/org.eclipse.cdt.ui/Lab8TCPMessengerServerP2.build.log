@@ -1,0 +1,6 @@
+20:54:29 **** Incremental Build of configuration Debug for project Lab8TCPMessengerServerP2 ****
+make all 
+make: Nothing to be done for `all'.
+
+20:54:30 Build Finished (took 316ms)
+

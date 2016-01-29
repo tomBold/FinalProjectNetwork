@@ -1,0 +1,295 @@
+
+#include "TCPMessengerServer.h"
+#include "TCPMessengerProtocol.h"
+
+
+MsnBroker::	MsnBroker(MsnDispatcher* dispatcher, TCPSocket* p1,TCPSocket* p2){
+	if (p2 == NULL) cout<<"create new test broker with: "<<p1->destIpAndPort()<<endl;
+	else cout<<"create new broker between: "<<p1->destIpAndPort()<<" and "<<p2->destIpAndPort()<<endl;
+	this->dispatcher = dispatcher;
+	peer1 = p1;
+	peer2 = p2;
+}
+
+void MsnBroker::close(){
+
+}
+
+void MsnBroker::run(){
+	if (peer2 != NULL){
+		cout<<"Broker thread started"<<endl;
+		MultipleTCPSocketsListener msp;
+		msp.addSocket(peer1);
+		msp.addSocket(peer2);
+		bool flag = true;
+		while(flag){
+			TCPSocket* sender = msp.listenToSocket();
+			if (sender == NULL) break;
+			TCPSocket* receiver = peer1;
+			if (receiver == sender) receiver = peer2;
+			int command = TCPMessengerServer::readCommandFromPeer(sender);
+			string msg;
+			switch (command){
+			case SEND_MSG_TO_PEER:
+				cout<<"sending msg:"<<sender->destIpAndPort()<<" -> "<<receiver->destIpAndPort()<<" "<<msg<<endl;
+				msg =  TCPMessengerServer::readDataFromPeer(sender);
+				TCPMessengerServer::sendCommandToPeer(receiver,SEND_MSG_TO_PEER);
+				TCPMessengerServer::sendDataToPeer(receiver,msg);
+				break;
+			case CLOSE_SESSION_WITH_PEER:
+				cout<<"closing session:"<<sender->destIpAndPort()<<" -> "<<receiver->destIpAndPort()<<endl;
+				TCPMessengerServer::sendCommandToPeer(receiver,CLOSE_SESSION_WITH_PEER);
+				dispatcher->addPeer(sender);
+				dispatcher->addPeer(receiver);
+				flag = false;
+				break;
+			}
+		}
+		cout<<"closing broker:"<<peer1->destIpAndPort()<<"-"<<peer2->destIpAndPort()<<endl;
+	}else{
+		bool flag = true;
+		while(flag){
+			int command = TCPMessengerServer::readCommandFromPeer(peer1);
+			string msg;
+			switch (command){
+			case SEND_MSG_TO_PEER:
+				cout<<"sending msg:"<<peer1->destIpAndPort()<<" -> "<<peer1->destIpAndPort()<<" "<<msg<<endl;
+				msg =  TCPMessengerServer::readDataFromPeer(peer1);
+				TCPMessengerServer::sendCommandToPeer(peer1,SEND_MSG_TO_PEER);
+				TCPMessengerServer::sendDataToPeer(peer1,msg);
+				break;
+			case CLOSE_SESSION_WITH_PEER:
+				cout<<"closing session:"<<peer1->destIpAndPort()<<" -> "<<peer1->destIpAndPort()<<endl;
+				dispatcher->addPeer(peer1);
+				flag = false;
+				break;
+			}
+		}
+		cout<<"closing test broker:"<<peer1->destIpAndPort()<<endl;
+	}
+	delete this;
+}
+
+/***********************   PeersRequestsDispatcher implementation ******************************/
+/**
+ * The dispatcher server reads incoming commands from open peers and performs the required operations
+ */
+MsnDispatcher::MsnDispatcher(){
+	running = false;
+}
+MsnDispatcher::~MsnDispatcher(){
+	close();
+}
+
+void MsnDispatcher::run(){
+	cout<<"dispatcher started"<<endl;
+	running = true;
+	while (running){
+		MultipleTCPSocketsListener msp;
+		msp.addSockets(getPeersVec());
+		TCPSocket* readyPeer = msp.listenToSocket(2);
+		if(readyPeer == NULL) continue;
+
+		int command = TCPMessengerServer::readCommandFromPeer(readyPeer);
+		string peerName;
+		TCPSocket* scondPeer;
+		switch (command){
+		case OPEN_SESSION_WITH_PEER:
+			peerName = TCPMessengerServer::readDataFromPeer(readyPeer);
+			cout<<"got open session command:"<<readyPeer->destIpAndPort()<<"->"<< peerName<<endl;
+			scondPeer = getAvailablePeerByName(peerName);
+			if (scondPeer!=NULL){
+				TCPMessengerServer::sendCommandToPeer(readyPeer, SESSION_ESTABLISHED);
+				TCPMessengerServer::sendCommandToPeer(scondPeer, OPEN_SESSION_WITH_PEER);
+				TCPMessengerServer::sendDataToPeer(scondPeer, readyPeer->destIpAndPort());
+				markPeerAsUnavailable(scondPeer);
+				markPeerAsUnavailable(readyPeer);
+				MsnBroker* broker = new MsnBroker(readyPeer,scondPeer,this);
+				brokers.push_back(broker);
+			}else{
+				cout<<"FAIL: didn't find peer:"<<peerName<<endl;
+				TCPMessengerServer::sendCommandToPeer(readyPeer, SESSION_REFUSED);
+			}
+			break;
+		default:
+			cout<<"peer disconnected: "<<readyPeer->destIpAndPort()<<endl;
+			peerDisconnect(readyPeer);
+			break;
+		}
+	}
+	cout<<"dispatcher ended"<<endl;
+}
+
+void MsnDispatcher::listPeers(){
+	tOpenedPeers::iterator iter = openedPeers.begin();
+	tOpenedPeers::iterator endIter = openedPeers.end();
+	for(;iter != endIter;iter++){
+		cout<<(*iter).second->destIpAndPort()<<endl;
+	}
+}
+
+void MsnDispatcher::close(){
+	cout<<"closing dispatcher"<< endl;
+	running = false;
+	tBrokers::iterator biter = brokers.begin();
+	tBrokers::iterator beEndIter = brokers.end();
+
+
+	tOpenedPeers::iterator iter = openedPeers.begin();
+	tOpenedPeers::iterator endIter = openedPeers.end();
+	for(;iter != endIter;iter++){
+		((*iter).second)->cclose();
+	}
+	waitForThread();
+
+	iter = openedPeers.begin();
+	endIter = openedPeers.end();
+	for(;iter != endIter;iter++){
+		delete (*iter).second;
+	}
+	cout<<"dispatcher closed"<< endl;
+}
+
+vector<TCPSocket*> MsnDispatcher::getPeersVec(){
+	vector<TCPSocket*> vec;
+	tOpenedPeers::iterator iter = openedPeers.begin();
+	tOpenedPeers::iterator endIter = openedPeers.end();
+	for(;iter != endIter;iter++){
+		vec.push_back((*iter).second);
+	}
+	return vec;
+}
+
+TCPSocket* MsnDispatcher::getAvailablePeerByName(string peerName){
+	tOpenedPeers::iterator iter = openedPeers.find(peerName);
+	tOpenedPeers::iterator endIter = openedPeers.end();
+	if (iter == endIter){
+		return NULL;
+	}
+	return (*iter).second;
+}
+
+void MsnDispatcher::peerDisconnect(TCPSocket* peer){
+	openedPeers.erase(peer->destIpAndPort());
+	busyPeers.erase(peer->destIpAndPort());
+	peer->cclose();
+	delete peer;
+}
+
+void MsnDispatcher::markPeerAsUnavailable(TCPSocket* peer){
+	openedPeers.erase(peer->destIpAndPort());
+	busyPeers[peer->destIpAndPort()] = peer;
+}
+
+void MsnDispatcher::markPeerAsAvailable(TCPSocket* peer){
+	busyPeers.erase(peer->destIpAndPort());
+	openedPeers[peer->destIpAndPort()] = peer;
+}
+
+void MsnDispatcher::addPeer(TCPSocket* peerSocket){
+	openedPeers[peerSocket->destIpAndPort()] = peerSocket;
+}
+
+
+
+/***********************   MsnServer implementation ******************************/
+MsnServer::MsnServer(MsnDispatcher* dispatcher){
+	tcpServerSocket = new TCPSocket(MSNGR_PORT);
+	running = false;
+	this->dispatcher = dispatcher;
+}
+
+void MsnServer::run(){
+	running = true;
+	while(running){
+		TCPSocket* peerSocket = tcpServerSocket->listenAndAccept();
+
+		if (peerSocket!= NULL){
+			cout<<"new peer connected: "<<peerSocket->destIpAndPort()<<endl;
+			dispatcher->addPeer(peerSocket);
+		}
+	}
+}
+
+void MsnServer::close(){
+	running = false;
+	dispatcher = NULL;
+	tcpServerSocket->cclose();
+	waitForThread();
+	delete tcpServerSocket;
+	tcpServerSocket = NULL;
+}
+
+MsnServer::~MsnServer(){
+	close();
+}
+
+/***********************   TCPMessengerServer implementation ******************************/
+
+TCPMessengerServer::TCPMessengerServer(){
+	dispatcher = new MsnDispatcher();
+	server = new MsnServer(dispatcher);
+}
+
+void TCPMessengerServer::close(){
+	server->close();
+	dispatcher->close();
+	delete server;
+	delete dispatcher;
+	server = NULL;
+	dispatcher = NULL;
+}
+
+TCPMessengerServer::~TCPMessengerServer(){
+	close();
+}
+
+int TCPMessengerServer::readCommandFromPeer(TCPSocket* peer){
+	int command = 0;
+	int rt = peer->recv((char*)&command,4);
+	if (rt < 1) return rt;
+	command = ntohl(command);
+	return command;
+}
+
+string TCPMessengerServer::readDataFromPeer(TCPSocket* peer){
+	string msg;
+	char buff[1500];
+	int msgLen;
+	peer->recv((char*)&msgLen,4);
+	msgLen = ntohl(msgLen);
+	int totalrc = 0;
+	int rc;
+	while (totalrc < msgLen){
+		rc = peer->recv((char*)&buff[totalrc],msgLen-totalrc);
+		if (rc>0){
+			totalrc += rc;
+		}else{
+			break;
+		}
+	}
+	if (rc > 0 && totalrc == msgLen){
+		buff[msgLen] = 0;
+		msg = buff;
+	}else{
+		peer->cclose();
+	}
+	return msg;
+}
+
+void TCPMessengerServer::sendCommandToPeer(TCPSocket* peer, int command){
+	command = htonl(command);
+	peer->send((char*)&command,4);
+}
+
+void TCPMessengerServer::sendDataToPeer(TCPSocket* peer, string msg){
+	int msgLen = msg.length();
+	msgLen = htonl(msgLen);
+	peer->send((char*)&msgLen,4);
+	peer->send(msg.data(),msg.length());
+}
+
+void TCPMessengerServer::listPeers(){
+	dispatcher->listPeers();
+}
+

@@ -1,0 +1,7 @@
+10:22:25 **** Clean-only build of configuration Debug for project Lab2-UDPMessenger - Solution ****
+make clean 
+rm -rf  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o  ./src/MThread.d ./src/UDPMessenger.d ./src/UDPSocket.d ./src/main.d  Lab2UDPMessengerSolution
+ 
+
+10:22:25 Build Finished (took 459ms)
+

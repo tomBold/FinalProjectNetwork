@@ -1,0 +1,43 @@
+#ifndef TCPMSNSERVER_H__
+#define TCPMSNSERVER_H__
+
+#include <strings.h>
+#include <map>
+#include <vector>
+#include <set>
+#include "MThread.h"
+#include "TCPSocket.h"
+#include "MultipleTCPSocketsListener.h"
+#include "TCPMessengerProtocol.h"
+#include "MsnDispatcher.h"
+
+using namespace std;
+
+
+class MsnServer: public MThread{
+	MsnDispatcher* dispatcher;
+	TCPSocket* tcpServerSocket;
+	bool running;
+
+public:
+	/**
+	 * Construct the msn server and connect it to the dispatcher
+	 */
+	MsnServer(MsnDispatcher* dispatcher);
+	~MsnServer();
+	/**
+	 * the server main loop- this loop waits for incoming clients connection,
+	 * once a connection is established the new connection is moved to the
+	 * dispatcher handle further communication
+	 */
+	void run();
+
+	/**
+	 * close the server
+	 */
+	void close();
+
+
+};
+
+#endif

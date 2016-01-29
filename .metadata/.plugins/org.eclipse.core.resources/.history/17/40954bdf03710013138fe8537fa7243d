@@ -1,0 +1,83 @@
+//============================================================================
+// Name        : TCPp2pMessenger.h
+// Author      : Eliav Menachi
+// Version     :
+// Copyright   : Your copyright notice
+// Description : TCP p2p Messenger application
+//============================================================================
+
+#include <pthread.h>
+#include "TCPSocket.h"
+#include "TCPp2pMessenger.h"
+
+using namespace std;
+
+/**
+ * Construct a TCP server socket, opens a thread that receive all incoming connection
+ */
+TCPp2pMessenger::TCPp2pMessenger(){
+	//TODO: initialize class properties
+	client = NULL;
+}
+
+/**
+ * Open a connection to the given IP address and once the connection is established it will open a thread
+ * to read incoming messages from the socket
+ */
+bool TCPp2pMessenger::open(string peerIp){
+	//TODO: if the client socket is already connected, disconnect it and free all related resources
+
+	//TODO: create a new client socket and connect it to the given IP
+	client = new P2PClient();
+	//TODO: start a thread that reads incoming messages from the socket
+
+	return false;
+}
+
+/**
+ * Close an open session
+ */
+bool TCPp2pMessenger::closeSession(){
+	//TODO: if the client socket is already connected, disconnect it and free all related resources
+	return false;
+}
+
+/**
+ * send a message on the client open connection
+ * The message is sent in the form: [message length - 4 bytes][message data]
+ */
+void TCPp2pMessenger::send(string msg){
+	//TODO: send message on the client socket
+}
+
+/**
+ * send a message on the server socket incoming connection
+ * The message is sent in the form: [message length - 4 bytes][message data]
+ */
+void TCPp2pMessenger::reply(string msg){
+	//TODO: send message on the server socket
+}
+
+/**
+ * close all resources / sockets
+ */
+void TCPp2pMessenger::close(){
+	//TODO: close all sockets and threads
+}
+
+/**
+ * return  true if the client socket is connected
+ */
+bool TCPp2pMessenger::isActiveClientSession(){
+	//TODO: complete implementation
+	return false;
+}
+
+/**
+ * return true if there is an open incoming connection
+ */
+bool TCPp2pMessenger::isActivePeerSession(){
+	//TODO: complete implementation
+	return false;
+}
+

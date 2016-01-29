@@ -1,0 +1,21 @@
+06:09:03 **** Incremental Build of configuration Debug for project Lab7TCPMessengerServerP2 ****
+make all 
+Building target: Lab7TCPMessengerServerP2
+Invoking: GCC C++ Linker
+g++  -o "Lab7TCPMessengerServerP2"  ./src/MThread.o ./src/MultipleTCPSocketsListener.o ./src/TCPMessengerServer.o ./src/TCPSocket.o ./src/main.o   
+./src/MThread.o: In function `MThread::start()':
+/home/efi/Dropbox/workspace/Lab7TCPMessengerServerP2/Debug/../src/MThread.cpp:21: undefined reference to `pthread_create'
+./src/MThread.o: In function `MThread::waitForThread()':
+/home/efi/Dropbox/workspace/Lab7TCPMessengerServerP2/Debug/../src/MThread.cpp:25: undefined reference to `pthread_join'
+./src/MThread.o: In function `~MThread':
+/home/efi/Dropbox/workspace/Lab7TCPMessengerServerP2/Debug/../src/MThread.cpp:31: undefined reference to `pthread_cancel'
+/home/efi/Dropbox/workspace/Lab7TCPMessengerServerP2/Debug/../src/MThread.cpp:31: undefined reference to `pthread_cancel'
+/home/efi/Dropbox/workspace/Lab7TCPMessengerServerP2/Debug/../src/MThread.cpp:31: undefined reference to `pthread_cancel'
+./src/TCPMessengerServer.o:(.rodata+0x48): undefined reference to `pthread_cancel'
+./src/TCPSocket.o:(.rodata+0x80): undefined reference to `pthread_cancel'
+./src/main.o:(.rodata+0x7c): more undefined references to `pthread_cancel' follow
+collect2: ld returned 1 exit status
+make: *** [Lab7TCPMessengerServerP2] Error 1
+
+06:09:05 Build Finished (took 2s.449ms)
+

@@ -1,0 +1,20 @@
+00:18:14 **** Build of configuration Debug for project Copy of Lab4TCPp2pMessenger ****
+make all 
+Building file: ../src/TCPp2pMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/TCPp2pMessenger.d" -MT"src/TCPp2pMessenger.d" -o "src/TCPp2pMessenger.o" "../src/TCPp2pMessenger.cpp"
+Finished building: ../src/TCPp2pMessenger.cpp
+ 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: Copy of Lab4TCPp2pMessenger
+Invoking: GCC C++ Linker
+g++  -o "Copy of Lab4TCPp2pMessenger"  ./src/MThread.o ./src/TCPSocket.o ./src/TCPp2pMessenger.o ./src/main.o   -lpthread
+Finished building target: Copy of Lab4TCPp2pMessenger
+ 
+
+00:18:21 Build Finished (took 6s.875ms)
+

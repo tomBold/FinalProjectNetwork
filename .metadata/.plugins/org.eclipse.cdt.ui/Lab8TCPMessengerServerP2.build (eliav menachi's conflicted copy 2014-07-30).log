@@ -1,0 +1,7 @@
+10:22:36 **** Clean-only build of configuration Debug for project Lab8TCPMessengerServerP2 ****
+make clean 
+rm -rf  ./src/MThread.o ./src/MultipleTCPSocketsListener.o ./src/TCPMessengerServer.o ./src/TCPSocket.o ./src/main.o  ./src/MThread.d ./src/MultipleTCPSocketsListener.d ./src/TCPMessengerServer.d ./src/TCPSocket.d ./src/main.d  Lab8TCPMessengerServerP2
+ 
+
+10:22:37 Build Finished (took 948ms)
+

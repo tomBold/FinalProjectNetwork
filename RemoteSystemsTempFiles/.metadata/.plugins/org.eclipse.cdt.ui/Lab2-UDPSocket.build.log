@@ -1,0 +1,6 @@
+20:25:42 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+
+20:25:42 Build Finished (took 193ms)
+

@@ -1,0 +1,17 @@
+15:20:49 **** Build of configuration Debug for project TCPClient ****
+make all 
+Building file: ../src/net_client.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/net_client.d" -MT"src/net_client.d" -o "src/net_client.o" "../src/net_client.c"
+../src/net_client.c: In function ‘main’:
+../src/net_client.c:32:2: warning: implicit declaration of function ‘inet_addr’ [-Wimplicit-function-declaration]
+Finished building: ../src/net_client.c
+ 
+Building target: TCPClient
+Invoking: GCC C Linker
+gcc  -o "TCPClient"  ./src/net_client.o   
+Finished building target: TCPClient
+ 
+
+15:20:51 Build Finished (took 2s.60ms)
+

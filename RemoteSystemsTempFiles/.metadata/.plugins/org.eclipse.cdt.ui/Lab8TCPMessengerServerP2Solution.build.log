@@ -1,0 +1,17 @@
+20:54:31 **** Incremental Build of configuration Debug for project Lab8TCPMessengerServerP2Solution ****
+make all 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -I"/home/user/Dropbox/network lab summer program/msocketsLib" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: Lab8TCPMessengerServerP2Solution
+Invoking: GCC C++ Linker
+g++ -L"/home/user/Dropbox/network lab summer program/msocketsLib" -o "Lab8TCPMessengerServerP2Solution"  ./src/TCPMessengerServer.o ./src/main.o   -lpthread -lmsockets
+./src/TCPMessengerServer.o:(.rodata._ZTV9MsnBroker[_ZTV9MsnBroker]+0xc): undefined reference to `MsnBroker::~MsnBroker()'
+./src/TCPMessengerServer.o:(.rodata._ZTV9MsnBroker[_ZTV9MsnBroker]+0x10): undefined reference to `MsnBroker::~MsnBroker()'
+collect2: error: ld returned 1 exit status
+make: *** [Lab8TCPMessengerServerP2Solution] Error 1
+
+20:54:32 Build Finished (took 1s.628ms)
+

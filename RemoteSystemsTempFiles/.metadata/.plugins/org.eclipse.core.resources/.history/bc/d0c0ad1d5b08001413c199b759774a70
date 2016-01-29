@@ -1,0 +1,68 @@
+
+#include "TCPMessengerServer.h"
+#include "TCPMessengerProtocol.h"
+
+
+TCPSessionBroker::	TCPSessionBroker(TCPMessengerServer* mesgr, TCPSocket* p1,TCPSocket* p2){
+	if (p2 == NULL) cout<<"create new test broker with: "<<p1->destIpAndPort()<<endl;
+	else cout<<"create new broker between: "<<p1->destIpAndPort()<<" and "<<p2->destIpAndPort()<<endl;
+	messenger = mesgr;
+	peer1 = p1;
+	peer2 = p2;
+}
+
+void TCPSessionBroker::run(){
+	if (peer2 != NULL){
+		cout<<"Broker thread started"<<endl;
+		MultipleTCPSocketsListener msp;
+		msp.addSocket(peer1);
+		msp.addSocket(peer2);
+		bool flag = true;
+		while(flag){
+			TCPSocket* sender = msp.listenToSocket();
+			if (sender == NULL) break;
+			TCPSocket* receiver = peer1;
+			if (receiver == sender) receiver = peer2;
+			int command = messenger->readCommandFromPeer(sender);
+			string msg;
+			switch (command){
+			case SEND_MSG_TO_PEER:
+				cout<<"sending msg:"<<sender->destIpAndPort()<<" -> "<<receiver->destIpAndPort()<<" "<<msg<<endl;
+				msg =  messenger->readDataFromPeer(sender);
+				messenger->sendCommandToPeer(receiver,SEND_MSG_TO_PEER);
+				messenger->sendDataToPeer(receiver,msg);
+				break;
+			case CLOSE_SESSION_WITH_PEER:
+				cout<<"closing session:"<<sender->destIpAndPort()<<" -> "<<receiver->destIpAndPort()<<endl;
+				messenger->sendCommandToPeer(receiver,CLOSE_SESSION_WITH_PEER);
+				messenger->markPeerAsAvailable(sender);
+				messenger->markPeerAsAvailable(receiver);
+				flag = false;
+				break;
+			}
+		}
+		cout<<"closing broker:"<<peer1->destIpAndPort()<<"-"<<peer2->destIpAndPort()<<endl;
+	}else{
+		bool flag = true;
+		while(flag){
+			int command = messenger->readCommandFromPeer(peer1);
+			string msg;
+			switch (command){
+			case SEND_MSG_TO_PEER:
+				cout<<"sending msg:"<<peer1->destIpAndPort()<<" -> "<<peer1->destIpAndPort()<<" "<<msg<<endl;
+				msg =  messenger->readDataFromPeer(peer1);
+				messenger->sendCommandToPeer(peer1,SEND_MSG_TO_PEER);
+				messenger->sendDataToPeer(peer1,msg);
+				break;
+			case CLOSE_SESSION_WITH_PEER:
+				cout<<"closing session:"<<peer1->destIpAndPort()<<" -> "<<peer1->destIpAndPort()<<endl;
+				messenger->markPeerAsAvailable(peer1);
+				flag = false;
+				break;
+			}
+		}
+		cout<<"closing test broker:"<<peer1->destIpAndPort()<<endl;
+	}
+	delete this;
+}
+

@@ -1,0 +1,42 @@
+
+#include "TCPMessengerServer.h"
+#include "TCPMessengerProtocol.h"
+
+/***********************   TCPMessengerServer implementation ******************************/
+
+TCPMessengerServer::TCPMessengerServer(){
+	//TODO: class initialization
+}
+
+void TCPMessengerServer::close(){
+	//TODO: close the server
+}
+
+TCPMessengerServer::~TCPMessengerServer(){
+}
+
+int TCPMessengerServer::readCommandFromPeer(TCPSocket* peer){
+	//TODO: read a command from socket
+	return -1;
+}
+
+string TCPMessengerServer::readDataFromPeer(TCPSocket* peer){
+	//TODO: read a string from socket
+	return "";
+}
+
+void TCPMessengerServer::sendCommandToPeer(TCPSocket* peer, int command){
+	command = htonl(command);
+	peer->send((char*)&command,4);
+}
+
+void TCPMessengerServer::sendDataToPeer(TCPSocket* peer, string msg){
+	int msgLen = msg.length();
+	msgLen = htonl(msgLen);
+	peer->send((char*)&msgLen,4);
+	peer->send(msg.data(),msg.length());
+}
+
+void TCPMessengerServer::listPeers(){
+}
+

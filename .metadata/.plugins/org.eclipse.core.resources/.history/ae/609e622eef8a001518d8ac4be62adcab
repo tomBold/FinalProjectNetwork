@@ -1,0 +1,64 @@
+//============================================================================
+// Name        : UDPMessenger
+// Author      : Eliav Menachi
+// Version     :
+// Copyright   : Your copyright notice
+// Description : UDP Messenger application
+//============================================================================
+
+#include "UDPMessenger.h"
+#include <string.h>
+
+using namespace std;
+
+
+UDPMessenger::UDPMessenger(OnRecieveClbk* clbk){
+	//TODO: initiate local arguments (if needed)
+	rcvClbk = clbk;
+
+	//TODO: create the socket
+	mainSocket = new UDPSocket();
+
+	//TODO: start the thread to receive incoming messages
+	this->start();
+}
+
+void UDPMessenger::run(){
+	//TODO: create a loop in which you read from the socket and print the received messages
+
+	char buffer[100];
+	memset((void*)buffer,0,100);
+
+	// TODO: 1?
+	while(1)
+	{
+		// Print the received messages
+		mainSocket->recv(buffer,100);
+		cout << "Receive message from: " << mainSocket->fromAddr() << endl;
+		cout << ">" << '"' << buffer << '"' << endl;
+	}
+}
+
+void UDPMessenger::sendTo(string msg,string ip){
+	//TODO: Check port???
+	//TODO: send the given message to the given destination
+	mainSocket->sendTo(msg, ip, 9999);
+}
+
+void UDPMessenger::reply(string msg){
+	//TODO: send the message to the address of the last received message
+}
+
+void UDPMessenger::close(){
+	//TODO: close the thread
+	this->close();
+
+	//TODO: close the socket
+	mainSocket->cclose();
+
+	//TODO: wait for thread to exit
+
+
+	//TODO: delete and free any allocated resources
+}
+

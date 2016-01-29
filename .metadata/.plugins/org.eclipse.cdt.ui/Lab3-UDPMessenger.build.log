@@ -1,0 +1,6 @@
+20:25:43 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+make: Nothing to be done for `all'.
+
+20:25:44 Build Finished (took 203ms)
+

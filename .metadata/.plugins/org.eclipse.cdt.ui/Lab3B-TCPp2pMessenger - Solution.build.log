@@ -1,0 +1,15 @@
+16:12:31 **** Build of configuration Debug for project Lab3B-TCPp2pMessenger - Solution ****
+make all 
+Building file: ../src/TCPp2pMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/TCPp2pMessenger.d" -MT"src/TCPp2pMessenger.d" -o "src/TCPp2pMessenger.o" "../src/TCPp2pMessenger.cpp"
+Finished building: ../src/TCPp2pMessenger.cpp
+ 
+Building target: Lab3B-TCPp2pMessenger - Solution
+Invoking: GCC C++ Linker
+g++  -o "Lab3B-TCPp2pMessenger - Solution"  ./src/MThread.o ./src/TCPSocket.o ./src/TCPp2pMessenger.o ./src/main.o   -lpthread
+Finished building target: Lab3B-TCPp2pMessenger - Solution
+ 
+
+16:12:38 Build Finished (took 7s.57ms)
+

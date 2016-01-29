@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;SinkUDP/src/recv_udp.c&apos; to &apos;sink.c&apos;" description="Rename resource &apos;recv_udp.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/recv_udp.c" name="sink.c" stamp="1354619900485" updateReferences="true"/>
+</session>

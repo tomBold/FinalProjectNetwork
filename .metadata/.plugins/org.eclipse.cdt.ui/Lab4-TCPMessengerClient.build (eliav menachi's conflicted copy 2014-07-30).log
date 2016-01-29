@@ -1,0 +1,7 @@
+10:22:28 **** Clean-only build of configuration Debug for project Lab4-TCPMessengerClient ****
+make clean 
+rm -rf  ./src/TCPMessengerClient.o ./src/main.o  ./src/TCPMessengerClient.d ./src/main.d  Lab6TCPMessengerClient
+ 
+
+10:22:28 Build Finished (took 331ms)
+

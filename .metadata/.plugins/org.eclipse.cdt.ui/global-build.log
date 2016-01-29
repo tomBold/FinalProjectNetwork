@@ -1,0 +1,352 @@
+18:50:52 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+make: Nothing to be done for `all'.
+19:03:23 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+19:03:23 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:04:54 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+19:04:54 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:22:24 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+19:22:24 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:23:03 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+19:23:03 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+make: Nothing to be done for `all'.
+19:24:51 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+19:24:51 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:28:29 **** Clean-only build of configuration Debug for project Lab2-UDPSocket ****
+make clean 
+rm -rf  ./src/UDPSocket.o ./src/main.o  ./src/UDPSocket.d ./src/main.d  Lab2-UDPSocket
+ 
+19:28:29 **** Clean-only build of configuration Debug for project Lab3-UDPMessenger ****
+make clean 
+rm -rf  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o  ./src/MThread.d ./src/UDPMessenger.d ./src/UDPSocket.d ./src/main.d  Lab3-UDPMessenger
+ 
+19:28:31 **** Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+Building file: ../src/UDPSocket.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPSocket.d" -MT"src/UDPSocket.d" -o "src/UDPSocket.o" "../src/UDPSocket.cpp"
+Finished building: ../src/UDPSocket.cpp
+ 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: Lab2-UDPSocket
+Invoking: GCC C++ Linker
+g++  -o "Lab2-UDPSocket"  ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab2-UDPSocket
+ 
+19:28:32 **** Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/MThread.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/MThread.d" -MT"src/MThread.d" -o "src/MThread.o" "../src/MThread.cpp"
+Finished building: ../src/MThread.cpp
+ 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building file: ../src/UDPSocket.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPSocket.d" -MT"src/UDPSocket.d" -o "src/UDPSocket.o" "../src/UDPSocket.cpp"
+Finished building: ../src/UDPSocket.cpp
+ 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:31:10 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:31:19 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:35:05 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+19:35:05 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:35:12 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:35:23 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+19:35:23 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:43:49 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+19:58:06 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+20:01:05 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+20:01:21 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+20:01:47 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+Info: Nothing to build for Lab1-Threads
+20:09:01 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+20:09:02 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+20:24:30 **** Clean-only build of configuration Debug for project Lab1-Threads ****
+rm -rf src/MThread.o src/main.d Lab1-Threads src/MThread.d src/main.o 
+20:24:31 **** Clean-only build of configuration Debug for project Lab2-UDPSocket ****
+make clean 
+rm -rf  ./src/UDPSocket.o ./src/main.o  ./src/UDPSocket.d ./src/main.d  Lab2-UDPSocket
+ 
+20:24:32 **** Clean-only build of configuration Debug for project Lab3-UDPMessenger ****
+make clean 
+rm -rf  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o  ./src/MThread.d ./src/UDPMessenger.d ./src/UDPSocket.d ./src/main.d  Lab3-UDPMessenger
+ 
+20:24:49 **** Rebuild of configuration Debug for project Lab1-Threads ****
+Info: Internal Builder is used for build
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o src/MThread.o ../src/MThread.cpp 
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o src/main.o ../src/main.cpp 
+../src/main.cpp: In constructor ‘Counter::Counter()’:
+../src/main.cpp:24:11: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+../src/main.cpp:24:11: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+g++ -o Lab1-Threads src/main.o src/MThread.o -lpthread 
+20:24:55 **** Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+Building file: ../src/UDPSocket.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPSocket.d" -MT"src/UDPSocket.d" -o "src/UDPSocket.o" "../src/UDPSocket.cpp"
+Finished building: ../src/UDPSocket.cpp
+ 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: Lab2-UDPSocket
+Invoking: GCC C++ Linker
+g++  -o "Lab2-UDPSocket"  ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab2-UDPSocket
+ 
+20:25:00 **** Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+Building file: ../src/MThread.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/MThread.d" -MT"src/MThread.d" -o "src/MThread.o" "../src/MThread.cpp"
+Finished building: ../src/MThread.cpp
+ 
+Building file: ../src/UDPMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPMessenger.d" -MT"src/UDPMessenger.d" -o "src/UDPMessenger.o" "../src/UDPMessenger.cpp"
+Finished building: ../src/UDPMessenger.cpp
+ 
+Building file: ../src/UDPSocket.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/UDPSocket.d" -MT"src/UDPSocket.d" -o "src/UDPSocket.o" "../src/UDPSocket.cpp"
+Finished building: ../src/UDPSocket.cpp
+ 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: Lab3-UDPMessenger
+Invoking: GCC C++ Linker
+g++  -o "Lab3-UDPMessenger"  ./src/MThread.o ./src/UDPMessenger.o ./src/UDPSocket.o ./src/main.o   -lpthread
+Finished building target: Lab3-UDPMessenger
+ 
+20:25:12 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+make: Nothing to be done for `all'.
+Info: Nothing to build for Lab1-Threads
+20:25:36 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+20:25:37 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+make: Nothing to be done for `all'.
+Info: Nothing to build for Lab1-Threads
+20:25:42 **** Incremental Build of configuration Debug for project Lab2-UDPSocket ****
+make all 
+make: Nothing to be done for `all'.
+20:25:43 **** Incremental Build of configuration Debug for project Lab3-UDPMessenger ****
+make all 
+make: Nothing to be done for `all'.

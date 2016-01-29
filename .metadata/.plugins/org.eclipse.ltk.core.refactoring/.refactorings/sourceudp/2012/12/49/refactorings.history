@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;SourceUDP/src/send_udp.c&apos; to &apos;source.c&apos;" description="Rename resource &apos;send_udp.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/send_udp.c" name="source.c" stamp="1354618994400" updateReferences="true"/>
+</session>

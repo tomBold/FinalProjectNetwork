@@ -1,0 +1,7 @@
+10:22:34 **** Clean-only build of configuration Debug for project Lab5A-Select - Solution ****
+make clean 
+rm -rf  ./src/MThread.o ./src/MultipleTCPSocketsListener.o ./src/TCPSocket.o ./src/main.o  ./src/MThread.d ./src/MultipleTCPSocketsListener.d ./src/TCPSocket.d ./src/main.d  Lab5SelectSolution
+ 
+
+10:22:35 Build Finished (took 533ms)
+

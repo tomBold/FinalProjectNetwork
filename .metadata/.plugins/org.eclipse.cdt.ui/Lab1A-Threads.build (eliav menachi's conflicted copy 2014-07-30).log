@@ -1,0 +1,23 @@
+10:22:54 **** Build of configuration Debug for project Lab1A-Threads ****
+make all 
+Building file: ../src/MThread.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/MThread.d" -MT"src/MThread.d" -o "src/MThread.o" "../src/MThread.cpp"
+Finished building: ../src/MThread.cpp
+ 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.d" -o "src/main.o" "../src/main.cpp"
+../src/main.cpp: In constructor ‘Counter::Counter()’:
+../src/main.cpp:21: warning: extended initializer lists only available with -std=c++0x or -std=gnu++0x
+../src/main.cpp:21: warning: extended initializer lists only available with -std=c++0x or -std=gnu++0x
+Finished building: ../src/main.cpp
+ 
+Building target: Lab1A-Threads
+Invoking: GCC C++ Linker
+g++  -o "Lab1A-Threads"  ./src/MThread.o ./src/main.o   -lpthread
+Finished building target: Lab1A-Threads
+ 
+
+10:23:01 Build Finished (took 6s.931ms)
+

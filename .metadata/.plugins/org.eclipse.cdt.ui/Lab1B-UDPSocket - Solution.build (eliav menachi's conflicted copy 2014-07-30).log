@@ -1,0 +1,7 @@
+10:22:24 **** Clean-only build of configuration Debug for project Lab1B-UDPSocket - Solution ****
+make clean 
+rm -rf  ./src/UDPSocket.o ./src/main.o  ./src/UDPSocket.d ./src/main.d  Lab1UDPSocketSolution
+ 
+
+10:22:24 Build Finished (took 286ms)
+

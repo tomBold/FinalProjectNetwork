@@ -1,0 +1,44 @@
+//============================================================================
+// Name        : TCPMessengerServer
+// Author      : Eliav Menachi
+// Version     :
+// Copyright   :
+// Description :
+//============================================================================
+
+#include <iostream>
+#include "TCPMessengerServer.h"
+using namespace std;
+
+void printInstructions(){
+	cout<<"To open connect to server type: c <server ip>"<<endl;
+	cout<<"To open session type with peer: o <peer ip>"<<endl;
+	cout<<"Opening session will close any previously active sessions"<<endl;
+	cout<<"After the session is opened, to send message type: s <message>"<<endl;
+	cout<<"To disconnect from server type: d"<<endl;
+	cout<<"To exit type: x"<<endl;
+}
+
+int main(){
+	cout<<"Welcome to TCP messenger Server"<<endl;
+	printInstructions();
+	TCPMessengerServer msngrServer;
+	bool loop = true;
+	while(loop){
+		string msg;
+		string command;
+		cin >> command;
+		if(command == "lp"){
+			msngrServer.listPeers();
+		}else if(command == "x"){
+			loop = false;
+		}else{
+			cout<<"wrong input"<<endl;
+			printInstructions();
+		}
+	}
+	msngrServer.close();
+	msngrServer.waitForThread();
+	cout<<"messenger was closed"<<endl;
+	return 0;
+}

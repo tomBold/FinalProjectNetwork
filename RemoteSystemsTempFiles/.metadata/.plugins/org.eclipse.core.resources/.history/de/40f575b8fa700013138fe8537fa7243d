@@ -1,0 +1,98 @@
+//============================================================================
+// Name        : UDPMessenger.h
+// Author      : Eliav Menachi
+// Version     :
+// Copyright   : Your copyright notice
+// Description : TCP p2p Messenger application
+//============================================================================
+#include <iostream>
+#include <string.h>
+#include "MThread.h"
+#include "TCPSocket.h"
+
+using namespace std;
+
+class TCPp2pMessenger;
+
+class TCPp2pServer: public MThread{
+	TCPSocket socket;
+	bool running;
+public:
+	TCPp2pServer(int port);
+
+	void reply(string msg);
+	/**
+	 * This method constantly reads incoming messages from the server socket and print them on to the console
+	 */
+
+	void run();
+};
+
+class TCPp2pClient: public MThread{
+	TCPSocket socket;
+	bool running;
+
+public:
+	TCPp2pClient(int port, string ip);
+
+	void send(string msg);
+
+	/**
+	 * This method constantly reads incoming messages from the client socket and print them on to the console
+	 */
+	void run();
+};
+
+class TCPp2pMessenger{
+	static const int MSNGR_PORT = 3345;
+
+	bool running;
+	TCPp2pServerReceiver* serverReceiver;
+	TCPp2pClientReceiver* clientReceiver;
+
+private:
+	/**
+	 * This method constantly reads incoming messages from the given socket and print them on to the console
+	 */
+	void readFromSocket(TCPSocket* socket);
+
+public:
+	/**
+	 * Construct a TCP server socket, opens a thread that receive all incoming connection
+	 */
+	TCPp2pMessenger();
+
+	/**
+	 * Open a connection to the given IP address and once the connection is established it will open a thread
+	 * to read incoming messages from the socket
+	 */
+	bool open(string peerIp);
+
+	/**
+	 * send a message on the client open connection
+	 * The message is sent in the form: [message length - 4 bytes][message data]
+	 */
+	void send(string msg);
+
+	/**
+	 * send a message on the server socket incomming connection
+	 * The message is sent in the form: [message length - 4 bytes][message data]
+	 */
+	void reply(string msg);
+
+	/**
+	 * close all resources / sockets
+	 */
+	void close();
+
+	/**
+	 * return  true if the client socket is connected
+	 */
+	bool isActiveClientSession();
+
+	/**
+	 * return true if there is an open incoming connection
+	 */
+	bool isActivePeerSession();
+};
+

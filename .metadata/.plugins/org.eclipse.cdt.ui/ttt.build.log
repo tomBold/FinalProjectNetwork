@@ -1,0 +1,15 @@
+04:46:06 **** Build of configuration Debug for project ttt ****
+make all 
+Building file: ../src/ttt.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/ttt.d" -MT"src/ttt.d" -o "src/ttt.o" "../src/ttt.cpp"
+Finished building: ../src/ttt.cpp
+ 
+Building target: ttt
+Invoking: GCC C++ Linker
+g++  -o "ttt"  ./src/ttt.o   
+Finished building target: ttt
+ 
+
+04:46:07 Build Finished (took 683ms)
+

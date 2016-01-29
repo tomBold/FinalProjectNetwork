@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;UDPMessenger/src/UDPMessenger.cpp&apos; to &apos;UDPMessenger.h&apos;" description="Rename resource &apos;UDPMessenger.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/UDPMessenger.cpp" name="UDPMessenger.h" stamp="1360187022430" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;Lab2UDPMessengerSolution/src/UDPMessenger.h&apos; to &apos;UDPMessenger.cpp&apos;" description="Rename resource &apos;UDPMessenger.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/UDPMessenger.h" name="UDPMessenger.cpp" stamp="1360318243429" updateReferences="true"/>
+</session>

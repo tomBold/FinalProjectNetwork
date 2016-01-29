@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;Lab4TCPp2pMessenger/src/TCPSocket.cpp&apos;" deleteContents="false" description="Delete resource &apos;Lab4TCPp2pMessenger/src/TCPSocket.cpp&apos;" element1="/Lab4TCPp2pMessenger/src/TCPSocket.cpp" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1365358089638"/>
+</session>

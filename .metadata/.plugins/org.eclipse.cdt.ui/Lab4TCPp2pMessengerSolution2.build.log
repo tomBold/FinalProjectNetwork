@@ -1,0 +1,47 @@
+00:18:24 **** Incremental Build of configuration Debug for project Lab4TCPp2pMessengerSolution2 ****
+make all 
+Building file: ../src/TCPp2pMessenger.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/TCPp2pMessenger.d" -MT"src/TCPp2pMessenger.d" -o "src/TCPp2pMessenger.o" "../src/TCPp2pMessenger.cpp"
+In file included from ../src/TCPp2pMessenger.cpp:11:
+../src/TCPp2pMessenger.h:52: error: ISO C++ forbids declaration of ‘TCPp2pServerReceiver’ with no type
+../src/TCPp2pMessenger.h:52: error: expected ‘;’ before ‘*’ token
+../src/TCPp2pMessenger.h:53: error: ‘TCPp2pClientReceiver’ does not name a type
+../src/TCPp2pMessenger.cpp: In member function ‘virtual void TCPp2pServer::run()’:
+../src/TCPp2pMessenger.cpp:30: error: base operand of ‘->’ has non-pointer type ‘TCPSocket’
+../src/TCPp2pMessenger.cpp:34: error: ‘readFromSocket’ was not declared in this scope
+../src/TCPp2pMessenger.cpp: In member function ‘virtual void TCPp2pClient::run()’:
+../src/TCPp2pMessenger.cpp:54: error: ‘readFromSocket’ was not declared in this scope
+../src/TCPp2pMessenger.cpp: At global scope:
+../src/TCPp2pMessenger.cpp:68: error: prototype for ‘bool TCPp2pMessenger::readFromSocket(TCPSocket*)’ does not match any in class ‘TCPp2pMessenger’
+../src/TCPp2pMessenger.h:59: error: candidate is: void TCPp2pMessenger::readFromSocket(TCPSocket*)
+../src/TCPp2pMessenger.cpp: In member function ‘bool TCPp2pMessenger::open(std::string)’:
+../src/TCPp2pMessenger.cpp:103: error: ‘tcpClientSocket’ was not declared in this scope
+../src/TCPp2pMessenger.cpp:106: error: ‘clientReceiver’ was not declared in this scope
+../src/TCPp2pMessenger.cpp:107: error: type ‘<type error>’ argument given to ‘delete’, expected pointer
+../src/TCPp2pMessenger.cpp:109: error: ‘tcpClientSocket’ was not declared in this scope
+../src/TCPp2pMessenger.cpp:111: error: ‘clientReceiver’ was not declared in this scope
+../src/TCPp2pMessenger.cpp:111: error: expected type-specifier before ‘TCPp2pClientReceiver’
+../src/TCPp2pMessenger.cpp:111: error: expected ‘;’ before ‘TCPp2pClientReceiver’
+../src/TCPp2pMessenger.cpp: In member function ‘void TCPp2pMessenger::send(std::string)’:
+../src/TCPp2pMessenger.cpp:124: error: ‘tcpClientSocket’ was not declared in this scope
+../src/TCPp2pMessenger.cpp: In member function ‘void TCPp2pMessenger::reply(std::string)’:
+../src/TCPp2pMessenger.cpp:134: error: ‘tcpPeerSocket’ was not declared in this scope
+../src/TCPp2pMessenger.cpp: In member function ‘void TCPp2pMessenger::close()’:
+../src/TCPp2pMessenger.cpp:143: error: ‘tcpPeerSocket’ was not declared in this scope
+../src/TCPp2pMessenger.cpp:146: error: ‘tcpClientSocket’ was not declared in this scope
+../src/TCPp2pMessenger.cpp:148: error: ‘clientReceiver’ was not declared in this scope
+../src/TCPp2pMessenger.cpp:149: error: type ‘<type error>’ argument given to ‘delete’, expected pointer
+../src/TCPp2pMessenger.cpp:150: error: type ‘<type error>’ argument given to ‘delete’, expected pointer
+../src/TCPp2pMessenger.cpp:152: error: ‘tcpServerSocket’ was not declared in this scope
+../src/TCPp2pMessenger.cpp:153: error: ‘serverReceiver’ was not declared in this scope
+../src/TCPp2pMessenger.cpp:154: error: type ‘<type error>’ argument given to ‘delete’, expected pointer
+../src/TCPp2pMessenger.cpp:155: error: type ‘<type error>’ argument given to ‘delete’, expected pointer
+../src/TCPp2pMessenger.cpp: In member function ‘bool TCPp2pMessenger::isActiveClientSession()’:
+../src/TCPp2pMessenger.cpp:162: error: ‘tcpClientSocket’ was not declared in this scope
+../src/TCPp2pMessenger.cpp: In member function ‘bool TCPp2pMessenger::isActivePeerSession()’:
+../src/TCPp2pMessenger.cpp:169: error: ‘tcpPeerSocket’ was not declared in this scope
+make: *** [src/TCPp2pMessenger.o] Error 1
+
+00:18:25 Build Finished (took 1s.143ms)
+

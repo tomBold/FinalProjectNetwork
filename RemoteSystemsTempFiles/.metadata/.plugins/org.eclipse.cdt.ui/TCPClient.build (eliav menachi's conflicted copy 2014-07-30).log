@@ -1,0 +1,7 @@
+10:22:37 **** Clean-only build of configuration Debug for project TCPClient ****
+make clean 
+rm -rf  ./src/net_client.o  ./src/net_client.d  TCPClient
+ 
+
+10:22:38 Build Finished (took 334ms)
+

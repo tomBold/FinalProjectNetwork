@@ -1,0 +1,4 @@
+activeuserprofiles=Team;Ubuntu-VM;user-virtual-machine
+eclipse.preferences.version=1
+org.eclipse.rse.systemtype.local.systemType.defaultUserId=user
+useridperkey=user-virtual-machine.Local\=user;
