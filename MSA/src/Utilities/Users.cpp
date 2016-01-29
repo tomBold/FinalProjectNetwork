@@ -1,6 +1,7 @@
 #include "Users.h"
 
 namespace Utilities {
+map<string, string>* Users::userToPassword = NULL;
 
 map<string, string>* Users::getAll() {
 	if (userToPassword == NULL) {
@@ -25,7 +26,8 @@ bool Users::load() {
 	while (users && passwords) {
 		getline(users, name);
 		getline(passwords, password);
-		newUserToPassword->insert(name, password);
+
+		(*newUserToPassword)[name] = password;
 	}
 
 	users.close();
@@ -56,8 +58,8 @@ bool Users::create(string name, string password) {
 	users.open("users", std::ios_base::app);
 	passwords.open("passwords", std::ios_base::app);
 
-	users << name;
-	passwords << password;
+	users << endl << name;
+	passwords << endl << password;
 
 	users.close();
 	passwords.close();
@@ -66,7 +68,7 @@ bool Users::create(string name, string password) {
 
 	return true;
 }
-
+//
 bool Users::login(string name, string password) {
 	if (!contains(name))
 	{

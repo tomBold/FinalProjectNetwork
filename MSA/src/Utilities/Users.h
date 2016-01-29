@@ -11,7 +11,6 @@ using namespace std;
 
 namespace Utilities {
 
-
 class Users {
 private:
 	static map<string, string>* userToPassword;
