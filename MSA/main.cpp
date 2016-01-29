@@ -48,6 +48,9 @@ int main() {
 			if (server->dispatcher->roomExists(roomName)) {
 				cout << room->getRoomsUsers() << endl;
 			}
+		} else if (command == "x") {
+			// TODO:
+
 		} else {
 			cout << "Wrong input" << endl;
 			printInstructions();
