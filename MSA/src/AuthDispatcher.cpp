@@ -78,7 +78,7 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 	int command = TCPMessengerServer::readCommandFromPeer(socket);
 
 	switch (command) {
-	case (LOGIN): {
+	case (LOGIN_REQ): {
 		string userNameAndPassword = TCPMessengerServer::readDataFromPeer(
 				socket);
 		string name;
@@ -98,7 +98,7 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 
 		break;
 	}
-	case (REGISTER): {
+	case (REGISTER_REQ): {
 		string userNameAndPassword = TCPMessengerServer::readDataFromPeer(
 				socket);
 		string name;

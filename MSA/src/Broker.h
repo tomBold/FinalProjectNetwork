@@ -27,6 +27,7 @@ public:
 	Broker();
 	Broker(TCPSocket* initiativeSocket, TCPSocket* recvSocket, TCPMessengerDispatcher* dispatcher);
 	virtual ~Broker();
+	bool isUserInBroker(string ip);
 
 	/**
 	 * Run the messages between peers

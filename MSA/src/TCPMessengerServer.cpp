@@ -98,6 +98,6 @@ void TCPMessengerServer::run() {
 void TCPMessengerServer::userLogin(TCPSocket* peer, string name) {
 	// TODO: checl if the user is login!!!!
 
-	this->dispatcher->addSocket(peer);
+	this->dispatcher->addSocket(peer, name);
 }
 

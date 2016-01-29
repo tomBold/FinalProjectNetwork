@@ -1,10 +1,3 @@
-/*
- * TCPMessengerProtocol.h
- *
- *  Created on: Feb 13, 2013
- *      Author: efi
- */
-
 #ifndef TCPMESSENGERPROTOCOL_H_
 #define TCPMESSENGERPROTOCOL_H_
 
@@ -21,13 +14,27 @@
 #define SEND_MSG_TO_PEER			4
 #define SESSION_REFUSED				5
 #define SESSION_ESTABLISHED			6
-#define LOGIN						7
-#define REGISTER					8
+#define LOGIN_REQ					7
+#define REGISTER_REQ				8
+#define USER_ALREADY_EXISTS_RES 	9
+#define LOGIN_FAILED				10
+#define OPEN_ROOM_REQ				11
+#define CLOSE_ROOM_REQ				12
+#define JOIN_ROOM_REQ				13
+#define LEAVE_ROOM_REQ				14
+#define NEW_MESSAGE_DST_RES			15
+#define USER_JOIN_ROOM_RES			16
+#define USER_LEAVE_ROOM_RES			17
+#define ALREADY_CONNECTED_RES		18
+#define USER_BUSY_RES				19
+#define ROOM_ALREADY_EXISTS			20
+#define SUCCESSFULY_LEFT_ROOM		21
+#define CLOSE_ROOM_RES				22
+#define SUCCESSFULY_JOIN_ROOM		23
+#define PRINT_ROOMS_USERS_REQ		24
+#define PRINT_ROOMS_USERS_RES		25
 
 #define TEST_PEER_NAME "test"
 #define SESSION_REFUSED_MSG "Connection to peer refused, peer might be busy or disconnected, try again later"
-#define USER_ALREADY_EXISTS 		9
-#define LOGIN_FAILED				10
-
 
 #endif /* TCPMESSENGERPROTOCOL_H_ */

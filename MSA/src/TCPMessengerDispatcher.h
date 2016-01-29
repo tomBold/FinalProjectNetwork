@@ -1,10 +1,3 @@
-/*
- * TCPMessengerDispatcher.h
- *
- *  Created on: Dec 16, 2015
- *      Author: Tom Boldan and Gal Schlezinger
- */
-
 #include <strings.h>
 #include <map>
 #include "TCPSocket.h"
@@ -25,11 +18,12 @@ class Room;
 class TCPMessengerDispatcher : public MThread{
 	map<string, TCPSocket*> sockets;
 	MultipleTCPSocketsListener* multiSocketListener;
-	map<string, string> peersIpToUser;
 	set<Broker*> brokers;
 	set<Room*> rooms;
 
 public:
+	map<string, string> peersIpToUser;
+	map<string, string> userToPeersIp;
 	TCPMessengerDispatcher();
 	virtual ~TCPMessengerDispatcher();
 
@@ -42,7 +36,6 @@ public:
 	 * Add socket to the map and the multiple tcp socket listener
 	 */
 	void addSocket(TCPSocket* socket);
-
 
 	/*
 	 * Delete socket by socket
@@ -73,6 +66,7 @@ public:
 	 * Create a broker
 	 */
 	void createBroker(TCPSocket* firstSocket, TCPSocket* secondSocket);
+
 	vector<TCPSocket*> getSockets();
 	void createSession(TCPSocket* socket, string peer);
 	bool isSocketExists(TCPSocket* socket);
@@ -80,6 +74,13 @@ public:
 	void exit(TCPSocket* socket);
 	void handleSocketCommand(TCPSocket* socket, int command);
 	void closeBroker(Broker* broker);
+	bool createRoom(string room, TCPSocket* admin);
+	void closeRoom(Room* room);
+	void leaveRoom(TCPSocket* socket);
+	bool joinRoom(string roomName, TCPSocket* socket);
+	Room* roomExists(string room);
+	bool isUserBusy(string name);
+	void forceLeaveUser(string name);
 };
 
 #endif /* TCPMESSENGERDISPATCHER_H_ */

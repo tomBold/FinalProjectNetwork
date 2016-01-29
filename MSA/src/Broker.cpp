@@ -17,13 +17,16 @@ Broker::Broker(TCPSocket* initiativeSocket, TCPSocket* recvSocket,
 	this->areBothPeersConnected = true;
 	this->firstSocket = initiativeSocket;
 	this->secondSocket = recvSocket;
+
 	this->multiSocketListener = new MultipleTCPSocketsListener();
 	this->multiSocketListener->addSocket(this->firstSocket);
 	this->multiSocketListener->addSocket(this->secondSocket);
 	this->dispatcher = dispatcher;
 
+	// TODO: delete it?
 	cout << "Open session between " << initiativeSocket->destIpAndPort()
 			<< " and " << recvSocket->destIpAndPort() << endl;
+
 	TCPMessengerServer::sendCommandToPeer(initiativeSocket,
 	SESSION_ESTABLISHED);
 	TCPMessengerServer::sendCommandToPeer(recvSocket, OPEN_SESSION_WITH_PEER);
@@ -67,3 +70,8 @@ void Broker::run() {
 	}
 }
 
+bool Broker::isUserInBroker(string ip) {
+	return this->firstSocket->destIpAndPort() == ip
+			|| this->secondSocket->destIpAndPort() == ip;
+
+}

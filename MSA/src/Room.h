@@ -12,21 +12,30 @@
 #include <strings.h>
 #include <vector>
 #include "TCPSocket.h"
+#include "TCPMessengerDispatcher.h"
+#include "MultipleTCPSocketsListener.h"
 #include <map>
 using namespace std;
 
-class Room {
+class Room: public MThread {
 private:
+	TCPMessengerDispatcher* dispatcher;
+	MultipleTCPSocketsListener* multiSocketListener;
+public:
 	string admin;
 	string name;
 	map<string, TCPSocket*> users;
-public:
-	Room(string name, string admin, TCPSocket* adminSocket);
+	Room(string name, string admin, TCPSocket* adminSocket,
+			TCPMessengerDispatcher* dispatcher);
 	virtual ~Room();
 	bool leave(string name);
-	bool join(string user,  TCPSocket* userSocket);
+	bool join(string user, TCPSocket* userSocket);
 	bool close(string user);
 	bool exists(string name);
+	void run();
+	string getOtherUsersIps(string name);
+	void sendMsgDest(string name);
+	string getRoomsUsers();
 };
 
 #endif /* ROOM_H_ */
