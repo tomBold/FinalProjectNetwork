@@ -29,13 +29,14 @@ using namespace std;
 
 class TCPMessengerServer : public MThread{
 	TCPSocket* serverSocket;
-	TCPMessengerDispatcher* dispatcher;
+
 	AuthDispatcher* authDispatcher;
 
 public:
 	/**
 	 * Build the Messenger server
 	 */
+	TCPMessengerDispatcher* dispatcher;
 	TCPMessengerServer();
 	~TCPMessengerServer();
 
