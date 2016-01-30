@@ -180,6 +180,14 @@ void TCPMessengerDispatcher::handleSocketCommand(TCPSocket* socket,
 
 		break;
 	}
+	case (PRINT_USERS_REQ):
+	{
+		string users = Users::getAllUsers();
+		ServerIO::sendCommandToPeer(socket, PRINT_USERS_RES);
+		ServerIO::sendDataToPeer(socket, users);
+
+		break;
+	}
 	default: {
 		cout << "Command " << command << " not found" << endl;
 		break;

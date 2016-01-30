@@ -37,9 +37,9 @@ void printInstructions() {
 int main() {
 	TCPMessengerClient* client = new TCPMessengerClient();
 	bool isRunning = true;
+	printInstructions();
 
 	while (isRunning) {
-		printInstructions();
 		string command = "";
 		cin >> command;
 
@@ -56,6 +56,8 @@ int main() {
 			cin >> password;
 
 			client->login(name, password);
+		} else if (command == "l") {
+			cout << "User status: " << client->getStatus() << endl;
 		} else if (command == "register") {
 			string name = "";
 			string password = "";
@@ -64,9 +66,19 @@ int main() {
 
 			client->registerUser(name, password);
 		} else if (command == "x") {
-			// TODO
 			isRunning = false;
+			client->disconnect();
 		}
-
+		else if (command == "lu")
+		{
+			if (!client->getAllUsers())
+			{
+				cout << "For this action you should log in" << endl;
+			}
+		}
+		else
+		{
+			printInstructions();
+		}
 	}
 }

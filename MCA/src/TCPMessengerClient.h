@@ -26,7 +26,7 @@ class TCPMessengerClient: public MThread, public OnRecieveClbk {
 	map<string, string> ipAndPortToUsers;
 	TCPSocket* socket;
 	int status;
-	string currentRoom;
+	string currentConversation;
 	bool isRunning;
 	UDPMessenger* udpMessenger;
 
@@ -57,7 +57,7 @@ public:
 	string getServerIp();
 	string getPeerName();
 	string getPeerIpAndPort();
-	string getRoomName();
+	string getConversation();
 	bool openSession(string user);
 	bool joinRoom(string room);
 	bool closeRoom(string room);
@@ -66,7 +66,7 @@ public:
 	bool isActiveRoom();
 	bool closeActiveSession();
 	bool send(string msg);
-	int getStatus();
+	string getStatus();
 	void run();
 };
 

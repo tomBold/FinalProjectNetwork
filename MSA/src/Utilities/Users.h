@@ -19,6 +19,7 @@ public:
 	static bool create(string name, string password);
 	static bool login(string name, string password);
 	static vector<string> getAllNames();
+	static string getAllUsers();
 };
 
 #endif /* USERS_H_ */

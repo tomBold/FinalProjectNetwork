@@ -44,6 +44,8 @@
 #define PORT_INIT_FAILED			34
 #define IN_DISPATCHER				35
 #define IN_EMPTY_ROOM				36
+#define PRINT_USERS_REQ				37
+#define PRINT_USERS_RES				38 // DATA: name1,name2,...
 
 #define ROOM						1
 #define DISPATCHER					2

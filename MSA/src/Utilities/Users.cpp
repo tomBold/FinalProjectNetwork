@@ -89,3 +89,20 @@ vector<string> Users::getAllNames() {
 	return names;
 }
 
+string Users::getAllUsers()
+{
+	string result = "";
+
+	vector<string> names = getAllNames();
+	for (unsigned int i = 0; i < names.size(); i++) {
+		if (i != 0)
+		{
+			result += ",";
+		}
+
+		result +=  names[i];
+	}
+
+	return result;
+}
+

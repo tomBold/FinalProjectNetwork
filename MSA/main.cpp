@@ -28,10 +28,7 @@ int main() {
 		cin >> command;
 
 		if (command == "lu") {
-			vector<string> names = Users::getAllNames();
-			for (unsigned int i = 0; i < names.size(); i++) {
-				cout << names[i] << endl;
-			}
+			cout << "Users: " << Users::getAllUsers() << endl;
 		} else if (command == "lcu") {
 			cout << server->dispatcher->getConnectUsers() << endl;
 		} else if (command == "ls") {

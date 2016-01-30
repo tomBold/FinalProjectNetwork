@@ -11,7 +11,7 @@ TCPMessengerClient::TCPMessengerClient() {
 	this->socket = NULL;
 	this->status = DISCONNECTED;
 	this->udpMessenger = NULL;
-	this->currentRoom = "";
+	this->currentConversation = "";
 	this->isRunning = false;
 	this->user = "";
 }
@@ -50,6 +50,12 @@ bool TCPMessengerClient::disconnect() {
 }
 
 bool TCPMessengerClient::getAllUsers() {
+	if (!this->isConnected() || this->status == AUTH) {
+		return false;
+	}
+
+	ServerIO::sendCommandToPeer(this->socket, PRINT_USERS_REQ);
+	return true;
 }
 
 bool getConnectedUsers() {
@@ -93,8 +99,8 @@ string TCPMessengerClient::getPeerName() {
 }
 string TCPMessengerClient::getPeerIpAndPort() {
 }
-string TCPMessengerClient::getRoomName() {
-	return this->currentRoom;
+string TCPMessengerClient::getConversation() {
+	return this->currentConversation;
 }
 bool TCPMessengerClient::openSession(string user) {
 }
@@ -147,9 +153,13 @@ void TCPMessengerClient::run() {
 		}
 		case (SUCCESSFULY_LOGIN_RES): {
 			this->user = ServerIO::readDataFromPeer(this->socket);
-
 			cout << "Welcome " << this->user << endl;
 
+			break;
+		}
+		case (PRINT_USERS_RES): {
+			string users = ServerIO::readDataFromPeer(this->socket);
+			cout << "Users: " << users << endl;
 			break;
 		}
 		default: {
@@ -159,8 +169,26 @@ void TCPMessengerClient::run() {
 	}
 }
 
-int TCPMessengerClient::getStatus() {
-	return this->status;
+string TCPMessengerClient::getStatus() {
+	switch (this->status) {
+	case (DISCONNECTED): {
+		return "disconnected";
+	}
+	case (AUTH): {
+		return "waiting for credentials";
+	}
+	case (DISPATCHER): {
+		return "connected to server " + this->getServerIp();
+	}
+	case (BROKER): {
+		return "chatting with " + this->getConversation();
+	}
+	case (ROOM): {
+		return "in room " + this->getConversation();
+	}
+	}
+
+	return "unknown status";
 }
 
 void TCPMessengerClient::handleMessage(string msg) {
