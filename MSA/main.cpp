@@ -51,8 +51,7 @@ int main() {
 				cout << room->getRoomsUsers() << endl;
 			}
 		} else if (command == "x") {
-			// TODO:
-
+			server->close();
 		} else {
 			cout << "Wrong input" << endl;
 			printInstructions();

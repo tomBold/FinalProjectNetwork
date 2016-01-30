@@ -9,6 +9,7 @@
 #include "AuthDispatcher.h"
 
 AuthDispatcher::AuthDispatcher(TCPMessengerServer* tcpMessengerServer) {
+	this->isRunning = true;
 	this->tcpMessengerServer = tcpMessengerServer;
 	this->multiSocketListener = new ExtendedMultipleTCPSocketListener();
 	this->start();
@@ -52,7 +53,7 @@ void AuthDispatcher::deleteSocket(string ipAndPort) {
  * Retrieve messages from peers
  */
 void AuthDispatcher::run() {
-	while (true) {
+	while (this->isRunning) {
 		TCPSocket* currSocket = this->multiSocketListener->listenToSocket();
 
 		if (currSocket != NULL) {
@@ -108,7 +109,8 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 			cout << name << " register failed" << endl;
 
 			if (Users::contains(name)) {
-				TCPMessengerServer::sendCommandToPeer(socket, USER_ALREADY_EXISTS_RES);
+				TCPMessengerServer::sendCommandToPeer(socket,
+						USER_ALREADY_EXISTS_RES);
 			}
 		}
 
@@ -165,4 +167,15 @@ void AuthDispatcher::getUserAndPasswordFromSocket(TCPSocket* socket,
 
 	(*name) = userNameAndPassword.substr(0, index);
 	(*password) = userNameAndPassword.substr(index + 1);
+}
+
+void AuthDispatcher::shutdown() {
+
+	for (map<string, TCPSocket*>::const_iterator it =
+			this->sockets.begin(); it != this->sockets.end();
+			it++) {
+		this->disconnectClient(it->second);
+	}
+
+	this->isRunning = false;
 }

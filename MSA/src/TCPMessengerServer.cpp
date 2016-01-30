@@ -15,6 +15,8 @@ TCPMessengerServer::TCPMessengerServer() {
  */
 void TCPMessengerServer::close() {
 	this->serverSocket->cclose();
+	this->dispatcher->shutdown();
+	this->authDispatcher->shutdown();
 }
 
 TCPMessengerServer::~TCPMessengerServer() {

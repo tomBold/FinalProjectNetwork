@@ -28,6 +28,7 @@ private:
 	map<string, TCPSocket*> sockets;
 	ExtendedMultipleTCPSocketListener* multiSocketListener;
 	TCPMessengerServer* tcpMessengerServer;
+	bool isRunning;
 
 	void getUserAndPasswordFromSocket(TCPSocket* socket, string* name, string* password);
 
@@ -86,6 +87,8 @@ public:
 	 * Client login
 	 */
 	void userLogin(TCPSocket* socket, string name);
+
+	void shutdown();
 };
 
 #endif /* AUTHDISPATCHER_H_ */

@@ -228,9 +228,16 @@ void TCPMessengerDispatcher::createSession(TCPSocket* socket, string peerName) {
  * Handle exit socket
  */
 void TCPMessengerDispatcher::disconnectClient(TCPSocket* socket) {
+	string ip = socket->destIpAndPort();
+	string name = this->peersIpToUser[ip];
+
 	this->deleteSocket(socket);
 	socket->cclose();
 	delete socket;
+
+	this->userToPeersIp.erase(name);
+	this->peersIpToPort.erase(ip);
+	this->peersIpToUser.erase(ip);
 }
 
 void TCPMessengerDispatcher::closeBroker(Broker* broker) {
@@ -405,14 +412,13 @@ string TCPMessengerDispatcher::getAllBrokers() {
 }
 
 void TCPMessengerDispatcher::shutdown() {
-	set<Room*>::iterator it;
-	for (it = this->rooms.begin(); it != this->rooms.end(); it++) {
-		Room* room = *it;
+	for (set<Room*>::iterator itR = this->rooms.begin(); itR != this->rooms.end(); itR++) {
+		Room* room = *itR;
 		room->close(room->admin);
 	}
 
-	set<Broker*>::iterator itB;
-	for (itB = this->brokers.begin(); itB != this->brokers.end(); itB++) {
+
+	for (set<Broker*>::iterator itB = this->brokers.begin(); itB != this->brokers.end(); itB++) {
 		Broker* broker = *itB;
 		this->closeBroker(broker);
 	}
