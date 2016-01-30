@@ -40,6 +40,9 @@ public:
 	 */
 	TCPSocket* listenToSocket();
 
+	/**
+	 * This method remove socket
+	 */
 	void removeSocket(TCPSocket* socket);
 };
 

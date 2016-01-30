@@ -73,7 +73,7 @@ public:
 	vector<TCPSocket*> getSockets();
 
 	/**
-	 * Checl if the socket exists
+	 * Check if the socket exists
 	 */
 	bool isSocketExists(TCPSocket* socket);
 

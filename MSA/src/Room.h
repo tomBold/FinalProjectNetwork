@@ -14,14 +14,14 @@
 #include <vector>
 #include "TCPSocket.h"
 #include "TCPMessengerDispatcher.h"
-#include "MultipleTCPSocketsListener.h"
+#include "ExtendedMultipleTCPSocketListener.h"
 #include <map>
 using namespace std;
 
 class Room: public MThread {
 private:
 	TCPMessengerDispatcher* dispatcher;
-	MultipleTCPSocketsListener* multiSocketListener;
+	ExtendedMultipleTCPSocketListener* multiSocketListener;
 public:
 	string admin;
 	string name;

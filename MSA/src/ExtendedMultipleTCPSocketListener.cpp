@@ -44,6 +44,9 @@ TCPSocket* ExtendedMultipleTCPSocketListener::listenToSocket() {
 	return this->multipleTCPSocketsListener->listenToSocket();
 }
 
+/**
+ * This method remove socket
+ */
 void ExtendedMultipleTCPSocketListener::removeSocket(TCPSocket* socket) {
 	MultipleTCPSocketsListener* old = this->multipleTCPSocketsListener;
 	MultipleTCPSocketsListener* newListener = new MultipleTCPSocketsListener();

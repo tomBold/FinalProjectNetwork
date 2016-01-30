@@ -14,9 +14,11 @@ Room::Room(string name, string admin, TCPSocket* adminSocket,
 	this->admin = admin;
 	this->users[admin] = adminSocket;
 
-	this->multiSocketListener = new MultipleTCPSocketsListener();
+	this->multiSocketListener = new ExtendedMultipleTCPSocketListener();
 	this->multiSocketListener->addSocket(adminSocket);
 	this->dispatcher = dispatcher;
+
+	TCPMessengerServer::sendCommandToPeer(adminSocket, IN_EMPTY_ROOM);
 }
 
 Room::~Room() {
@@ -36,8 +38,7 @@ bool Room::leave(string name) {
 	TCPSocket* userLeave = this->users[name];
 	this->users.erase(name);
 
-	MultipleTCPSocketsListener* oldListener = this->multiSocketListener;
-	MultipleTCPSocketsListener* newListener = new MultipleTCPSocketsListener();
+	this->multiSocketListener->removeSocket(userLeave);
 
 	// Notify that the user leave the room
 	for (std::map<string, TCPSocket*>::const_iterator it = this->users.begin();
@@ -45,13 +46,13 @@ bool Room::leave(string name) {
 		TCPSocket* socket = it->second;
 		TCPMessengerServer::sendCommandToPeer(socket, USER_LEAVE_ROOM_RES);
 		TCPMessengerServer::sendDataToPeer(socket, name);
-		newListener->addSocket(socket);
-		this->sendMsgDest(it->first);
-	}
 
-	// Init the listener
-	this->multiSocketListener = newListener;
-	delete oldListener;
+		if (this->users.size() == 1) {
+			TCPMessengerServer::sendCommandToPeer(socket, IN_EMPTY_ROOM);
+		} else {
+			this->sendMsgDest(it->first);
+		}
+	}
 
 	this->dispatcher->leaveRoom(userLeave);
 
@@ -102,7 +103,7 @@ string Room::getOtherUsersIps(string name) {
 				ips += ",";
 			}
 
-			ips += it->second->fromAddr() + ":" + it->first;
+			ips += this->dispatcher->getUserP2PAddress(it->second);
 		}
 	}
 
@@ -161,17 +162,15 @@ void Room::run() {
 }
 
 string Room::getRoomsUsers() {
-	string ips = "";
+	string names = "";
 	for (std::map<string, TCPSocket*>::const_iterator it = this->users.begin();
 			it != this->users.end(); it++) {
 
-		TCPSocket* socket = it->second;
-
-		if (ips != "") {
-			ips += ",";
+		if (names != "") {
+			names += ",";
 		}
 
-		ips += it->first;
+		names += it->first;
 	}
-	return ips;
+	return names;
 }

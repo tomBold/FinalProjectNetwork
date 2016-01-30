@@ -20,11 +20,13 @@ class TCPMessengerDispatcher : public MThread{
 	ExtendedMultipleTCPSocketListener* multiSocketListener;
 	set<Broker*> brokers;
 	set<Room*> rooms;
+	bool isRunning;
 
 public:
 	map<string, string> peersIpToUser;
 	map<string, string> userToPeersIp;
 	map<string, string> peersIpToPort;
+
 	TCPMessengerDispatcher();
 	virtual ~TCPMessengerDispatcher();
 
@@ -68,7 +70,14 @@ public:
 	 */
 	void createBroker(TCPSocket* firstSocket, TCPSocket* secondSocket);
 
+	/**
+	 * Gets sockets
+	 */
 	vector<TCPSocket*> getSockets();
+
+	/**
+	 * Create session
+	 */
 	void createSession(TCPSocket* socket, string peer);
 	bool isSocketExists(TCPSocket* socket);
 	void disconnectClient(TCPSocket* socket);
@@ -86,6 +95,7 @@ public:
 	string getAllBrokers();
 	void shutdown();
 	string getUserP2PAddress(TCPSocket* socket);
+	bool isUserConnected(string name);
 };
 
 #endif /* TCPMESSENGERDISPATCHER_H_ */
