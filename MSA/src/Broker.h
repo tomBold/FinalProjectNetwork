@@ -21,10 +21,10 @@ class Broker: public MThread
 {
 	TCPMessengerDispatcher* dispatcher;
 	MultipleTCPSocketsListener* multiSocketListener;
-	bool areBothPeersConnected;
 
 	void sendNewDest();
 public:
+	bool areBothPeersConnected;
 	TCPSocket* firstSocket;
 	TCPSocket* secondSocket;
 

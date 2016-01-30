@@ -19,6 +19,7 @@ Room::Room(string name, string admin, TCPSocket* adminSocket,
 	this->dispatcher = dispatcher;
 
 	ServerIO::sendCommandToPeer(adminSocket, IN_EMPTY_ROOM);
+	ServerIO::sendDataToPeer(adminSocket, this->name);
 }
 
 Room::~Room() {
@@ -49,6 +50,7 @@ bool Room::leave(string name) {
 
 		if (this->users.size() == 1) {
 			ServerIO::sendCommandToPeer(socket, IN_EMPTY_ROOM);
+			ServerIO::sendDataToPeer(socket, this->name);
 		} else {
 			this->sendMsgDest(it->first);
 		}
@@ -126,30 +128,29 @@ bool Room::exists(string name) {
  * Run the messages between peers
  */
 void Room::run() {
-	bool roomIsOpen = true;
-	while (roomIsOpen) {
-
+	this->roomIsOpen = true;
+	while (this->roomIsOpen) {
 		// Find who from the sockets will send the next command
 		TCPSocket* socket = this->multiSocketListener->listenToSocket();
-		string name = this->dispatcher->peersIpToUser[socket->destIpAndPort()];
 		// If no one sends a command, try again
 		if (socket == NULL) {
 			continue;
 		}
 
+		string name = this->dispatcher->peersIpToUser[socket->destIpAndPort()];
 		int command = ServerIO::readCommandFromPeer(socket);
 		switch (command) {
 		// when a SIG_TERM happens, the client sends 0
 		case (CLOSE_SESSION_WITH_PEER): {
 			if (this->leave(name) && name == this->admin) {
-				roomIsOpen = false;
+				this->roomIsOpen = false;
 			}
 
 			break;
 		}
 		case (CLOSE_ROOM_REQ): {
 			if (this->close(name)) {
-				roomIsOpen = false;
+				this->roomIsOpen = false;
 			}
 
 			break;

@@ -4,36 +4,25 @@
 #include <pthread.h>
 #include "UDPSocket.h"
 #include "MThread.h"
+#include <map>
+#include <vector>
+#include "Utilities/Strings.h"
+
 using namespace std;
 
-class OnRecieveClbk {
-public:
-	virtual void handleMessage(string msg)=0;
-	virtual ~OnRecieveClbk() {
-	}
-};
-
 class UDPMessenger: public MThread {
-	//TODO: declare the class properties
 private:
-	OnRecieveClbk* rcvClbk;
 	bool isRunning;
+	map<string, string> ipAndPortToUsers;
 public:
-	// TODO: I add this ... i need it?
 	UDPSocket* mainSocket;
 
-	UDPMessenger(OnRecieveClbk* clbk);
+	UDPMessenger();
 	~UDPMessenger();
 	/**
-	 * sends the given message to the given peer specified by IP
+	 * sends the given message
 	 */
-	void sendTo(string msg, string ip, int port);
-
-	/**
-	 * reply to an incoming message, this method will send the given message
-	 * the peer from which the last message was received.
-	 */
-	void reply(string msg);
+	void send(string msg);
 
 	/**
 	 * close the messenger and all related objects (socket)
@@ -49,6 +38,9 @@ public:
 
 	int getPort();
 
+	void setTheMsgDestination(string dst);
+
+	void handleMsg(string msg, string ipAndPort);
 };
 
 #endif

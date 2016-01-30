@@ -79,6 +79,7 @@ void TCPMessengerDispatcher::run() {
 
 		if (currSocket != NULL) {
 			this->handleSocket(currSocket);
+			this->clean();
 		}
 	}
 }
@@ -160,6 +161,9 @@ void TCPMessengerDispatcher::handleSocketCommand(TCPSocket* socket,
 			ServerIO::sendCommandToPeer(socket,
 			PRINT_ROOMS_USERS_RES);
 			ServerIO::sendDataToPeer(socket, roomUsers);
+		} else {
+			ServerIO::sendCommandToPeer(socket, ROOM_NOT_EXISTS);
+			ServerIO::sendDataToPeer(socket, roomName);
 		}
 
 		break;
@@ -180,8 +184,7 @@ void TCPMessengerDispatcher::handleSocketCommand(TCPSocket* socket,
 
 		break;
 	}
-	case (PRINT_USERS_REQ):
-	{
+	case (PRINT_USERS_REQ): {
 		string users = Users::getAllUsers();
 		ServerIO::sendCommandToPeer(socket, PRINT_USERS_RES);
 		ServerIO::sendDataToPeer(socket, users);
@@ -213,7 +216,7 @@ vector<TCPSocket*> TCPMessengerDispatcher::getSockets() {
  * Create session
  */
 void TCPMessengerDispatcher::createSession(TCPSocket* socket, string peerName) {
-	if (!isUserConnected(peerName)) {
+	if (!isUserConnected(peerName) || this->isUserBusy(peerName)) {
 		ServerIO::sendCommandToPeer(socket, SESSION_REFUSED);
 		return;
 	}
@@ -246,6 +249,7 @@ void TCPMessengerDispatcher::disconnectClient(TCPSocket* socket) {
 }
 
 void TCPMessengerDispatcher::closeBroker(Broker* broker) {
+	broker->areBothPeersConnected = false;
 	// Adding back
 	this->addSocket(broker->firstSocket);
 	this->addSocket(broker->secondSocket);
@@ -255,8 +259,8 @@ void TCPMessengerDispatcher::closeBroker(Broker* broker) {
 	ServerIO::sendCommandToPeer(broker->secondSocket,
 	CLOSE_SESSION_WITH_PEER);
 
-	this->brokers.erase(broker);
-	delete broker;
+	//this->brokers.erase(broker);
+	//delete broker;
 }
 
 bool TCPMessengerDispatcher::createRoom(string roomName, TCPSocket* admin) {
@@ -282,8 +286,9 @@ void TCPMessengerDispatcher::closeRoom(Room* room) {
 		this->addSocket(it->second);
 	}
 
-	this->rooms.erase(room);
-	delete room;
+	room->roomIsOpen = false;
+	//this->rooms.erase(room);
+	//delete room;
 }
 
 void TCPMessengerDispatcher::leaveRoom(TCPSocket* socket) {
@@ -294,7 +299,7 @@ bool TCPMessengerDispatcher::joinRoom(string roomName, TCPSocket* socket) {
 	Room* room = this->roomExists(roomName);
 
 	if (!room) {
-		return false;
+		return this->createRoom(roomName, socket);
 	}
 
 	if (!room->join(this->peersIpToUser[socket->destIpAndPort()], socket)) {
@@ -302,7 +307,7 @@ bool TCPMessengerDispatcher::joinRoom(string roomName, TCPSocket* socket) {
 	}
 
 	this->deleteSocket(socket);
-	ServerIO::sendCommandToPeer(socket, SUCCESSFULY_JOIN_ROOM);
+	ServerIO::sendCommandToPeer(socket, SUCCESSFULLY_JOIN_ROOM);
 	ServerIO::sendDataToPeer(socket, roomName);
 
 	return true;
@@ -379,6 +384,7 @@ string TCPMessengerDispatcher::getRoomsNames() {
 		roomsNames += room->name;
 	}
 
+	cout << roomsNames << endl;
 	return roomsNames;
 }
 
@@ -409,7 +415,6 @@ string TCPMessengerDispatcher::getAllBrokers() {
 		result += this->peersIpToUser[broker->firstSocket->destIpAndPort()]
 				+ "<>"
 				+ this->peersIpToUser[broker->secondSocket->destIpAndPort()];
-
 	}
 
 	return result;
@@ -446,3 +451,24 @@ bool TCPMessengerDispatcher::isUserConnected(string name) {
 	return this->userToPeersIp.find(name) != this->userToPeersIp.end();
 }
 
+void TCPMessengerDispatcher::clean() {
+	for (set<Room*>::iterator itR = this->rooms.begin();
+			itR != this->rooms.end(); itR++) {
+		Room* room = *itR;
+		if (!room->roomIsOpen)
+		{
+			this->rooms.erase(room);
+			delete room;
+		}
+	}
+
+	for (set<Broker*>::iterator itB = this->brokers.begin();
+			itB != this->brokers.end(); itB++) {
+		Broker* broker = *itB;
+		if (!broker->areBothPeersConnected)
+		{
+			this->brokers.erase(broker);
+			delete broker;
+		}
+	}
+}

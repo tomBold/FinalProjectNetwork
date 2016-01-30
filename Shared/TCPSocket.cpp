@@ -127,8 +127,12 @@ string TCPSocket::fromAddr() {
 	return inet_ntoa(this->peerAddr.sin_addr);
 }
 
-// TODO: DELETE IT
 string TCPSocket::destIpAndPort()
 {
-	return "";
+	string str = fromAddr() + ":";
+	char buff[10];
+	sprintf(buff, "%d", ntohs(peerAddr.sin_port));
+	str.append(buff);
+
+	return str;
 }

@@ -21,20 +21,20 @@
 
 using namespace std;
 
-class TCPMessengerClient: public MThread, public OnRecieveClbk {
+class TCPMessengerClient: public MThread {
 	string user;
-	map<string, string> ipAndPortToUsers;
+
 	TCPSocket* socket;
 	int status;
 	string currentConversation;
 	bool isRunning;
 	UDPMessenger* udpMessenger;
 
+	bool isLoggedIn();
+	bool sendCommand(int command);
 public:
 	TCPMessengerClient();
 	~TCPMessengerClient();
-
-	void handleMessage(string msg);
 
 	bool connect(string ip);
 
@@ -55,8 +55,6 @@ public:
 	bool registerUser(string name, string password);
 
 	string getServerIp();
-	string getPeerName();
-	string getPeerIpAndPort();
 	string getConversation();
 	bool openSession(string user);
 	bool joinRoom(string room);

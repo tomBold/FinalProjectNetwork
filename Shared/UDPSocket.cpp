@@ -21,16 +21,12 @@ UDPSocket::UDPSocket(int port) {
 	fsize = sizeof(from);
 
 	//bind the socket on the specified address
-	printf("UDP server binding...\n");
 	if (bind(socket_fd, (struct sockaddr *) &s_in, sizeof(s_in)) < 0) {
 		perror("Error naming channel");
 	}
 }
 
 int UDPSocket::recv(char* buffer, int length) {
-	printf("UDP server receive loop...\n");
-	//ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
-	//					struct sockaddr *src_addr, socklen_t *addrlen);
 	return recvfrom(socket_fd, buffer, length, 0, (struct sockaddr *) &from,
 			&fsize);
 }
@@ -70,5 +66,14 @@ int UDPSocket::getPort() {
 	} else {
 		return ntohs(sin.sin_port);
 	}
+}
+
+string UDPSocket::destIpAndPort() {
+	string str = fromAddr() + ":";
+	char buff[10];
+	sprintf(buff, "%d", ntohs(from.sin_port));
+	str.append(buff);
+
+	return str;
 }
 

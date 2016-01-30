@@ -28,9 +28,9 @@
 #define ALREADY_CONNECTED_RES		18
 #define USER_BUSY_RES				19
 #define ROOM_ALREADY_EXISTS			20
-#define SUCCESSFULY_LEFT_ROOM		21
+#define SUCCESSFULLY_LEFT_ROOM		21
 #define CLOSE_ROOM_RES				22
-#define SUCCESSFULY_JOIN_ROOM		23 // DATA: room
+#define SUCCESSFULLY_JOIN_ROOM		23 // DATA: room
 #define PRINT_ROOMS_USERS_REQ		24
 #define PRINT_ROOMS_USERS_RES		25 // DATA: name1,name2,...
 #define PRIMT_ROOMS_NAMES_REQ		26
@@ -38,7 +38,7 @@
 #define PRINT_CONNECT_USERS_REQ		28
 #define PRINT_CONNECT_USERS_RES		29 // DATA: name1,name2,...
 #define SHUT_DOWN_RES				30
-#define SUCCESSFULY_LOGIN_RES		31
+#define SUCCESSFULLY_LOGIN_RES		31
 #define PORT_INIT_RES				32 // DATA: port
 #define PORT_INIT_REQ				33
 #define PORT_INIT_FAILED			34
@@ -46,6 +46,7 @@
 #define IN_EMPTY_ROOM				36
 #define PRINT_USERS_REQ				37
 #define PRINT_USERS_RES				38 // DATA: name1,name2,...
+#define ROOM_NOT_EXISTS				39
 
 #define ROOM						1
 #define DISPATCHER					2

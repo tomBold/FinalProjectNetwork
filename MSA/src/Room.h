@@ -27,6 +27,7 @@ public:
 	string admin;
 	string name;
 	map<string, TCPSocket*> users;
+	bool roomIsOpen;
 
 	Room(string name, string admin, TCPSocket* adminSocket,
 			TCPMessengerDispatcher* dispatcher);

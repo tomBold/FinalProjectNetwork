@@ -28,6 +28,7 @@ public:
 	void cclose();
 	string fromAddr();
 	int getPort();
+	string destIpAndPort();
 };
 
 #endif /* UDPSOCKET_H_ */

@@ -3,13 +3,12 @@
 
 using namespace std;
 
-UDPMessenger::UDPMessenger(OnRecieveClbk* clbk) {
+UDPMessenger::UDPMessenger() {
 	// Initiate local arguments
-	rcvClbk = clbk;
-	isRunning = true;
+	this->isRunning = true;
 
 	// create the socket
-	mainSocket = new UDPSocket(0);
+	this->mainSocket = new UDPSocket(0);
 
 	// start the thread to receive incoming messages
 	this->start();
@@ -18,23 +17,29 @@ UDPMessenger::UDPMessenger(OnRecieveClbk* clbk) {
 void UDPMessenger::run() {
 	char buffer[100];
 	memset((void*) buffer, 0, 100);
-	mainSocket->recv(buffer, 100);
+	this->mainSocket->recv(buffer, 100);
 
 	// Receive messages while the messenger is running
 	while (isRunning) {
-		rcvClbk->handleMessage(buffer);
-		mainSocket->recv(buffer, 100);
+		this->handleMsg(buffer, this->mainSocket->destIpAndPort());
+		memset((void*) buffer, 0, 100);
+		this->mainSocket->recv(buffer, 100);
 	}
 }
 
-void UDPMessenger::sendTo(string msg, string ip, int port) {
-	// Send the given message to the given destination
-	mainSocket->sendTo(msg, ip, port);
+void UDPMessenger::handleMsg(string msg, string ipAndPort)
+{
+	cout << ">[" << this->ipAndPortToUsers[ipAndPort] << "] " << msg << endl;
 }
 
-void UDPMessenger::reply(string msg) {
-	// Send the message to the address of the last received message
-	mainSocket->reply(msg);
+void UDPMessenger::send(string msg) {
+	// Send the given message to the given destination
+	for (map<string, string>::iterator it = this->ipAndPortToUsers.begin();
+			it != this->ipAndPortToUsers.end(); ++it) {
+		vector<string> dst = Strings::split(it->first, ":");
+
+		this->mainSocket->sendTo(msg, dst[0], stoi(dst[1]));
+	}
 }
 
 void UDPMessenger::close() {
@@ -42,13 +47,12 @@ void UDPMessenger::close() {
 	isRunning = false;
 
 	// Close the socket
-	mainSocket->cclose();
+	this->mainSocket->cclose();
 
 	// Wait for thread to exit
 	this->waitForThread();
 
 	// Delete and free any allocated resources
-	delete rcvClbk;
 	delete mainSocket;
 }
 
@@ -56,5 +60,16 @@ int UDPMessenger::getPort() {
 	return this->mainSocket->getPort();
 }
 
-UDPMessenger::~UDPMessenger() {}
+UDPMessenger::~UDPMessenger() {
+}
+
+void UDPMessenger::setTheMsgDestination(string dst) {
+	this->ipAndPortToUsers.clear();
+	vector<string> users = Strings::split(dst, ",");
+
+	for (string user : users) {
+		vector<string> userData = Strings::split(user, ":");
+		this->ipAndPortToUsers[userData[0] + ":" + userData[1]] = userData[2];
+	}
+}
 

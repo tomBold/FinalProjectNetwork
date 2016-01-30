@@ -24,11 +24,14 @@ Broker::Broker(TCPSocket* initiativeSocket, TCPSocket* recvSocket,
 	this->multiSocketListener->addSocket(this->secondSocket);
 	this->dispatcher = dispatcher;
 
-	cout << "Open session between " << initiativeSocket->destIpAndPort()
-			<< " and " << recvSocket->destIpAndPort() << endl;
-
-	ServerIO::sendCommandToPeer(initiativeSocket,
+	ServerIO::sendCommandToPeer(this->firstSocket,
 	SESSION_ESTABLISHED);
+	ServerIO::sendDataToPeer(this->firstSocket,
+			this->dispatcher->peersIpToUser[this->secondSocket->destIpAndPort()]);
+	ServerIO::sendCommandToPeer(this->secondSocket,
+	SESSION_ESTABLISHED);
+	ServerIO::sendDataToPeer(this->secondSocket,
+			this->dispatcher->peersIpToUser[this->firstSocket->destIpAndPort()]);
 
 	this->sendNewDest();
 }

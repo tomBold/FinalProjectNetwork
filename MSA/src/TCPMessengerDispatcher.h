@@ -23,6 +23,7 @@ class TCPMessengerDispatcher : public MThread{
 	set<Room*> rooms;
 	bool isRunning;
 
+	void clean();
 public:
 	map<string, string> peersIpToUser;
 	map<string, string> userToPeersIp;
