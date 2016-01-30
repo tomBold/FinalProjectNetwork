@@ -11,7 +11,7 @@
 
 #include <strings.h>
 #include <string.h>
-#include "../TCPSocket.h"
+#include "TCPSocket.h"
 
 class ServerIO {
 public:

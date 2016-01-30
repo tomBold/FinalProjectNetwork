@@ -56,3 +56,5 @@ int UDPMessenger::getPort() {
 	return this->mainSocket->getPort();
 }
 
+UDPMessenger::~UDPMessenger() {}
+

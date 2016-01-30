@@ -60,9 +60,10 @@ void TCPMessengerServer::userLogin(TCPSocket* peer, string name) {
 
 		return;
 	}
+	ServerIO::sendCommandToPeer(peer, SUCCESSFULY_LOGIN_RES);
+	ServerIO::sendDataToPeer(peer, name);
 
 	this->dispatcher->addSocket(peer, name,
 			ServerIO::readDataFromPeer(peer));
-	ServerIO::sendCommandToPeer(peer, SUCCESSFULY_LOGIN_RES);
 }
 

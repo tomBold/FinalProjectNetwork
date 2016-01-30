@@ -23,7 +23,7 @@ public:
 	UDPSocket* mainSocket;
 
 	UDPMessenger(OnRecieveClbk* clbk);
-
+	~UDPMessenger();
 	/**
 	 * sends the given message to the given peer specified by IP
 	 */

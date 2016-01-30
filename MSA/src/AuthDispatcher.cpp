@@ -86,7 +86,7 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 
 		this->getUserAndPasswordFromSocket(socket, &name, &password);
 
-		if (Users::login(name, password)) {
+		if (!Users::login(name, password)) {
 			cout << "Login failed, please check the user name and password"
 					<< endl;
 			ServerIO::sendCommandToPeer(socket, LOGIN_FAILED);

@@ -9,11 +9,15 @@
 #define TCPMESSENGERCLIENT_H_
 
 #include <strings.h>
+#include <string.h>
 #include "TCPSocket.h"
 #include "UDPMessenger.h"
 #include "MThread.h"
+#include "ServerIO.h"
 #include <map>
 #include "TCPMessengerProtocol.h"
+#include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -62,7 +66,7 @@ public:
 	bool isActiveRoom();
 	bool closeActiveSession();
 	bool send(string msg);
-
+	int getStatus();
 	void run();
 };
 
