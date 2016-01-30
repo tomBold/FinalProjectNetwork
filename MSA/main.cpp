@@ -18,20 +18,20 @@ void printInstructions() {
 	cout << "x - shutdown" << endl;
 }
 
-
 // ********** MSA *********
 int main() {
 
 	TCPMessengerServer* server = new TCPMessengerServer();
+	bool isRunning = true;
 
-	while (true) {
+	while (isRunning) {
 		printInstructions();
 		string command = "";
 		cin >> command;
 
 		if (command == "lu") {
 			vector<string> names = Users::getAllNames();
-			for (int i = 0; i < names.size(); i++) {
+			for (unsigned int i = 0; i < names.size(); i++) {
 				cout << names[i] << endl;
 			}
 		} else if (command == "lcu") {
@@ -49,9 +49,12 @@ int main() {
 
 			if (server->dispatcher->roomExists(roomName)) {
 				cout << room->getRoomsUsers() << endl;
+			} else {
+				cout << "Room " + roomName + " does not exist" << endl;
 			}
 		} else if (command == "x") {
 			server->close();
+			isRunning = false;
 		} else {
 			cout << "Wrong input" << endl;
 			printInstructions();
