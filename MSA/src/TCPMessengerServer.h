@@ -21,7 +21,7 @@
 #include "TCPMessengerProtocol.h"
 #include "TCPMessengerDispatcher.h"
 #include "AuthDispatcher.h"
-#include "Utilities/ServerIO.h"
+#include "ServerIO.h"
 
 class AuthDispatcher;
 
