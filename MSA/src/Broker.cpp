@@ -1,5 +1,6 @@
 /*
- * Broker.cpp
+ * Broker.h
+ * This class handles communication peer to peer
  *
  *  Created on: Dec 18, 2015
  *      Author: Tom Boldan and Gal Schlezinger
@@ -23,15 +24,26 @@ Broker::Broker(TCPSocket* initiativeSocket, TCPSocket* recvSocket,
 	this->multiSocketListener->addSocket(this->secondSocket);
 	this->dispatcher = dispatcher;
 
-	// TODO: delete it?
 	cout << "Open session between " << initiativeSocket->destIpAndPort()
 			<< " and " << recvSocket->destIpAndPort() << endl;
 
 	TCPMessengerServer::sendCommandToPeer(initiativeSocket,
 	SESSION_ESTABLISHED);
-	TCPMessengerServer::sendCommandToPeer(recvSocket, OPEN_SESSION_WITH_PEER);
-	TCPMessengerServer::sendDataToPeer(recvSocket,
-			initiativeSocket->destIpAndPort());
+
+	this->sendNewDest();
+}
+
+void Broker::sendNewDest()
+{
+	TCPMessengerServer::sendCommandToPeer(this->firstSocket,
+	NEW_MESSAGE_DST_RES);
+	TCPMessengerServer::sendDataToPeer(this->firstSocket,
+			this->dispatcher->getUserP2PAddress(this->secondSocket));
+
+	TCPMessengerServer::sendCommandToPeer(this->secondSocket,
+	NEW_MESSAGE_DST_RES);
+	TCPMessengerServer::sendDataToPeer(this->secondSocket,
+			this->dispatcher->getUserP2PAddress(this->firstSocket));
 }
 
 Broker::~Broker() {

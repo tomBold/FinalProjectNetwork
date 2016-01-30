@@ -1,3 +1,11 @@
+/*
+ * Room
+ * This class represents a chat room
+ *
+ *  Created on: Jan 29, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #include "Room.h"
 
 Room::Room(string name, string admin, TCPSocket* adminSocket,

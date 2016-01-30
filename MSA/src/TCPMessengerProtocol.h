@@ -39,7 +39,9 @@
 #define PRINT_CONNECT_USERS_RES		29
 #define SHUT_DOWN_RES				30
 #define SUCCESSFULY_LOGIN_RES		31
-
+#define PORT_INIT_RES				32
+#define PORT_INIT_REQ				33
+#define PORT_INIT_FAILED			34
 
 
 #define TEST_PEER_NAME "test"

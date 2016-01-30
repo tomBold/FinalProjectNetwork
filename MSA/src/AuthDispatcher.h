@@ -13,7 +13,7 @@
 #include <strings.h>
 #include "TCPSocket.h"
 #include <map>
-#include "MultipleTCPSocketsListener.h"
+#include "ExtendedMultipleTCPSocketListener.h"
 #include "Utilities/Users.h"
 #include "TCPMessengerProtocol.h"
 #include "TCPMessengerServer.h"
@@ -26,7 +26,7 @@ class TCPMessengerServer;
 class AuthDispatcher: public MThread {
 private:
 	map<string, TCPSocket*> sockets;
-	MultipleTCPSocketsListener* multiSocketListener;
+	ExtendedMultipleTCPSocketListener* multiSocketListener;
 	TCPMessengerServer* tcpMessengerServer;
 
 	void getUserAndPasswordFromSocket(TCPSocket* socket, string* name, string* password);
@@ -76,11 +76,6 @@ public:
 	 * Checl if the socket exists
 	 */
 	bool isSocketExists(TCPSocket* socket);
-
-	/**
-	 * Initiates the multiple tcp socket listener
-	 */
-	void createMultipleTCPSocketListener();
 
 	/**
 	 * Disconnect a client

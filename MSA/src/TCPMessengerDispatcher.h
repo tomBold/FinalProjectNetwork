@@ -1,7 +1,7 @@
 #include <strings.h>
 #include <map>
 #include "TCPSocket.h"
-#include "MultipleTCPSocketsListener.h"
+#include "ExtendedMultipleTCPSocketListener.h"
 #include "MThread.h"
 #include "TCPMessengerProtocol.h"
 #include "TCPMessengerServer.h"
@@ -17,20 +17,21 @@ class Room;
 
 class TCPMessengerDispatcher : public MThread{
 	map<string, TCPSocket*> sockets;
-	MultipleTCPSocketsListener* multiSocketListener;
+	ExtendedMultipleTCPSocketListener* multiSocketListener;
 	set<Broker*> brokers;
 	set<Room*> rooms;
 
 public:
 	map<string, string> peersIpToUser;
 	map<string, string> userToPeersIp;
+	map<string, string> peersIpToPort;
 	TCPMessengerDispatcher();
 	virtual ~TCPMessengerDispatcher();
 
 	/*
 	 * Add socket to the map and the multiple tcp socket listener
 	 */
-	void addSocket(TCPSocket* socket, string name);
+	void addSocket(TCPSocket* socket, string name, string port);
 
 	/*
 	 * Add socket to the map and the multiple tcp socket listener
@@ -70,7 +71,6 @@ public:
 	vector<TCPSocket*> getSockets();
 	void createSession(TCPSocket* socket, string peer);
 	bool isSocketExists(TCPSocket* socket);
-	void createMultipleTCPSocketListener();
 	void disconnectClient(TCPSocket* socket);
 	void handleSocketCommand(TCPSocket* socket, int command);
 	void closeBroker(Broker* broker);
@@ -85,6 +85,7 @@ public:
 	string getConnectUsers();
 	string getAllBrokers();
 	void shutdown();
+	string getUserP2PAddress(TCPSocket* socket);
 };
 
 #endif /* TCPMESSENGERDISPATCHER_H_ */

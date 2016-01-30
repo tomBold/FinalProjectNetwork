@@ -96,7 +96,27 @@ void TCPMessengerServer::run() {
 }
 
 void TCPMessengerServer::userLogin(TCPSocket* peer, string name) {
-	this->dispatcher->addSocket(peer, name);
+	TCPMessengerServer::sendCommandToPeer(peer, PORT_INIT_REQ);
+
+	int command = TCPMessengerServer::readCommandFromPeer(peer);
+
+	if (command != PORT_INIT_RES)
+	{
+		if (command == DISCONNECT_FROM_SERVER_REQ || command == 0)
+		{
+			peer->cclose();
+			delete peer;
+
+			return;
+		}
+
+		TCPMessengerServer::sendCommandToPeer(peer, PORT_INIT_FAILED);
+		this->authDispatcher->addSocket(peer);
+
+		return;
+	}
+
+	this->dispatcher->addSocket(peer, name, TCPMessengerServer::readDataFromPeer(peer));
 	TCPMessengerServer::sendCommandToPeer(peer, SUCCESSFULY_LOGIN_RES);
 }
 

@@ -1,8 +1,16 @@
+/*
+ * AuthDispatcher.h
+ * This class is responsible of authenticating users or registering them.
+ *
+ *  Created on: Jan 29, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #include "AuthDispatcher.h"
 
 AuthDispatcher::AuthDispatcher(TCPMessengerServer* tcpMessengerServer) {
 	this->tcpMessengerServer = tcpMessengerServer;
-	this->multiSocketListener = new MultipleTCPSocketsListener();
+	this->multiSocketListener = new ExtendedMultipleTCPSocketListener();
 	this->start();
 }
 
@@ -35,8 +43,9 @@ void AuthDispatcher::deleteSocket(TCPSocket* socket) {
  * Delete socket by ip and port
  */
 void AuthDispatcher::deleteSocket(string ipAndPort) {
-	this->sockets.erase(this->sockets.find(ipAndPort));
-	this->createMultipleTCPSocketListener();
+	map<string, TCPSocket*>::iterator it = this->sockets.find(ipAndPort);
+	this->multiSocketListener->removeSocket(it->second);
+	this->sockets.erase(it);
 }
 
 /**
@@ -132,19 +141,6 @@ vector<TCPSocket*> AuthDispatcher::getSockets() {
 	}
 
 	return socketsVec;
-}
-
-/*
- * Create the multiple TCP socket listener
- */
-void AuthDispatcher::createMultipleTCPSocketListener() {
-	MultipleTCPSocketsListener* oldMultipleTCPSocketsListener =
-			this->multiSocketListener;
-	MultipleTCPSocketsListener* newMultipleTCPSocketsListener =
-			new MultipleTCPSocketsListener();
-	newMultipleTCPSocketsListener->addSockets(this->getSockets());
-	this->multiSocketListener = newMultipleTCPSocketsListener;
-	delete oldMultipleTCPSocketsListener;
 }
 
 /*
