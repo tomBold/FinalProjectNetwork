@@ -18,8 +18,10 @@ void printInstructions() {
 	cout << "x - shutdown" << endl;
 }
 
+
 // ********** MSA *********
 int main() {
+
 	TCPMessengerServer* server = new TCPMessengerServer();
 
 	while (true) {

@@ -89,13 +89,12 @@ string Room::getOtherUsersIps(string name) {
 	for (std::map<string, TCPSocket*>::const_iterator it = this->users.begin();
 			it != this->users.end(); it++) {
 		if (it->first != name) {
-			TCPSocket* socket = it->second;
 
 			if (ips != "") {
 				ips += ",";
 			}
 
-			ips += it->second->fromAddr();
+			ips += it->second->fromAddr() + ":" + it->first;
 		}
 	}
 

@@ -73,5 +73,4 @@ void Broker::run() {
 bool Broker::isUserInBroker(string ip) {
 	return this->firstSocket->destIpAndPort() == ip
 			|| this->secondSocket->destIpAndPort() == ip;
-
 }

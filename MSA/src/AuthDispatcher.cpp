@@ -1,9 +1,9 @@
 #include "AuthDispatcher.h"
 
 AuthDispatcher::AuthDispatcher(TCPMessengerServer* tcpMessengerServer) {
+	this->tcpMessengerServer = tcpMessengerServer;
 	this->multiSocketListener = new MultipleTCPSocketsListener();
 	this->start();
-	this->tcpMessengerServer = tcpMessengerServer;
 }
 
 AuthDispatcher::~AuthDispatcher() {
@@ -20,7 +20,7 @@ AuthDispatcher::~AuthDispatcher() {
  * Add socket to the map and the multiple tcp socket listener
  */
 void AuthDispatcher::addSocket(TCPSocket* socket) {
-	this->sockets[socket->fromAddr()] = socket;
+	this->sockets[socket->destIpAndPort()] = socket;
 	this->multiSocketListener->addSocket(socket);
 }
 
@@ -28,15 +28,15 @@ void AuthDispatcher::addSocket(TCPSocket* socket) {
  * Delete socket by socket
  */
 void AuthDispatcher::deleteSocket(TCPSocket* socket) {
-	std::string destIpAndPort = socket->fromAddr();
-	this->deleteSocket(destIpAndPort);
+	this->deleteSocket(socket->destIpAndPort());
 }
 
 /*
- * Delete socket by key
+ * Delete socket by ip and port
  */
-void AuthDispatcher::deleteSocket(string socketKey) {
-	this->sockets.erase(this->sockets.find(socketKey));
+void AuthDispatcher::deleteSocket(string ipAndPort) {
+	this->sockets.erase(this->sockets.find(ipAndPort));
+	this->createMultipleTCPSocketListener();
 }
 
 /**
@@ -56,15 +56,7 @@ void AuthDispatcher::run() {
  * Check if the socket exists in the sockets map
  */
 bool AuthDispatcher::isSocketExists(TCPSocket* socket) {
-	TCPSocket* sock = this->sockets[socket->fromAddr()];
-
-	if (sock == NULL) {
-		this->deleteSocket(sock);
-
-		return false;
-	}
-
-	return true;
+	return this->sockets.find(socket->destIpAndPort()) != this->sockets.end();
 }
 
 /*
@@ -79,14 +71,10 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 
 	switch (command) {
 	case (LOGIN_REQ): {
-		string userNameAndPassword = TCPMessengerServer::readDataFromPeer(
-				socket);
 		string name;
 		string password;
 
-		int index = userNameAndPassword.find(" ");
-		name = userNameAndPassword.substr(0, index);
-		password = userNameAndPassword.substr(index + 1);
+		this->getUserAndPasswordFromSocket(socket, &name, &password);
 
 		if (Users::login(name, password)) {
 			cout << "Login failed, please check the user name and password"
@@ -99,14 +87,10 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 		break;
 	}
 	case (REGISTER_REQ): {
-		string userNameAndPassword = TCPMessengerServer::readDataFromPeer(
-				socket);
 		string name;
 		string password;
 
-		int index = userNameAndPassword.find(" ");
-		name = userNameAndPassword.substr(0, index);
-		password = userNameAndPassword.substr(index + 1);
+		this->getUserAndPasswordFromSocket(socket, &name, &password);
 
 		if (Users::create(name, password)) {
 			cout << name << " register successfully" << endl;
@@ -115,18 +99,18 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 			cout << name << " register failed" << endl;
 
 			if (Users::contains(name)) {
-				cout << "The user: " << name << " already exists" << endl;
+				TCPMessengerServer::sendCommandToPeer(socket, USER_ALREADY_EXISTS_RES);
 			}
 		}
 
 		break;
 	}
 	case (0): {
-		this->exit(socket);
+		this->disconnectClient(socket);
 		break;
 	}
-	case (EXIT): {
-		this->exit(socket);
+	case (DISCONNECT_FROM_SERVER_REQ): {
+		this->disconnectClient(socket);
 		break;
 	}
 	default: {
@@ -154,24 +138,35 @@ vector<TCPSocket*> AuthDispatcher::getSockets() {
  * Create the multiple TCP socket listener
  */
 void AuthDispatcher::createMultipleTCPSocketListener() {
-	delete this->multiSocketListener;
-	this->multiSocketListener = new MultipleTCPSocketsListener();
-	this->multiSocketListener->addSockets(this->getSockets());
+	MultipleTCPSocketsListener* oldMultipleTCPSocketsListener =
+			this->multiSocketListener;
+	MultipleTCPSocketsListener* newMultipleTCPSocketsListener =
+			new MultipleTCPSocketsListener();
+	newMultipleTCPSocketsListener->addSockets(this->getSockets());
+	this->multiSocketListener = newMultipleTCPSocketsListener;
+	delete oldMultipleTCPSocketsListener;
 }
 
 /*
  * Handle exit socket
  */
-void AuthDispatcher::exit(TCPSocket* socket) {
-	cout << "Exit" << endl;
+void AuthDispatcher::disconnectClient(TCPSocket* socket) {
 	this->deleteSocket(socket);
 	socket->cclose();
 	delete socket;
-	this->createMultipleTCPSocketListener();
 }
 
 void AuthDispatcher::userLogin(TCPSocket* socket, string name) {
 	this->deleteSocket(socket);
-	this->createMultipleTCPSocketListener();
 	this->tcpMessengerServer->userLogin(socket, name);
+}
+
+void AuthDispatcher::getUserAndPasswordFromSocket(TCPSocket* socket,
+		string* name, string* password) {
+	string userNameAndPassword = TCPMessengerServer::readDataFromPeer(socket);
+
+	int index = userNameAndPassword.find(" ");
+
+	(*name) = userNameAndPassword.substr(0, index);
+	(*password) = userNameAndPassword.substr(index + 1);
 }

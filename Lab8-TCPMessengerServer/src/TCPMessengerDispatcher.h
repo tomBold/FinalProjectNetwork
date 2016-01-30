@@ -63,7 +63,7 @@ public:
 	void createSession(TCPSocket* socket, string peer);
 	bool isSocketExists(TCPSocket* socket);
 	void createMultipleTCPSocketListener();
-	void exit(TCPSocket* socket);
+	void disconnectClient(TCPSocket* socket);
 };
 
 #endif /* TCPMESSENGERDISPATCHER_H_ */

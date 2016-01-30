@@ -47,7 +47,7 @@ TCPSocket* MultipleTCPSocketsListener::listenToSocket() {
 
 		return NULL;
 	} else if (selectNum == 0) {
-		cout << "Nobody is ready" << endl;
+		// Nobody is ready
 
 		return NULL;
 	}

@@ -71,7 +71,7 @@ public:
 	void createSession(TCPSocket* socket, string peer);
 	bool isSocketExists(TCPSocket* socket);
 	void createMultipleTCPSocketListener();
-	void exit(TCPSocket* socket);
+	void disconnectClient(TCPSocket* socket);
 	void handleSocketCommand(TCPSocket* socket, int command);
 	void closeBroker(Broker* broker);
 	bool createRoom(string room, TCPSocket* admin);
@@ -84,6 +84,7 @@ public:
 	string getRoomsNames();
 	string getConnectUsers();
 	string getAllBrokers();
+	void shutdown();
 };
 
 #endif /* TCPMESSENGERDISPATCHER_H_ */

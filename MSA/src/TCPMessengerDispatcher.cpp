@@ -129,24 +129,25 @@ void TCPMessengerDispatcher::handleSocketCommand(TCPSocket* socket,
 	switch (command) {
 	case (CLOSE_SESSION_WITH_PEER): {
 		this->forceLeaveUser(name);
-		cout << "Close session with peer" << endl;
 		break;
 	}
 	case (OPEN_SESSION_WITH_PEER): {
-		cout << "Open session with peer" << endl;
 		this->forceLeaveUser(name);
 		string peer = TCPMessengerServer::readDataFromPeer(socket);
 		createSession(socket, peer);
+
 		break;
 	}
 	case (0): {
 		this->forceLeaveUser(name);
-		this->exit(socket);
+		this->disconnectClient(socket);
+
 		break;
 	}
-	case (EXIT): {
+	case (DISCONNECT_FROM_SERVER_REQ): {
 		this->forceLeaveUser(name);
-		this->exit(socket);
+		this->disconnectClient(socket);
+
 		break;
 	}
 	case (JOIN_ROOM_REQ): {
@@ -209,7 +210,6 @@ vector<TCPSocket*> TCPMessengerDispatcher::getSockets() {
  * Create session
  */
 void TCPMessengerDispatcher::createSession(TCPSocket* socket, string peer) {
-	TCPSocket* peerSocket = this->sockets[peer];
 	if (this->sockets[peer] == NULL) {
 		this->deleteSocket(peer);
 		TCPMessengerServer::sendCommandToPeer(socket, SESSION_REFUSED);
@@ -233,14 +233,11 @@ void TCPMessengerDispatcher::createMultipleTCPSocketListener() {
 /*
  * Handle exit socket
  */
-void TCPMessengerDispatcher::exit(TCPSocket* socket) {
-	cout << "Exit" << endl;
+void TCPMessengerDispatcher::disconnectClient(TCPSocket* socket) {
 	this->deleteSocket(socket);
 	socket->cclose();
 	delete socket;
 	this->createMultipleTCPSocketListener();
-
-	// todo: delete from maps
 }
 
 void TCPMessengerDispatcher::closeBroker(Broker* broker) {
@@ -419,5 +416,9 @@ string TCPMessengerDispatcher::getAllBrokers() {
 	}
 
 	return result;
+}
+
+void TCPMessengerDispatcher::shutdown() {
+
 }
 

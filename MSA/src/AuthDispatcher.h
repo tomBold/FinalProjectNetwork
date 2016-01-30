@@ -1,14 +1,13 @@
 /*
  * AuthDispatcher.h
+ * This class is responsible of authenticating users or registering them.
  *
  *  Created on: Jan 29, 2016
- *      Author: user
+ *      Author: Tom Boldan & Gal Schlezinger
  */
 
 #ifndef AUTHDISPATCHER_H_
 #define AUTHDISPATCHER_H_
-
-#pragma once
 
 #include "MThread.h"
 #include <strings.h>
@@ -30,9 +29,19 @@ private:
 	MultipleTCPSocketsListener* multiSocketListener;
 	TCPMessengerServer* tcpMessengerServer;
 
+	void getUserAndPasswordFromSocket(TCPSocket* socket, string* name, string* password);
+
 public:
+	/*
+	 * CTOR
+	 */
 	AuthDispatcher(TCPMessengerServer* tcpMessengerServer);
+
+	/**
+	 * DTOR
+	 */
 	virtual ~AuthDispatcher();
+
 	/*
 	 * Add socket to the map and the multiple tcp socket listener
 	 */
@@ -44,12 +53,12 @@ public:
 	void deleteSocket(TCPSocket* socket);
 
 	/*
-	 * Delete socket by key
+	 * Delete socket by ip and port
 	 */
-	void deleteSocket(string socketKey);
+	void deleteSocket(string ipAndPort);
 
 	/**
-	 * Retrieve messages from peers
+	 * Retrieve commands from peers
 	 */
 	void run();
 
@@ -58,10 +67,29 @@ public:
 	 */
 	void handleSocket(TCPSocket* socket);
 
+	/*
+	 * Get the sockets
+	 */
 	vector<TCPSocket*> getSockets();
+
+	/**
+	 * Checl if the socket exists
+	 */
 	bool isSocketExists(TCPSocket* socket);
+
+	/**
+	 * Initiates the multiple tcp socket listener
+	 */
 	void createMultipleTCPSocketListener();
-	void exit(TCPSocket* socket);
+
+	/**
+	 * Disconnect a client
+	 */
+	void disconnectClient(TCPSocket* socket);
+
+	/**
+	 * Client login
+	 */
 	void userLogin(TCPSocket* socket, string name);
 };
 

@@ -121,11 +121,11 @@ void TCPMessengerDispatcher::handleSocket(TCPSocket* socket) {
 		break;
 	}
 	case (0): {
-		this->exit(socket);
+		this->disconnectClient(socket);
 		break;
 	}
 	case (EXIT): {
-		this->exit(socket);
+		this->disconnectClient(socket);
 		break;
 	}
 	case (SEND_MSG_TO_PEER): {
@@ -191,7 +191,7 @@ void TCPMessengerDispatcher::createMultipleTCPSocketListener() {
 /*
  * Handle exit socket
  */
-void TCPMessengerDispatcher::exit(TCPSocket* socket) {
+void TCPMessengerDispatcher::disconnectClient(TCPSocket* socket) {
 	cout << "Exit" << endl;
 	this->deleteSocket(socket);
 	socket->cclose();
