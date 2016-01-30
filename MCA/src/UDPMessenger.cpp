@@ -9,7 +9,7 @@ UDPMessenger::UDPMessenger(OnRecieveClbk* clbk) {
 	isRunning = true;
 
 	// create the socket
-	mainSocket = new UDPSocket(1341);
+	mainSocket = new UDPSocket(0);
 
 	// start the thread to receive incoming messages
 	this->start();
@@ -27,9 +27,9 @@ void UDPMessenger::run() {
 	}
 }
 
-void UDPMessenger::sendTo(string msg, string ip) {
+void UDPMessenger::sendTo(string msg, string ip, int port) {
 	// Send the given message to the given destination
-	mainSocket->sendTo(msg, ip, 1341);
+	mainSocket->sendTo(msg, ip, port);
 }
 
 void UDPMessenger::reply(string msg) {
@@ -50,5 +50,9 @@ void UDPMessenger::close() {
 	// Delete and free any allocated resources
 	delete rcvClbk;
 	delete mainSocket;
+}
+
+int UDPMessenger::getPort() {
+	return this->mainSocket->getPort();
 }
 

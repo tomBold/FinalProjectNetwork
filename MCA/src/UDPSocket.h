@@ -6,6 +6,11 @@
 #include <strings.h>
 #include <stdio.h>
 #include <iostream>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -22,6 +27,7 @@ public:
 	int reply(string msg);
 	void cclose();
 	string fromAddr();
+	int getPort();
 };
 
 #endif /* UDPSOCKET_H_ */

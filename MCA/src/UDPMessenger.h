@@ -6,14 +6,14 @@
 #include "MThread.h"
 using namespace std;
 
-
 class OnRecieveClbk {
 public:
 	virtual void handleMessage(string msg)=0;
-	virtual ~OnRecieveClbk(){}
+	virtual ~OnRecieveClbk() {
+	}
 };
 
-class UDPMessenger: public MThread{
+class UDPMessenger: public MThread {
 	//TODO: declare the class properties
 private:
 	OnRecieveClbk* rcvClbk;
@@ -27,7 +27,7 @@ public:
 	/**
 	 * sends the given message to the given peer specified by IP
 	 */
-	void sendTo(string msg,string ip);
+	void sendTo(string msg, string ip, int port);
 
 	/**
 	 * reply to an incoming message, this method will send the given message
@@ -47,6 +47,7 @@ public:
 	 */
 	void run();
 
+	int getPort();
 
 };
 
