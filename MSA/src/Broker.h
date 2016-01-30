@@ -15,6 +15,7 @@
 #include "TCPMessengerServer.h"
 #include "TCPMessengerProtocol.h"
 #include "TCPMessengerDispatcher.h"
+#include "Utilities/ServerIO.h"
 
 class Broker: public MThread
 {

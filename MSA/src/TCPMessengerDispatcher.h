@@ -8,6 +8,7 @@
 #include "Broker.h"
 #include "Room.h"
 #include <set>
+#include "Utilities/ServerIO.h"
 
 #ifndef TCPMESSENGERDISPATCHER_H_
 #define TCPMESSENGERDISPATCHER_H_

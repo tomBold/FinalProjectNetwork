@@ -2,8 +2,6 @@
 #include "../src/Utilities/Users.h"
 #include "vector"
 
-using namespace Utilities;
-
 using namespace std;
 
 // ********** MSA *********

@@ -18,7 +18,7 @@ Room::Room(string name, string admin, TCPSocket* adminSocket,
 	this->multiSocketListener->addSocket(adminSocket);
 	this->dispatcher = dispatcher;
 
-	TCPMessengerServer::sendCommandToPeer(adminSocket, IN_EMPTY_ROOM);
+	ServerIO::sendCommandToPeer(adminSocket, IN_EMPTY_ROOM);
 }
 
 Room::~Room() {
@@ -44,11 +44,11 @@ bool Room::leave(string name) {
 	for (std::map<string, TCPSocket*>::const_iterator it = this->users.begin();
 			it != this->users.end(); it++) {
 		TCPSocket* socket = it->second;
-		TCPMessengerServer::sendCommandToPeer(socket, USER_LEAVE_ROOM_RES);
-		TCPMessengerServer::sendDataToPeer(socket, name);
+		ServerIO::sendCommandToPeer(socket, USER_LEAVE_ROOM_RES);
+		ServerIO::sendDataToPeer(socket, name);
 
 		if (this->users.size() == 1) {
-			TCPMessengerServer::sendCommandToPeer(socket, IN_EMPTY_ROOM);
+			ServerIO::sendCommandToPeer(socket, IN_EMPTY_ROOM);
 		} else {
 			this->sendMsgDest(it->first);
 		}
@@ -69,8 +69,8 @@ bool Room::join(string user, TCPSocket* userSocket) {
 	for (std::map<string, TCPSocket*>::const_iterator it = this->users.begin();
 			it != this->users.end(); it++) {
 		TCPSocket* socket = it->second;
-		TCPMessengerServer::sendCommandToPeer(socket, USER_JOIN_ROOM_RES);
-		TCPMessengerServer::sendDataToPeer(socket, user);
+		ServerIO::sendCommandToPeer(socket, USER_JOIN_ROOM_RES);
+		ServerIO::sendDataToPeer(socket, user);
 		this->sendMsgDest(it->first);
 	}
 
@@ -85,7 +85,7 @@ bool Room::close(string user) {
 	for (std::map<string, TCPSocket*>::const_iterator it = this->users.begin();
 			it != this->users.end(); it++) {
 		TCPSocket* socket = it->second;
-		TCPMessengerServer::sendCommandToPeer(socket, CLOSE_ROOM_RES);
+		ServerIO::sendCommandToPeer(socket, CLOSE_ROOM_RES);
 	}
 
 	this->dispatcher->closeRoom(this);
@@ -113,9 +113,9 @@ string Room::getOtherUsersIps(string name) {
 void Room::sendMsgDest(string name) {
 	string ips = this->getOtherUsersIps(name);
 
-	TCPMessengerServer::sendCommandToPeer(this->users[name],
+	ServerIO::sendCommandToPeer(this->users[name],
 	NEW_MESSAGE_DST_RES);
-	TCPMessengerServer::sendDataToPeer(this->users[name], ips);
+	ServerIO::sendDataToPeer(this->users[name], ips);
 }
 
 bool Room::exists(string name) {
@@ -137,7 +137,7 @@ void Room::run() {
 			continue;
 		}
 
-		int command = TCPMessengerServer::readCommandFromPeer(socket);
+		int command = ServerIO::readCommandFromPeer(socket);
 		switch (command) {
 		// when a SIG_TERM happens, the client sends 0
 		case (CLOSE_SESSION_WITH_PEER): {

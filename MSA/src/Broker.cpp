@@ -27,22 +27,21 @@ Broker::Broker(TCPSocket* initiativeSocket, TCPSocket* recvSocket,
 	cout << "Open session between " << initiativeSocket->destIpAndPort()
 			<< " and " << recvSocket->destIpAndPort() << endl;
 
-	TCPMessengerServer::sendCommandToPeer(initiativeSocket,
+	ServerIO::sendCommandToPeer(initiativeSocket,
 	SESSION_ESTABLISHED);
 
 	this->sendNewDest();
 }
 
-void Broker::sendNewDest()
-{
-	TCPMessengerServer::sendCommandToPeer(this->firstSocket,
+void Broker::sendNewDest() {
+	ServerIO::sendCommandToPeer(this->firstSocket,
 	NEW_MESSAGE_DST_RES);
-	TCPMessengerServer::sendDataToPeer(this->firstSocket,
+	ServerIO::sendDataToPeer(this->firstSocket,
 			this->dispatcher->getUserP2PAddress(this->secondSocket));
 
-	TCPMessengerServer::sendCommandToPeer(this->secondSocket,
+	ServerIO::sendCommandToPeer(this->secondSocket,
 	NEW_MESSAGE_DST_RES);
-	TCPMessengerServer::sendDataToPeer(this->secondSocket,
+	ServerIO::sendDataToPeer(this->secondSocket,
 			this->dispatcher->getUserP2PAddress(this->firstSocket));
 }
 
@@ -66,7 +65,7 @@ void Broker::run() {
 			continue;
 		}
 
-		int command = TCPMessengerServer::readCommandFromPeer(socket);
+		int command = ServerIO::readCommandFromPeer(socket);
 		switch (command) {
 		// when a SIG_TERM happens, the client sends 0
 		case (CLOSE_SESSION_WITH_PEER): {

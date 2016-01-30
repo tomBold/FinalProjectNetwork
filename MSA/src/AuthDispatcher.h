@@ -17,8 +17,8 @@
 #include "Utilities/Users.h"
 #include "TCPMessengerProtocol.h"
 #include "TCPMessengerServer.h"
+#include "Utilities/ServerIO.h"
 
-using namespace Utilities;
 using namespace std;
 
 class TCPMessengerServer;

@@ -9,8 +9,6 @@
 
 using namespace std;
 
-namespace Utilities {
-
 class Users {
 private:
 	static map<string, string>* userToPassword;
@@ -22,7 +20,5 @@ public:
 	static bool login(string name, string password);
 	static vector<string> getAllNames();
 };
-
-} /* namespace Utilities */
 
 #endif /* USERS_H_ */

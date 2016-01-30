@@ -3,8 +3,6 @@
 #include "vector"
 #include "src/TCPMessengerServer.h"
 
-using namespace Utilities;
-
 using namespace std;
 
 void printInstructions() {

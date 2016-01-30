@@ -2,7 +2,9 @@
 using namespace std;
 
 // ********** MCA *********//
-int main() {
+
+void printInstructions()
+{
 	cout << "c <IP> - connect to the server in the given ip" << endl;
 	cout << "lu - print the user list from the server" << endl;
 	cout << "lcu - print the connected users list" << endl;
@@ -22,4 +24,24 @@ int main() {
 	cout << "cs - disconnect the open session / exit from a room" << endl;
 	cout << "d - disconnect from server" << endl;
 	cout << "x - close the app" << endl;
+}
+
+
+int main() {
+	//TCPSocket* server;
+	bool isRunning = true;
+
+	while (isRunning)
+	{
+		printInstructions();
+		string command = "";
+		cin >> command;
+
+		if (command == "x")
+		{
+			// TODO
+			isRunning = false;
+		}
+
+	}
 }

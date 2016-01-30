@@ -1,6 +1,5 @@
 #include "Users.h"
 
-namespace Utilities {
 map<string, string>* Users::userToPassword = NULL;
 
 map<string, string>* Users::getAll() {
@@ -90,4 +89,3 @@ vector<string> Users::getAllNames() {
 	return names;
 }
 
-} /* namespace Utilities */

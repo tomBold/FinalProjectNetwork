@@ -77,7 +77,7 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 		return;
 	}
 
-	int command = TCPMessengerServer::readCommandFromPeer(socket);
+	int command = ServerIO::readCommandFromPeer(socket);
 
 	switch (command) {
 	case (LOGIN_REQ): {
@@ -89,7 +89,7 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 		if (Users::login(name, password)) {
 			cout << "Login failed, please check the user name and password"
 					<< endl;
-			TCPMessengerServer::sendCommandToPeer(socket, LOGIN_FAILED);
+			ServerIO::sendCommandToPeer(socket, LOGIN_FAILED);
 		} else {
 			this->userLogin(socket, name);
 		}
@@ -109,7 +109,7 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 			cout << name << " register failed" << endl;
 
 			if (Users::contains(name)) {
-				TCPMessengerServer::sendCommandToPeer(socket,
+				ServerIO::sendCommandToPeer(socket,
 						USER_ALREADY_EXISTS_RES);
 			}
 		}
@@ -161,7 +161,7 @@ void AuthDispatcher::userLogin(TCPSocket* socket, string name) {
 
 void AuthDispatcher::getUserAndPasswordFromSocket(TCPSocket* socket,
 		string* name, string* password) {
-	string userNameAndPassword = TCPMessengerServer::readDataFromPeer(socket);
+	string userNameAndPassword = ServerIO::readDataFromPeer(socket);
 
 	int index = userNameAndPassword.find(" ");
 

@@ -18,10 +18,10 @@
 #include <set>
 #include "MThread.h"
 #include "TCPSocket.h"
-#include "MultipleTCPSocketsListener.h"
 #include "TCPMessengerProtocol.h"
 #include "TCPMessengerDispatcher.h"
 #include "AuthDispatcher.h"
+#include "Utilities/ServerIO.h"
 
 class AuthDispatcher;
 
@@ -49,26 +49,6 @@ public:
 	 * close the server
 	 */
 	void close();
-
-	/**
-	 * read command from peer
-	 */
-	static int readCommandFromPeer(TCPSocket* peer);
-
-	/**
-	 * read data from peer
-	 */
-	static string readDataFromPeer(TCPSocket* peer);
-
-	/**
-	 * send command to peer
-	 */
-	static void sendCommandToPeer(TCPSocket* peer, int command);
-
-	/**
-	 * send data to peer
-	 */
-	static void sendDataToPeer(TCPSocket* peer, string msg);
 
 	void run();
 
