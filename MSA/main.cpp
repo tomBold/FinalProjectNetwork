@@ -2,8 +2,20 @@
 #include "src/Utilities/Users.h"
 #include "vector"
 #include "src/TCPMessengerServer.h"
+#include <csignal>
 
 using namespace std;
+
+TCPMessengerServer* globalServer = NULL;
+
+void handleSignal(int signal) {
+	if (globalServer != NULL) {
+		globalServer->close();
+		delete globalServer;
+	}
+
+	cout << "Bye" << endl;
+}
 
 void printInstructions() {
 	cout << "Messenger Server App (MSA)" << endl;
@@ -20,6 +32,11 @@ void printInstructions() {
 int main() {
 
 	TCPMessengerServer* server = new TCPMessengerServer();
+	globalServer = server;
+
+	signal(SIGTERM, handleSignal);
+	signal(SIGABRT, handleSignal);
+
 	bool isRunning = true;
 
 	while (isRunning) {

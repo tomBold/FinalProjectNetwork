@@ -13,6 +13,7 @@ Room::Room(string name, string admin, TCPSocket* adminSocket,
 	this->name = name;
 	this->admin = admin;
 	this->users[admin] = adminSocket;
+	this->roomIsOpen = true;
 
 	this->multiSocketListener = new ExtendedMultipleTCPSocketListener();
 	this->multiSocketListener->addSocket(adminSocket);
@@ -160,6 +161,8 @@ void Room::run() {
 		}
 		}
 	}
+
+	this->dispatcher->deleteRoom(this);
 }
 
 string Room::getRoomsUsers() {

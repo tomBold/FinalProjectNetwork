@@ -79,7 +79,6 @@ void TCPMessengerDispatcher::run() {
 
 		if (currSocket != NULL) {
 			this->handleSocket(currSocket);
-			this->clean();
 		}
 	}
 }
@@ -250,6 +249,7 @@ void TCPMessengerDispatcher::disconnectClient(TCPSocket* socket) {
 
 void TCPMessengerDispatcher::closeBroker(Broker* broker) {
 	broker->areBothPeersConnected = false;
+
 	// Adding back
 	this->addSocket(broker->firstSocket);
 	this->addSocket(broker->secondSocket);
@@ -258,9 +258,6 @@ void TCPMessengerDispatcher::closeBroker(Broker* broker) {
 	CLOSE_SESSION_WITH_PEER);
 	ServerIO::sendCommandToPeer(broker->secondSocket,
 	CLOSE_SESSION_WITH_PEER);
-
-	//this->brokers.erase(broker);
-	//delete broker;
 }
 
 bool TCPMessengerDispatcher::createRoom(string roomName, TCPSocket* admin) {
@@ -279,16 +276,14 @@ bool TCPMessengerDispatcher::createRoom(string roomName, TCPSocket* admin) {
 }
 
 void TCPMessengerDispatcher::closeRoom(Room* room) {
+	room->roomIsOpen = false;
+
 	map<string, TCPSocket*> users = room->users;
 
 	for (map<string, TCPSocket*>::const_iterator it = users.begin();
 			it != users.end(); it++) {
 		this->addSocket(it->second);
 	}
-
-	room->roomIsOpen = false;
-	//this->rooms.erase(room);
-	//delete room;
 }
 
 void TCPMessengerDispatcher::leaveRoom(TCPSocket* socket) {
@@ -451,24 +446,12 @@ bool TCPMessengerDispatcher::isUserConnected(string name) {
 	return this->userToPeersIp.find(name) != this->userToPeersIp.end();
 }
 
-void TCPMessengerDispatcher::clean() {
-	for (set<Room*>::iterator itR = this->rooms.begin();
-			itR != this->rooms.end(); itR++) {
-		Room* room = *itR;
-		if (!room->roomIsOpen)
-		{
-			this->rooms.erase(room);
-			delete room;
-		}
-	}
+void TCPMessengerDispatcher::deleteRoom(Room* room) {
+	this->rooms.erase(room);
+	delete room;
+}
 
-	for (set<Broker*>::iterator itB = this->brokers.begin();
-			itB != this->brokers.end(); itB++) {
-		Broker* broker = *itB;
-		if (!broker->areBothPeersConnected)
-		{
-			this->brokers.erase(broker);
-			delete broker;
-		}
-	}
+void TCPMessengerDispatcher::deleteBroker(Broker* broker) {
+	this->brokers.erase(broker);
+	delete broker;
 }

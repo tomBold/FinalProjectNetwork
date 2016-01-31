@@ -98,6 +98,8 @@ public:
 	void shutdown();
 	string getUserP2PAddress(TCPSocket* socket);
 	bool isUserConnected(string name);
+	void deleteRoom(Room* room);
+	void deleteBroker(Broker* broker);
 };
 
 #endif /* TCPMESSENGERDISPATCHER_H_ */

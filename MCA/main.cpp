@@ -6,9 +6,15 @@
 
 using namespace std;
 
+TCPMessengerClient* globalClient = NULL;
+
 // ********** MCA *********//
-void handleSignal(TCPMessengerClient* client, int signal) {
-	client->disconnect();
+void handleSignal(int signal) {
+	if (globalClient != NULL) {
+		globalClient->disconnect();
+		delete globalClient;
+	}
+
 	cout << "Bye" << endl;
 }
 
@@ -36,9 +42,12 @@ void printInstructions() {
 
 int main() {
 	TCPMessengerClient* client = new TCPMessengerClient();
-	//auto signalHandler = bind(handleSignal, client, placeholders::_1);
-	//signal(SIGTERM, signalHandler);
-	//signal(SIGABRT, signalHandler);
+	globalClient = client;
+
+	// Set the terminate signal and the abort signal
+	// to actually disconnect
+	signal(SIGTERM, handleSignal);
+	signal(SIGABRT, handleSignal);
 
 	bool isRunning = true;
 	printInstructions();

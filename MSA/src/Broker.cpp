@@ -82,6 +82,8 @@ void Broker::run() {
 		}
 		}
 	}
+
+	this->dispatcher->deleteBroker(this);
 }
 
 bool Broker::isUserInBroker(string ip) {

@@ -63,7 +63,11 @@ void TCPMessengerServer::userLogin(TCPSocket* peer, string name) {
 	ServerIO::sendCommandToPeer(peer, SUCCESSFULLY_LOGIN_RES);
 	ServerIO::sendDataToPeer(peer, name);
 
-	this->dispatcher->addSocket(peer, name,
-			ServerIO::readDataFromPeer(peer));
+	this->dispatcher->addSocket(peer, name, ServerIO::readDataFromPeer(peer));
+}
+
+bool TCPMessengerServer::isUserConnected(string name) {
+	return this->dispatcher->userToPeersIp.find(name)
+			!= this->dispatcher->userToPeersIp.end();
 }
 

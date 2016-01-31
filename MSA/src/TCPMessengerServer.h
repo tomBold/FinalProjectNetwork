@@ -53,5 +53,7 @@ public:
 	void run();
 
 	void userLogin(TCPSocket* peer, string name);
+
+	bool isUserConnected(string name);
 };
 #endif
