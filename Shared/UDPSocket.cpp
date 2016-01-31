@@ -47,7 +47,6 @@ int UDPSocket::reply(string msg) {
 }
 
 void UDPSocket::cclose() {
-	cout << "closing socket" << endl;
 	shutdown(socket_fd, SHUT_RDWR);
 	close(socket_fd);
 }

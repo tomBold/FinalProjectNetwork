@@ -238,6 +238,11 @@ void TCPMessengerDispatcher::disconnectClient(TCPSocket* socket) {
 	string ip = socket->destIpAndPort();
 	string name = this->peersIpToUser[ip];
 
+	try {
+		ServerIO::sendCommandToPeer(socket, DISCONNECT_FROM_SERVER_REQ);
+	} catch (int err) {
+	}
+
 	this->deleteSocket(socket);
 	socket->cclose();
 	delete socket;

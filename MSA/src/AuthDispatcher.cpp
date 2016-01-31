@@ -85,11 +85,9 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 		string password;
 
 		this->getUserAndPasswordFromSocket(socket, &name, &password);
-		if (this->tcpMessengerServer->isUserConnected(name))
-		{
+		if (this->tcpMessengerServer->isUserConnected(name)) {
 			ServerIO::sendCommandToPeer(socket, ALREADY_CONNECTED_RES);
-		}
-		else if (!Users::login(name, password)) {
+		} else if (!Users::login(name, password)) {
 			ServerIO::sendCommandToPeer(socket, LOGIN_FAILED);
 		} else {
 			this->userLogin(socket, name);
@@ -111,7 +109,7 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 
 			if (Users::contains(name)) {
 				ServerIO::sendCommandToPeer(socket,
-						USER_ALREADY_EXISTS_RES);
+				USER_ALREADY_EXISTS_RES);
 			}
 		}
 
@@ -150,6 +148,11 @@ vector<TCPSocket*> AuthDispatcher::getSockets() {
  * Handle exit socket
  */
 void AuthDispatcher::disconnectClient(TCPSocket* socket) {
+	try {
+		ServerIO::sendCommandToPeer(socket, DISCONNECT_FROM_SERVER_REQ);
+	} catch (int err) {
+	}
+
 	this->deleteSocket(socket);
 	socket->cclose();
 	delete socket;
@@ -172,9 +175,8 @@ void AuthDispatcher::getUserAndPasswordFromSocket(TCPSocket* socket,
 
 void AuthDispatcher::shutdown() {
 
-	for (map<string, TCPSocket*>::const_iterator it =
-			this->sockets.begin(); it != this->sockets.end();
-			it++) {
+	for (map<string, TCPSocket*>::const_iterator it = this->sockets.begin();
+			it != this->sockets.end(); it++) {
 		this->disconnectClient(it->second);
 	}
 

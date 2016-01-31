@@ -297,6 +297,22 @@ void TCPMessengerClient::run() {
 
 			break;
 		}
+		case (DISCONNECT_FROM_SERVER_REQ): {
+			cout << "Disconnected" << endl;
+			this->status = DISCONNECTED;
+			this->currentConversation = "";
+			this->isRunning = false;
+			this->udpMessenger->close();
+			this->user = "";
+			this->socket->cclose();
+			delete this->socket;
+			delete this->udpMessenger;
+
+			this->udpMessenger = NULL;
+			this->socket = NULL;
+
+			break;
+		}
 		default: {
 			break;
 		}
