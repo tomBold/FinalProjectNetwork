@@ -165,6 +165,9 @@ void Room::run() {
 	this->dispatcher->deleteRoom(this);
 }
 
+/**
+ * Get textual representation of the user list
+ */
 string Room::getRoomsUsers() {
 	string names = "";
 	for (std::map<string, TCPSocket*>::const_iterator it = this->users.begin();

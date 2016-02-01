@@ -9,9 +9,12 @@ using namespace std;
 TCPMessengerServer* globalServer = NULL;
 
 void handleSignal(int signal) {
-	if (globalServer != NULL) {
-		globalServer->close();
-		delete globalServer;
+	try {
+		if (globalServer != NULL) {
+			globalServer->close();
+			delete globalServer;
+		}
+	} catch (int e) {
 	}
 
 	cout << "Bye" << endl;
@@ -72,5 +75,7 @@ int main() {
 			printInstructions();
 		}
 	}
+
+	delete globalServer;
 }
 

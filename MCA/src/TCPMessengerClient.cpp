@@ -2,7 +2,7 @@
  * TCPMessengerClient.cpp
  *
  *  Created on: Jan 30, 2016
- *      Author: user
+ *      Author: Tom Boldan & Gal Schlezinger
  */
 
 #include "TCPMessengerClient.h"
@@ -166,8 +166,7 @@ bool TCPMessengerClient::closeActiveSession() {
 	return false;
 }
 bool TCPMessengerClient::send(string msg) {
-	if (this->isActiveRoom() || this->isActiveBroker())
-	{
+	if (this->isActiveRoom() || this->isActiveBroker()) {
 		this->udpMessenger->send(msg);
 		return true;
 	}
@@ -297,7 +296,7 @@ void TCPMessengerClient::run() {
 
 			break;
 		}
-		case (DISCONNECT_FROM_SERVER_REQ): {
+		case (DISCONNECT_CLIENTS): {
 			cout << "Disconnected" << endl;
 			this->status = DISCONNECTED;
 			this->currentConversation = "";
@@ -351,4 +350,3 @@ bool TCPMessengerClient::sendCommand(int command) {
 	ServerIO::sendCommandToPeer(this->socket, command);
 	return true;
 }
-

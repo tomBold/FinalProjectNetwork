@@ -88,6 +88,9 @@ public:
 	 */
 	void userLogin(TCPSocket* socket, string name);
 
+	/**
+	 * Shutdown
+	 */
 	void shutdown();
 };
 

@@ -14,15 +14,15 @@ TCPMessengerServer::TCPMessengerServer() {
  * Close the server
  */
 void TCPMessengerServer::close() {
-	this->serverSocket->cclose();
 	this->dispatcher->shutdown();
 	this->authDispatcher->shutdown();
+	this->serverSocket->cclose();
 }
 
 TCPMessengerServer::~TCPMessengerServer() {
-	delete this->serverSocket;
 	delete this->dispatcher;
 	delete this->authDispatcher;
+	delete this->serverSocket;
 }
 
 /*

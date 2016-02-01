@@ -10,9 +10,12 @@ TCPMessengerClient* globalClient = NULL;
 
 // ********** MCA *********//
 void handleSignal(int signal) {
-	if (globalClient != NULL) {
-		globalClient->disconnect();
-		delete globalClient;
+	try {
+		if (globalClient != NULL) {
+			globalClient->disconnect();
+			delete globalClient;
+		}
+	} catch (int e) {
 	}
 
 	cout << "Bye" << endl;
@@ -114,4 +117,6 @@ int main() {
 			printInstructions();
 		}
 	}
+
+	delete globalClient;
 }

@@ -47,6 +47,7 @@
 #define PRINT_USERS_REQ				37
 #define PRINT_USERS_RES				38 // DATA: name1,name2,...
 #define ROOM_NOT_EXISTS				39
+#define DISCONNECT_CLIENTS			40
 
 #define ROOM						1
 #define DISPATCHER					2

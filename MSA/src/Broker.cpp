@@ -36,6 +36,13 @@ Broker::Broker(TCPSocket* initiativeSocket, TCPSocket* recvSocket,
 	this->sendNewDest();
 }
 
+Broker::~Broker() {
+	delete this->multiSocketListener;
+}
+
+/**
+ * Send the new messages destination
+ */
 void Broker::sendNewDest() {
 	ServerIO::sendCommandToPeer(this->firstSocket,
 	NEW_MESSAGE_DST_RES);
@@ -46,10 +53,6 @@ void Broker::sendNewDest() {
 	NEW_MESSAGE_DST_RES);
 	ServerIO::sendDataToPeer(this->secondSocket,
 			this->dispatcher->getUserP2PAddress(this->firstSocket));
-}
-
-Broker::~Broker() {
-	delete this->multiSocketListener;
 }
 
 /**
@@ -86,6 +89,9 @@ void Broker::run() {
 	this->dispatcher->deleteBroker(this);
 }
 
+/**
+ * Check if the user is in the broker
+ */
 bool Broker::isUserInBroker(string ip) {
 	return this->firstSocket->destIpAndPort() == ip
 			|| this->secondSocket->destIpAndPort() == ip;

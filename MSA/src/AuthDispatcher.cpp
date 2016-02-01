@@ -1,6 +1,6 @@
 /*
  * AuthDispatcher.h
- * This class is responsible of authenticating users or registering them.
+ *  This class is responsible of authenticating users or registering them.
  *
  *  Created on: Jan 29, 2016
  *      Author: Tom Boldan & Gal Schlezinger
@@ -148,21 +148,22 @@ vector<TCPSocket*> AuthDispatcher::getSockets() {
  * Handle exit socket
  */
 void AuthDispatcher::disconnectClient(TCPSocket* socket) {
-	try {
-		ServerIO::sendCommandToPeer(socket, DISCONNECT_FROM_SERVER_REQ);
-	} catch (int err) {
-	}
-
 	this->deleteSocket(socket);
 	socket->cclose();
 	delete socket;
 }
 
+/**
+ * Client login
+ */
 void AuthDispatcher::userLogin(TCPSocket* socket, string name) {
 	this->deleteSocket(socket);
 	this->tcpMessengerServer->userLogin(socket, name);
 }
 
+/**
+ * Get users' password from the socket
+ */
 void AuthDispatcher::getUserAndPasswordFromSocket(TCPSocket* socket,
 		string* name, string* password) {
 	string userNameAndPassword = ServerIO::readDataFromPeer(socket);
@@ -173,10 +174,14 @@ void AuthDispatcher::getUserAndPasswordFromSocket(TCPSocket* socket,
 	(*password) = userNameAndPassword.substr(index + 1);
 }
 
+/**
+ * Shutdown
+ */
 void AuthDispatcher::shutdown() {
 
 	for (map<string, TCPSocket*>::const_iterator it = this->sockets.begin();
 			it != this->sockets.end(); it++) {
+		ServerIO::sendCommandToPeer(it->second, DISCONNECT_CLIENTS);
 		this->disconnectClient(it->second);
 	}
 

@@ -232,16 +232,11 @@ void TCPMessengerDispatcher::createSession(TCPSocket* socket, string peerName) {
 }
 
 /*
- * Handle exit socket
+ * Handle disconnect client
  */
 void TCPMessengerDispatcher::disconnectClient(TCPSocket* socket) {
 	string ip = socket->destIpAndPort();
 	string name = this->peersIpToUser[ip];
-
-	try {
-		ServerIO::sendCommandToPeer(socket, DISCONNECT_FROM_SERVER_REQ);
-	} catch (int err) {
-	}
 
 	this->deleteSocket(socket);
 	socket->cclose();
@@ -435,6 +430,7 @@ void TCPMessengerDispatcher::shutdown() {
 
 	for (map<string, TCPSocket*>::const_iterator it = this->sockets.begin();
 			it != this->sockets.end(); it++) {
+		ServerIO::sendCommandToPeer(it->second, DISCONNECT_CLIENTS);
 		this->disconnectClient(it->second);
 	}
 
