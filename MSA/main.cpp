@@ -12,7 +12,6 @@ void handleSignal(int signal) {
 	try {
 		if (globalServer != NULL) {
 			globalServer->close();
-		//	delete globalServer;
 		}
 	} catch (int e) {
 	}

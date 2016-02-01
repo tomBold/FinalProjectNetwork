@@ -13,7 +13,6 @@ void handleSignal(int signal) {
 	try {
 		if (globalClient != NULL) {
 			globalClient->disconnect();
-		//	delete globalClient;
 		}
 	} catch (int e) {
 	}

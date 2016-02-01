@@ -43,8 +43,6 @@ TCPSocket* MultipleTCPSocketsListener::listenToSocket() {
 	int selectNum = select(maxSocketFd + 1, &rfds, NULL, NULL, &tv);
 
 	if (selectNum < 0) {
-		cout << "Error in select socket" << endl;
-
 		return NULL;
 	} else if (selectNum == 0) {
 		// Nobody is ready
