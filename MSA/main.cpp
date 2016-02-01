@@ -12,7 +12,7 @@ void handleSignal(int signal) {
 	try {
 		if (globalServer != NULL) {
 			globalServer->close();
-			delete globalServer;
+		//	delete globalServer;
 		}
 	} catch (int e) {
 	}
@@ -39,6 +39,7 @@ int main() {
 
 	signal(SIGTERM, handleSignal);
 	signal(SIGABRT, handleSignal);
+	signal(SIGINT, handleSignal);
 
 	bool isRunning = true;
 
