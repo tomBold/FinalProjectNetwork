@@ -3,6 +3,7 @@
 #include "vector"
 #include "src/TCPMessengerServer.h"
 #include <csignal>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -16,7 +17,7 @@ void handleSignal(int signal) {
 	} catch (int e) {
 	}
 
-	cout << "Bye" << endl;
+	exit(signal);
 }
 
 void printInstructions() {
