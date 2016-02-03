@@ -67,8 +67,7 @@ void TCPMessengerServer::userLogin(TCPSocket* peer, string name) {
 }
 
 bool TCPMessengerServer::isUserConnected(string name) {
-	return this->dispatcher->userToPeersIp.find(name)
-			!= this->dispatcher->userToPeersIp.end();
+	return this->dispatcher->isUserConnected(name);
 }
 
 string TCPMessengerServer::getConnectUsers() {

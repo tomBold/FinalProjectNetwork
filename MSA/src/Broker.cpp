@@ -27,11 +27,11 @@ Broker::Broker(TCPSocket* initiativeSocket, TCPSocket* recvSocket,
 	ServerIO::sendCommandToPeer(this->firstSocket,
 	SESSION_ESTABLISHED);
 	ServerIO::sendDataToPeer(this->firstSocket,
-			this->dispatcher->peersIpToUser[this->secondSocket->destIpAndPort()]);
+			this->dispatcher->getUserByPeerIp(this->secondSocket->destIpAndPort()));
 	ServerIO::sendCommandToPeer(this->secondSocket,
 	SESSION_ESTABLISHED);
 	ServerIO::sendDataToPeer(this->secondSocket,
-			this->dispatcher->peersIpToUser[this->firstSocket->destIpAndPort()]);
+			this->dispatcher->getUserByPeerIp(this->firstSocket->destIpAndPort()));
 
 	this->sendNewDest();
 }

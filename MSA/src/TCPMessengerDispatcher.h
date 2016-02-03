@@ -21,13 +21,13 @@ class TCPMessengerDispatcher : public Dispatcher{
 	set<Broker*> brokers;
 	set<Room*> rooms;
 
+	map<string, string> peerIpToUser;
+	map<string, string> userToPeerIp;
+	map<string, string> peerIpToPort;
+
 	void clean();
 public:
 	using Dispatcher::deleteSocket;
-
-	map<string, string> peersIpToUser;
-	map<string, string> userToPeersIp;
-	map<string, string> peersIpToPort;
 
 	TCPMessengerDispatcher();
 	virtual ~TCPMessengerDispatcher();
@@ -63,11 +63,6 @@ public:
 	void createBroker(TCPSocket* firstSocket, TCPSocket* secondSocket);
 
 	/**
-	 * Gets sockets
-	 */
-	//vector<TCPSocket*> getSockets();
-
-	/**
 	 * Create session
 	 */
 	void createSession(TCPSocket* socket, string peer);
@@ -90,6 +85,9 @@ public:
 	bool isUserConnected(string name);
 	void deleteRoom(Room* room);
 	void deleteBroker(Broker* broker);
+	string getUserByPeerIp(string peerIp);
+	string getPeerIpByUser(string user);
+	string getPortByPeerIp(string peerIp);
 };
 
 #endif /* TCPMESSENGERDISPATCHER_H_ */

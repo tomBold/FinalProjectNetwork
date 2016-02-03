@@ -138,7 +138,7 @@ void Room::run() {
 			continue;
 		}
 
-		string name = this->dispatcher->peersIpToUser[socket->destIpAndPort()];
+		string name = this->dispatcher->getUserByPeerIp(socket->destIpAndPort());
 		int command = ServerIO::readCommandFromPeer(socket);
 		switch (command) {
 		// when a SIG_TERM happens, the client sends 0
