@@ -1,7 +1,19 @@
+/*
+ * Users.cpp
+ *
+ * Wraps the "users" and "passwords" files in a simple class form
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #include "Users.h"
 
 map<string, string>* Users::userToPassword = NULL;
 
+/**
+ * Caches the file system calls
+ */
 map<string, string>* Users::getAll() {
 	if (userToPassword == NULL) {
 		load();
@@ -10,6 +22,9 @@ map<string, string>* Users::getAll() {
 	return userToPassword;
 }
 
+/**
+ * Loads the text files to the map
+ */
 bool Users::load() {
 	map<string, string>* newUserToPassword = new map<string, string>();
 
@@ -42,10 +57,17 @@ bool Users::load() {
 	return true;
 }
 
+/**
+ * Check if user exists
+ */
 bool Users::contains(string name) {
 	map<string, string>* all = getAll();
 	return all->find(name) != all->end();
 }
+
+/**
+ * Create a new user
+ */
 bool Users::create(string name, string password) {
 	if (contains(name)) {
 		return false;
@@ -68,15 +90,20 @@ bool Users::create(string name, string password) {
 	return true;
 }
 
+/**
+ * Check if there is a match with a username and password
+ */
 bool Users::login(string name, string password) {
-	if (!contains(name))
-	{
+	if (!contains(name)) {
 		return false;
 	}
 
 	return (userToPassword->find(name)->second == password);
 }
 
+/**
+ * Get all the users registered
+ */
 vector<string> Users::getAllNames() {
 	vector<string> names;
 
@@ -89,24 +116,24 @@ vector<string> Users::getAllNames() {
 	return names;
 }
 
-string Users::getAllUsers()
-{
+/**
+ * Get all the users registered in a textual representation
+ */
+string Users::getAllUsers() {
 	string result = "";
 
 	vector<string> names = getAllNames();
 
-	if (names.size() == 0)
-	{
+	if (names.size() == 0) {
 		return "There is no users.";
 	}
 
 	for (unsigned int i = 0; i < names.size(); i++) {
-		if (i != 0)
-		{
+		if (i != 0) {
 			result += ",";
 		}
 
-		result +=  names[i];
+		result += names[i];
 	}
 
 	return "Users: " + result;

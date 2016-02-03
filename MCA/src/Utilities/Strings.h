@@ -1,6 +1,8 @@
 /*
  * Strings.h
  *
+ * Provides some utilities with strings
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
