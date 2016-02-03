@@ -1,6 +1,8 @@
 /*
  * TCPSocket.cpp
  *
+ * Implements a TCP class to wrap the C TCP socket libraries
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
@@ -27,6 +29,7 @@ TCPSocket::TCPSocket(int port) {
 		perror("Error opening channel");
 	}
 
+	// Try to reuse an address, instead of waiting on TIME_WAIT
 	int enable = 1;
 	if (setsockopt(this->connected_sock, SOL_SOCKET, SO_REUSEADDR, &enable,
 			sizeof(int)) < 0) {
@@ -43,8 +46,8 @@ TCPSocket::TCPSocket(int port) {
 			sizeof(this->serverAddr)) < 0) {
 		perror("Error naming channel");
 	}
-	printf("Server is alive and waiting for socket connection from client.\n");
 
+	printf("Server is alive and waiting for socket connection from client.\n");
 }
 
 /**

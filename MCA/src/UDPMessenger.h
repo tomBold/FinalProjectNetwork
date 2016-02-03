@@ -1,7 +1,7 @@
 /*
  * UDPMessenger.h
  *
- * It's handle the peer to peer communication.
+ * Handles the peer to peer communication between two (or more) clients
  *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
@@ -17,6 +17,7 @@
 #include "Types.h"
 #include <vector>
 #include "Utilities/Strings.h"
+#include <string.h>
 
 using namespace std;
 
@@ -31,19 +32,17 @@ public:
 	~UDPMessenger();
 
 	/**
-	 * sends the given message
+	 * Sends the given message to the destinations
 	 */
 	void send(string msg);
 
 	/**
-	 * close the messenger
+	 * Close the messenger and stop listening to that port
 	 */
 	void close();
 
 	/**
-	 * This method runs in a separate thread, it reads the incoming messages
-	 * from the socket and prints the content on the terminal.
-	 * The thread should exist when the socket is closed
+	 * Read all the incoming messages and print them in the correct format
 	 */
 	void run();
 

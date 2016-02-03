@@ -27,6 +27,9 @@ Room::~Room() {
 	delete this->multiSocketListener;
 }
 
+/**
+ * Client leaves room
+ */
 bool Room::leave(user_name name) {
 	if (name == this->admin) {
 		return this->close(name);
@@ -62,6 +65,9 @@ bool Room::leave(user_name name) {
 	return true;
 }
 
+/**
+ * Client joins room
+ */
 bool Room::join(user_name user, TCPSocket* userSocket) {
 	if (exists(name)) {
 		return false;
@@ -80,6 +86,9 @@ bool Room::join(user_name user, TCPSocket* userSocket) {
 	return true;
 }
 
+/**
+ * Client tries to close the room
+ */
 bool Room::close(user_name user) {
 	if (user != this->admin) {
 		return false;
@@ -96,6 +105,9 @@ bool Room::close(user_name user) {
 	return true;
 }
 
+/**
+ * Get other user's UDP listening addresses
+ */
 string Room::getOtherUsersIps(user_name name) {
 	string ips = "";
 	for (std::map<string, TCPSocket*>::const_iterator it = this->users.begin();
@@ -113,6 +125,9 @@ string Room::getOtherUsersIps(user_name name) {
 	return ips;
 }
 
+/**
+ * Send new destinations to a specific user
+ */
 void Room::sendMsgDest(user_name name) {
 	string ips = this->getOtherUsersIps(name);
 
@@ -121,12 +136,15 @@ void Room::sendMsgDest(user_name name) {
 	ServerIO::sendDataToPeer(this->users[name], ips);
 }
 
+/**
+ * Check if user is a participant in this room
+ */
 bool Room::exists(string name) {
 	return this->users.find(name) != this->users.end();
 }
 
 /**
- * Run the messages between peers
+ * Run the commands of every participant in the chat room
  */
 void Room::run() {
 	this->roomIsOpen = true;
@@ -138,7 +156,8 @@ void Room::run() {
 			continue;
 		}
 
-		string name = this->dispatcher->getUserByPeerIp(socket->destIpAndPort());
+		string name = this->dispatcher->getUserByPeerIp(
+				socket->destIpAndPort());
 		int command = ServerIO::readCommandFromPeer(socket);
 		switch (command) {
 		// when a SIG_TERM happens, the client sends 0
