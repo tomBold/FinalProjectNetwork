@@ -267,7 +267,8 @@ void TCPMessengerClient::run() {
 		}
 		case (PORT_INIT_REQ): {
 			ServerIO::sendCommandToPeer(this->socket, PORT_INIT_RES);
-			ServerIO::sendDataToPeer(this->socket, to_string(this->udpMessenger->getPort()));
+			ServerIO::sendDataToPeer(this->socket,
+					std::to_string(this->udpMessenger->getPort()));
 			break;
 		}
 		case (ALREADY_CONNECTED_RES): {

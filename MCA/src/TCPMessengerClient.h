@@ -31,7 +31,14 @@ class TCPMessengerClient: public MThread {
 	bool isRunning;
 	UDPMessenger* udpMessenger;
 
+	/**
+	 * Tells if the user is logged in
+	 */
 	bool isLoggedIn();
+
+	/**
+	 * Sends a command to the server if the user is logged in
+	 */
 	bool sendCommand(int command);
 public:
 	TCPMessengerClient();
