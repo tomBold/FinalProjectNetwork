@@ -91,6 +91,10 @@ UDPMessenger::~UDPMessenger() {
  */
 void UDPMessenger::setTheMsgDestination(string dst) {
 	this->ipAndPortToUsers.clear();
+	if (dst.empty()) {
+		return;
+	}
+
 	vector<string> users = Strings::split(dst, ",");
 
 	for (string user : users) {

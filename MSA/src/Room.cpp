@@ -21,6 +21,7 @@ Room::Room(room_name name, user_name admin, TCPSocket* adminSocket,
 
 	ServerIO::sendCommandToPeer(adminSocket, IN_EMPTY_ROOM);
 	ServerIO::sendDataToPeer(adminSocket, this->name);
+	this->sendMsgDest(admin);
 }
 
 Room::~Room() {
@@ -55,9 +56,9 @@ bool Room::leave(user_name name) {
 		if (this->users.size() == 1) {
 			ServerIO::sendCommandToPeer(socket, IN_EMPTY_ROOM);
 			ServerIO::sendDataToPeer(socket, this->name);
-		} else {
-			this->sendMsgDest(it->first);
 		}
+
+		this->sendMsgDest(it->first);
 	}
 
 	this->dispatcher->leaveRoom(userLeave);
