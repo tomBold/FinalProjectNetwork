@@ -1,12 +1,13 @@
 /*
  * UDPMessenger.cpp
  *
+ * Handles the peer to peer communication between two (or more) clients
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
 
 #include "UDPMessenger.h"
-#include <string.h>
 
 using namespace std;
 
@@ -22,9 +23,7 @@ UDPMessenger::UDPMessenger() {
 }
 
 /**
- * This method runs in a separate thread, it reads the incoming messages
- * from the socket and prints the content on the terminal.
- * The thread should exist when the socket is closed
+ * Read all the incoming messages and print them in the correct format
  */
 void UDPMessenger::run() {
 	char buffer[100];
@@ -48,7 +47,7 @@ void UDPMessenger::handleMsg(string msg, ip_and_port ipAndPort)
 }
 
 /**
- * sends the given message
+ * Sends the given message to the destinations
  */
 void UDPMessenger::send(string msg) {
 	// Send the given message to the given destination
@@ -61,7 +60,7 @@ void UDPMessenger::send(string msg) {
 }
 
 /**
- * close the messenger and all related objects (socket)
+ * Close the messenger and stop listening to that port
  */
 void UDPMessenger::close() {
 	// Close the thread
@@ -99,4 +98,3 @@ void UDPMessenger::setTheMsgDestination(string dst) {
 		this->ipAndPortToUsers[userData[0] + ":" + userData[1]] = userData[2];
 	}
 }
-

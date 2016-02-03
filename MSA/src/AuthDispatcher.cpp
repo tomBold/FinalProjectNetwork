@@ -1,6 +1,8 @@
 /*
- * AuthDispatcher.cpp
- *  This class is responsible of authenticating users or registering them.
+ * AuthDispatcher.h
+ *
+ * This class is responsible of handling all the unauthenticated users
+ * by letting them authenticate or register.
  *
  *  Created on: Jan 29, 2016
  *      Author: Tom Boldan & Gal Schlezinger
@@ -111,7 +113,7 @@ void AuthDispatcher::disconnectClient(TCPSocket* socket) {
 }
 
 /**
- * Client login
+ * Authenticate user
  */
 void AuthDispatcher::userLogin(TCPSocket* socket, user_name name) {
 	this->deleteSocket(socket);
@@ -119,7 +121,8 @@ void AuthDispatcher::userLogin(TCPSocket* socket, user_name name) {
 }
 
 /**
- * Get users' password from the socket
+ * Read user and password from socket and put them in the
+ * respective out parameters.
  */
 void AuthDispatcher::getUserAndPasswordFromSocket(TCPSocket* socket,
 		user_name* name, string* password) {
@@ -132,10 +135,9 @@ void AuthDispatcher::getUserAndPasswordFromSocket(TCPSocket* socket,
 }
 
 /**
- * Shutdown
+ * Shutdown and disconnect every user
  */
 void AuthDispatcher::shutdown() {
-
 	for (map<string, TCPSocket*>::const_iterator it = this->sockets.begin();
 			it != this->sockets.end(); it++) {
 		ServerIO::sendCommandToPeer(it->second, DISCONNECT_CLIENTS);

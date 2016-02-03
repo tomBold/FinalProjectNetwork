@@ -1,6 +1,8 @@
 /*
  * AuthDispatcher.h
- * This class is responsible of authenticating users or registering them.
+ *
+ * This class is responsible of handling all the unauthenticated users
+ * by letting them authenticate or register.
  *
  *  Created on: Jan 29, 2016
  *      Author: Tom Boldan & Gal Schlezinger
@@ -29,10 +31,16 @@ class AuthDispatcher: public Dispatcher {
 private:
 	TCPMessengerServer* tcpMessengerServer;
 
-	void getUserAndPasswordFromSocket(TCPSocket* socket, user_name* name, string* password);
+	/**
+	 * Read user and password from socket and put them in the
+	 * respective out parameters.
+	 */
+	void getUserAndPasswordFromSocket(TCPSocket* socket, user_name* name,
+			string* password);
 
 public:
-	 using Dispatcher::deleteSocket;
+	using Dispatcher::deleteSocket;
+
 	/*
 	 * CTOR
 	 */
@@ -69,12 +77,12 @@ public:
 	void disconnectClient(TCPSocket* socket);
 
 	/**
-	 * Client login
+	 * Authenticate user
 	 */
 	void userLogin(TCPSocket* socket, user_name name);
 
 	/**
-	 * Shutdown
+	 * Shutdown and disconnect every user
 	 */
 	void shutdown();
 };

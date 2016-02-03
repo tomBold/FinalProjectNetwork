@@ -1,6 +1,7 @@
 /*
  * Broker.h
- * This class handles communication peer to peer
+ *
+ * This class handles the commands of the peer to peer communications
  *
  *  Created on: Dec 18, 2015
  *      Author: Tom Boldan and Gal Schlezinger

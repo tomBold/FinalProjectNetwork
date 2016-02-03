@@ -1,6 +1,6 @@
 /*
  * Broker.h
- * This class handles communication peer to peer
+ * This class handles the commands of the peer to peer communications
  *
  *  Created on: Dec 18, 2015
  *      Author: Tom Boldan and Gal Schlezinger
@@ -13,6 +13,9 @@ Broker::Broker() :
 		Broker(NULL, NULL, NULL) {
 }
 
+/**
+ * Creates a broker between the initiative socket and the receiver.
+ */
 Broker::Broker(TCPSocket* initiativeSocket, TCPSocket* recvSocket,
 		TCPMessengerDispatcher* dispatcher) {
 	this->areBothPeersConnected = true;
@@ -41,7 +44,7 @@ Broker::~Broker() {
 }
 
 /**
- * Send the new messages destination
+ * Send the new messages destination for the connected clients
  */
 void Broker::sendNewDest() {
 	ServerIO::sendCommandToPeer(this->firstSocket,

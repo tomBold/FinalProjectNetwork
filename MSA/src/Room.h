@@ -51,7 +51,7 @@ public:
 	bool close(user_name user);
 
 	/**
-	 * Check if user is participant this room
+	 * Check if user is a participant in this room
 	 */
 	bool exists(user_name name);
 
