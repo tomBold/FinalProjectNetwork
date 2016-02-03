@@ -129,7 +129,7 @@ string Users::getAllUsers() {
 	}
 
 	for (unsigned int i = 0; i < names.size(); i++) {
-		if (i != 0) {
+		if (result != "") {
 			result += ",";
 		}
 
