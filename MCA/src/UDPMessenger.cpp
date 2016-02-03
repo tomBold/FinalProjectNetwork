@@ -42,7 +42,7 @@ void UDPMessenger::run() {
 /**
  * Handle a message
  */
-void UDPMessenger::handleMsg(string msg, string ipAndPort)
+void UDPMessenger::handleMsg(string msg, ip_and_port ipAndPort)
 {
 	cout << ">[" << this->ipAndPortToUsers[ipAndPort] << "] " << msg << endl;
 }
