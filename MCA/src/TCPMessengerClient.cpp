@@ -290,7 +290,7 @@ void TCPMessengerClient::run() {
 		}
 		case (PRINT_USERS_RES): {
 			string users = ServerIO::readDataFromPeer(this->socket);
-			cout << "Users: " << users << endl;
+			cout << users << endl;
 			break;
 		}
 		case (PRINT_CONNECT_USERS_RES): {

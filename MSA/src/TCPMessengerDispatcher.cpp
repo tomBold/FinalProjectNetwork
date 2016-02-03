@@ -411,7 +411,7 @@ string TCPMessengerDispatcher::getAllBrokers() {
 		Broker* broker = *itB;
 
 		if (result != "") {
-			result += "\n";
+			result += ",";
 		}
 
 		// Building the description conversation.
