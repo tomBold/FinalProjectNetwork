@@ -1,3 +1,12 @@
+/*
+ * TCPMessengerServer.cpp
+ * This class holds is responsible for getting new connections and sends them
+ * to their dispatchers
+ *
+ *  Created on: Dec 16, 2015
+ *      Author: Tom Boldan and Gal Schlezinger
+ */
+
 #include "TCPMessengerServer.h"
 #include "TCPMessengerProtocol.h"
 
@@ -14,15 +23,24 @@ TCPMessengerServer::TCPMessengerServer() {
  * Close the server
  */
 void TCPMessengerServer::close() {
+	cout << "Shutting down main dispatcher.." << endl;
 	this->dispatcher->shutdown();
+	cout << "Shutting down authentication dispatcher.." << endl;
 	this->authDispatcher->shutdown();
+	cout << "Closing the socket" << endl;
 	this->serverSocket->cclose();
+	cout << "Finished closing." << endl;
 }
 
 TCPMessengerServer::~TCPMessengerServer() {
 	delete this->dispatcher;
+	this->dispatcher = NULL;
+
 	delete this->authDispatcher;
+	this->authDispatcher = NULL;
+
 	delete this->serverSocket;
+	this->serverSocket = NULL;
 }
 
 /*

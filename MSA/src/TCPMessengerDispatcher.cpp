@@ -415,23 +415,36 @@ string TCPMessengerDispatcher::getAllBrokers() {
 }
 
 void TCPMessengerDispatcher::shutdown() {
+	cout << "Closing all the rooms" << endl;
 	for (set<Room*>::iterator itR = this->rooms.begin();
 			itR != this->rooms.end(); itR++) {
 		Room* room = *itR;
+		cout << "Closing room " << room->name << endl;
 		room->close(room->admin);
 	}
+
+	cout << "Closing all the brokers" << endl;
 
 	for (set<Broker*>::iterator itB = this->brokers.begin();
 			itB != this->brokers.end(); itB++) {
 		Broker* broker = *itB;
+		cout << "Closing broker "
+				<< this->peersIpToUser[broker->firstSocket->destIpAndPort()]
+				<< "<>"
+				<< this->peersIpToUser[broker->secondSocket->destIpAndPort()]
+				<< endl;
 		this->closeBroker(broker);
 	}
 
+	cout << "Disconnecting all the users" << endl;
 	for (map<string, TCPSocket*>::const_iterator it = this->sockets.begin();
 			it != this->sockets.end(); it++) {
+		cout << "Disconnecting " << this->peersIpToUser[it->second->destIpAndPort()] << endl;
 		ServerIO::sendCommandToPeer(it->second, DISCONNECT_CLIENTS);
-		this->disconnectClient(it->second);
+		delete it->second;
 	}
+
+	cout << "Finished shutting down the main dispatcher." << endl;
 
 	this->isRunning = false;
 }

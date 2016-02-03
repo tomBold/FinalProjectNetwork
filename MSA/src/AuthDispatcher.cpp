@@ -178,12 +178,15 @@ void AuthDispatcher::getUserAndPasswordFromSocket(TCPSocket* socket,
  * Shutdown
  */
 void AuthDispatcher::shutdown() {
-
 	for (map<string, TCPSocket*>::const_iterator it = this->sockets.begin();
 			it != this->sockets.end(); it++) {
+		cout << "Disconnecting " << it->second->destIpAndPort()
+				<< " from the authentication dispatcher" << endl;
 		ServerIO::sendCommandToPeer(it->second, DISCONNECT_CLIENTS);
-		this->disconnectClient(it->second);
+		delete it->second;
 	}
+
+	cout << "No more users in the authentication dispatcher.. moving on." << endl;
 
 	this->isRunning = false;
 }

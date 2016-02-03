@@ -1,10 +1,11 @@
-//============================================================================
-// Name        : TCP Messenger Server
-// Author      : Tom Boldan and Gal Schlezinger
-// Version     :
-// Copyright   :
-// Description : TCP Messenger application
-//============================================================================
+/*
+ * TCPMessengerServer.h
+ * This class holds is responsible for getting new connections and sends them
+ * to their dispatchers
+ *
+ *  Created on: Dec 16, 2015
+ *      Author: Tom Boldan and Gal Schlezinger
+ */
 #pragma once
 
 #ifndef TCPMESSENGERSERVER_H__
@@ -29,7 +30,6 @@ using namespace std;
 
 class TCPMessengerServer : public MThread{
 	TCPSocket* serverSocket;
-
 	AuthDispatcher* authDispatcher;
 
 public:

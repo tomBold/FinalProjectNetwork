@@ -1,3 +1,10 @@
+/*
+ * TCPMessengerDispatcher.h
+ *
+ *  Created on: Dec 16, 2015
+ *      Author: Tom Boldan and Gal Schlezinger
+ */
+
 #include <strings.h>
 #include <map>
 #include "TCPSocket.h"
