@@ -379,7 +379,6 @@ string TCPMessengerDispatcher::getRoomsNames() {
 		roomsNames += room->name;
 	}
 
-	cout << roomsNames << endl;
 	return roomsNames;
 }
 
