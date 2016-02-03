@@ -24,6 +24,7 @@
 #include "TCPMessengerDispatcher.h"
 #include "AuthDispatcher.h"
 #include "ServerIO.h"
+#include "Types.h"
 
 class AuthDispatcher;
 
@@ -59,12 +60,12 @@ public:
 	/**
 	 * Handle user authenticated
 	 */
-	void userLogin(TCPSocket* peer, string name);
+	void userLogin(TCPSocket* peer, user_name name);
 
 	/**
 	 * Tells whether a user is connected
 	 */
-	bool isUserConnected(string name);
+	bool isUserConnected(user_name name);
 
 	/**
 	 * A string representation of all the connected users
@@ -84,6 +85,6 @@ public:
 	/**
 	 * A string representation of all the users in a certain room
 	 */
-	string getRoomsUsers(string roomName);
+	string getRoomsUsers(room_name roomName);
 };
 #endif

@@ -27,7 +27,7 @@ void AuthDispatcher::addSocket(TCPSocket* socket) {
 /*
  * Delete socket by ip and port
  */
-void AuthDispatcher::deleteSocket(string ipAndPort) {
+void AuthDispatcher::deleteSocket(ip_and_port ipAndPort) {
 	map<string, TCPSocket*>::iterator it = this->sockets.find(ipAndPort);
 	this->multiSocketListener->removeSocket(it->second);
 	this->sockets.erase(it);
@@ -113,7 +113,7 @@ void AuthDispatcher::disconnectClient(TCPSocket* socket) {
 /**
  * Client login
  */
-void AuthDispatcher::userLogin(TCPSocket* socket, string name) {
+void AuthDispatcher::userLogin(TCPSocket* socket, user_name name) {
 	this->deleteSocket(socket);
 	this->tcpMessengerServer->userLogin(socket, name);
 }
@@ -122,7 +122,7 @@ void AuthDispatcher::userLogin(TCPSocket* socket, string name) {
  * Get users' password from the socket
  */
 void AuthDispatcher::getUserAndPasswordFromSocket(TCPSocket* socket,
-		string* name, string* password) {
+		user_name* name, string* password) {
 	string userNameAndPassword = ServerIO::readDataFromPeer(socket);
 
 	int index = userNameAndPassword.find(" ");

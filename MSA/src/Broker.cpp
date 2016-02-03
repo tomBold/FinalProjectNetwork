@@ -27,11 +27,11 @@ Broker::Broker(TCPSocket* initiativeSocket, TCPSocket* recvSocket,
 	ServerIO::sendCommandToPeer(this->firstSocket,
 	SESSION_ESTABLISHED);
 	ServerIO::sendDataToPeer(this->firstSocket,
-			this->dispatcher->peersIpToUser[this->secondSocket->destIpAndPort()]);
+			this->dispatcher->getUserByPeerIp(this->secondSocket->destIpAndPort()));
 	ServerIO::sendCommandToPeer(this->secondSocket,
 	SESSION_ESTABLISHED);
 	ServerIO::sendDataToPeer(this->secondSocket,
-			this->dispatcher->peersIpToUser[this->firstSocket->destIpAndPort()]);
+			this->dispatcher->getUserByPeerIp(this->firstSocket->destIpAndPort()));
 
 	this->sendNewDest();
 }
@@ -92,7 +92,7 @@ void Broker::run() {
 /**
  * Check if the user is in the broker
  */
-bool Broker::isUserInBroker(string ip) {
+bool Broker::isUserInBroker(ip_and_port ip) {
 	return this->firstSocket->destIpAndPort() == ip
 			|| this->secondSocket->destIpAndPort() == ip;
 }

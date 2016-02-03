@@ -42,7 +42,7 @@ void TCPMessengerServer::run() {
 	}
 }
 
-void TCPMessengerServer::userLogin(TCPSocket* peer, string name) {
+void TCPMessengerServer::userLogin(TCPSocket* peer, user_name name) {
 	ServerIO::sendCommandToPeer(peer, PORT_INIT_REQ);
 
 	int command = ServerIO::readCommandFromPeer(peer);
@@ -66,9 +66,8 @@ void TCPMessengerServer::userLogin(TCPSocket* peer, string name) {
 	this->dispatcher->addSocket(peer, name, ServerIO::readDataFromPeer(peer));
 }
 
-bool TCPMessengerServer::isUserConnected(string name) {
-	return this->dispatcher->userToPeersIp.find(name)
-			!= this->dispatcher->userToPeersIp.end();
+bool TCPMessengerServer::isUserConnected(user_name name) {
+	return this->dispatcher->isUserConnected(name);
 }
 
 string TCPMessengerServer::getConnectUsers() {
@@ -101,7 +100,7 @@ string TCPMessengerServer::getRoomsNames() {
 	return "Rooms: " + rooms;
 }
 
-string TCPMessengerServer::getRoomsUsers(string roomName){
+string TCPMessengerServer::getRoomsUsers(room_name roomName){
 	Room* room = dispatcher->roomExists(roomName);
 
 	if (room) {
