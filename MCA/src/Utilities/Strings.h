@@ -2,7 +2,7 @@
  * Strings.h
  *
  *  Created on: Jan 30, 2016
- *      Author: user
+ *      Author: Tom Boldan & Gal Schlezinger
  */
 
 #ifndef STRINGS_H_
@@ -17,6 +17,9 @@ using namespace std;
 
 class Strings {
 public:
+	/**
+	 * Split a string by char
+	 */
 	static vector<string> split(string data, string token);
 };
 

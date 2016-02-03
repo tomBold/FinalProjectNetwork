@@ -1,3 +1,12 @@
+/*
+ * UDPMessenger.h
+ *
+ * It's handle the peer to peer communication
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #ifndef UDPMESSENGER_H_
 #define UDPMESSENGER_H_
 
@@ -19,6 +28,7 @@ public:
 
 	UDPMessenger();
 	~UDPMessenger();
+
 	/**
 	 * sends the given message
 	 */
@@ -36,10 +46,19 @@ public:
 	 */
 	void run();
 
+	/**
+	 * Get the main socket port
+	 */
 	int getPort();
 
+	/**
+	 * Set the messages destination
+	 */
 	void setTheMsgDestination(string dst);
 
+	/**
+	 * Handle a message
+	 */
 	void handleMsg(string msg, string ipAndPort);
 };
 

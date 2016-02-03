@@ -1,12 +1,13 @@
 /*
  * TCPMessengerClient.cpp
+ * Handle the communication between the MCA app to the server.
  *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
 
 #include "TCPMessengerClient.h"
-using namespace std;
+
 TCPMessengerClient::TCPMessengerClient() {
 	this->socket = NULL;
 	setStatus(DISCONNECTED);
@@ -28,6 +29,9 @@ TCPMessengerClient::~TCPMessengerClient() {
 	setStatus(DISCONNECTED);
 }
 
+/**
+ * Connect to server
+ */
 bool TCPMessengerClient::connect(string ip) {
 	if (this->isConnected()) {
 		cout << "Already connected to a server. press d to disconnect." << endl;
@@ -46,10 +50,16 @@ bool TCPMessengerClient::connect(string ip) {
 	}
 }
 
+/**
+ * Check if the user is connected
+ */
 bool TCPMessengerClient::isConnected() {
 	return this->status != DISCONNECTED;
 }
 
+/**
+ * Disconnect
+ */
 bool TCPMessengerClient::disconnect() {
 	if (this->isConnected()) {
 		ServerIO::sendCommandToPeer(this->socket, DISCONNECT_FROM_SERVER_REQ);
@@ -71,22 +81,37 @@ bool TCPMessengerClient::disconnect() {
 	return false;
 }
 
+/**
+ * Gets all users
+ */
 bool TCPMessengerClient::getAllUsers() {
 	return this->sendCommand(PRINT_USERS_REQ);
 }
 
+/**
+ * Gets all connected users
+ */
 bool TCPMessengerClient::getConnectedUsers() {
 	return this->sendCommand(PRINT_CONNECT_USERS_REQ);
 }
 
+/**
+ * Return if the user is logged in
+ */
 bool TCPMessengerClient::isLoggedIn() {
 	return this->isConnected() && this->status != AUTH;
 }
 
+/**
+ * Gets all rooms
+ */
 bool TCPMessengerClient::getAllRooms() {
 	return this->sendCommand(PRIMT_ROOMS_NAMES_REQ);
 }
 
+/**
+ * Gets the rooms' users
+ */
 bool TCPMessengerClient::getRoomsUsers(string room) {
 	if (this->sendCommand(PRINT_ROOMS_USERS_REQ)) {
 		ServerIO::sendDataToPeer(this->socket, room);
@@ -97,6 +122,9 @@ bool TCPMessengerClient::getRoomsUsers(string room) {
 	return false;
 }
 
+/**
+ * Login
+ */
 bool TCPMessengerClient::login(string name, string password) {
 	if (this->status != AUTH) {
 		cout << "You can't log in" << endl;
@@ -110,6 +138,9 @@ bool TCPMessengerClient::login(string name, string password) {
 	return true;
 }
 
+/**
+ * Register user
+ */
 bool TCPMessengerClient::registerUser(string name, string password) {
 	if (this->status != AUTH) {
 		cout << "You can't register" << endl;
@@ -123,13 +154,23 @@ bool TCPMessengerClient::registerUser(string name, string password) {
 	return true;
 }
 
+/**
+ * Gets the server ip
+ */
 string TCPMessengerClient::getServerIp() {
 	return this->socket->destIpAndPort();
 }
 
+/**
+ * Gets the current conversation
+ */
 string TCPMessengerClient::getConversation() {
 	return this->currentConversation;
 }
+
+/**
+ * Open a session
+ */
 bool TCPMessengerClient::openSession(string user) {
 	if (this->sendCommand(OPEN_SESSION_WITH_PEER)) {
 		ServerIO::sendDataToPeer(this->socket, user);
@@ -139,6 +180,9 @@ bool TCPMessengerClient::openSession(string user) {
 	return false;
 }
 
+/**
+ * Join a room
+ */
 bool TCPMessengerClient::joinRoom(string room) {
 	if (sendCommand(JOIN_ROOM_REQ)) {
 		ServerIO::sendDataToPeer(this->socket, room);
@@ -147,22 +191,37 @@ bool TCPMessengerClient::joinRoom(string room) {
 	return false;
 }
 
+/**
+ * Close room
+ */
 bool TCPMessengerClient::closeRoom(string room) {
 	return sendCommand(CLOSE_ROOM_REQ);
 }
 
+/**
+ * Exit room
+ */
 bool TCPMessengerClient::exitRoom() {
 	return this->closeActiveSession();
 }
 
+/**
+ * Return if the user is in active broker
+ */
 bool TCPMessengerClient::isActiveBroker() {
 	return this->status == BROKER;
 }
 
+/**
+ * Return if the user is in active room
+ */
 bool TCPMessengerClient::isActiveRoom() {
 	return this->status == ROOM;
 }
 
+/**
+ * Close the user current active session
+ */
 bool TCPMessengerClient::closeActiveSession() {
 	if (this->isActiveBroker() || this->isActiveRoom()) {
 		ServerIO::sendCommandToPeer(this->socket, CLOSE_SESSION_WITH_PEER);
@@ -172,6 +231,10 @@ bool TCPMessengerClient::closeActiveSession() {
 	cout << "There is no active session" << endl;
 	return false;
 }
+
+/**
+ * Send a message
+ */
 bool TCPMessengerClient::send(string msg) {
 	if (this->isActiveRoom() || this->isActiveBroker()) {
 		this->udpMessenger->send(msg);
@@ -182,6 +245,9 @@ bool TCPMessengerClient::send(string msg) {
 	return false;
 }
 
+/**
+ * Run a command
+ */
 void TCPMessengerClient::run() {
 	this->isRunning = true;
 
@@ -315,6 +381,9 @@ void TCPMessengerClient::run() {
 	}
 }
 
+/**
+ * Print the user status
+ */
 void TCPMessengerClient::printStatus() {
 	string statusDescription = "unknown status";
 
@@ -344,6 +413,9 @@ void TCPMessengerClient::printStatus() {
 	cout << "Current status: " << statusDescription << endl;
 }
 
+/**
+ * Send command
+ */
 bool TCPMessengerClient::sendCommand(int command) {
 	if (!this->isLoggedIn()) {
 		cout << "For this action you should log in" << endl;
@@ -354,6 +426,9 @@ bool TCPMessengerClient::sendCommand(int command) {
 	return true;
 }
 
+/**
+ * Set the user status
+ */
 void TCPMessengerClient::setStatus(int status) {
 	if (this->status != status) {
 		this->status = status;

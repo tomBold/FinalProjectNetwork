@@ -1,3 +1,10 @@
+/*
+ * UDPMessenger.cpp
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #include "UDPMessenger.h"
 #include <string.h>
 
@@ -14,6 +21,11 @@ UDPMessenger::UDPMessenger() {
 	this->start();
 }
 
+/**
+ * This method runs in a separate thread, it reads the incoming messages
+ * from the socket and prints the content on the terminal.
+ * The thread should exist when the socket is closed
+ */
 void UDPMessenger::run() {
 	char buffer[100];
 	memset((void*) buffer, 0, 100);
@@ -27,11 +39,17 @@ void UDPMessenger::run() {
 	}
 }
 
+/**
+ * Handle a message
+ */
 void UDPMessenger::handleMsg(string msg, string ipAndPort)
 {
 	cout << ">[" << this->ipAndPortToUsers[ipAndPort] << "] " << msg << endl;
 }
 
+/**
+ * sends the given message
+ */
 void UDPMessenger::send(string msg) {
 	// Send the given message to the given destination
 	for (map<string, string>::iterator it = this->ipAndPortToUsers.begin();
@@ -42,6 +60,9 @@ void UDPMessenger::send(string msg) {
 	}
 }
 
+/**
+ * close the messenger and all related objects (socket)
+ */
 void UDPMessenger::close() {
 	// Close the thread
 	isRunning = false;
@@ -56,6 +77,9 @@ void UDPMessenger::close() {
 	delete mainSocket;
 }
 
+/**
+ * Get the main socket port
+ */
 int UDPMessenger::getPort() {
 	return this->mainSocket->getPort();
 }
@@ -63,6 +87,9 @@ int UDPMessenger::getPort() {
 UDPMessenger::~UDPMessenger() {
 }
 
+/**
+ * Set the messages destination
+ */
 void UDPMessenger::setTheMsgDestination(string dst) {
 	this->ipAndPortToUsers.clear();
 	vector<string> users = Strings::split(dst, ",");

@@ -2,11 +2,14 @@
  * Strings.cpp
  *
  *  Created on: Jan 30, 2016
- *      Author: user
+ *      Author: Tom Boldan & Gal Schlezinger
  */
 
 #include "Strings.h"
 
+/**
+ * Split a string by char
+ */
 vector<string> Strings::split(string data, string delimiter)
 {
 	 vector<string> result;
