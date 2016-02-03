@@ -2,7 +2,7 @@
  * ServerIO.h
  *
  *  Created on: Jan 30, 2016
- *      Author: user
+ *      Author: Tom Boldan & Gal Schlezinger
  */
 
 #ifndef SERVERIO_H_

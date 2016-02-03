@@ -51,6 +51,7 @@ int main() {
 	// to actually disconnect
 	signal(SIGTERM, handleSignal);
 	signal(SIGABRT, handleSignal);
+	signal(SIGINT, handleSignal);
 
 	bool isRunning = true;
 	printInstructions();
@@ -63,7 +64,10 @@ int main() {
 			string ip = "";
 			cin >> ip;
 
-			client->connect(ip);
+			if (!client->connect(ip))
+			{
+				printInstructions();
+			}
 		} else if (command == "login") {
 			string name = "";
 			string password = "";

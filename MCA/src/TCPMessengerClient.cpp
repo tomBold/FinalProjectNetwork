@@ -34,12 +34,16 @@ bool TCPMessengerClient::connect(string ip) {
 		return false;
 	}
 
-	this->socket = new TCPSocket(ip, MSNGR_PORT);
-	this->udpMessenger = new UDPMessenger();
-	setStatus(AUTH);
-	this->start();
+	try {
+		this->socket = new TCPSocket(ip, MSNGR_PORT);
+		this->udpMessenger = new UDPMessenger();
+		setStatus(AUTH);
+		this->start();
 
-	return true;
+		return true;
+	} catch (const char* e) {
+		return false;
+	}
 }
 
 bool TCPMessengerClient::isConnected() {

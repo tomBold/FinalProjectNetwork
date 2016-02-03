@@ -2,7 +2,7 @@
  * ExtendedMultipleTCPSocketListener.cpp
  *
  *  Created on: Jan 30, 2016
- *      Author: user
+ *      Author: Tom Boldan & Gal Schlezinger
  */
 
 #include "ExtendedMultipleTCPSocketListener.h"

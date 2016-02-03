@@ -1,3 +1,10 @@
+/*
+ * TCPSocket.h
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #ifndef TCPSOCKET_H_
 #define TCPSOCKET_H_
 
@@ -62,7 +69,9 @@ public:
 	 */
 	string fromAddr();
 
-	// TODO: DELETE IT
+	/**
+	 * Gets the destination ip and port
+	 */
 	string destIpAndPort();
 };
 

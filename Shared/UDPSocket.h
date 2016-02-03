@@ -1,3 +1,10 @@
+/*
+ * UDPSocket.h
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #ifndef UDPSOCKET_H_
 #define UDPSOCKET_H_
 
@@ -22,6 +29,10 @@ class UDPSocket{
 
 public:
 	UDPSocket(int port = 9999);
+
+	/**
+	 *
+	 */
 	int recv(char* buffer, int length);
 	int sendTo(string msg, string ip, int port);
 	int reply(string msg);

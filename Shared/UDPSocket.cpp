@@ -1,3 +1,10 @@
+/*
+ * UDPSocket.cpp
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #include "UDPSocket.h"
 
 UDPSocket::UDPSocket(int port) {
@@ -67,6 +74,9 @@ int UDPSocket::getPort() {
 	}
 }
 
+/**
+ * Gets destination ip and port
+ */
 string UDPSocket::destIpAndPort() {
 	string str = fromAddr() + ":";
 	char buff[10];

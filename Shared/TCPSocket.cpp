@@ -1,6 +1,11 @@
+/*
+ * TCPSocket.cpp
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
 
 #include "TCPSocket.h"
-using namespace std;
 
 /**
  * Creates a TCP socket without listening
@@ -46,7 +51,6 @@ TCPSocket::TCPSocket(int port) {
  */
 TCPSocket::TCPSocket(string peerIp, int port) {
 	// Open TCP socket
-	printf("Client is alive and establishing socket connection.\n");
 	this->connected_sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (this->connected_sock < 0) {
 		perror("Error opening channel");
@@ -62,6 +66,7 @@ TCPSocket::TCPSocket(string peerIp, int port) {
 	if (connect(this->connected_sock, (struct sockaddr *) &this->peerAddr,
 			sizeof(this->peerAddr)) < 0) {
 		perror("Error establishing communications");
+		throw "Error establishing communications";
 	}
 }
 
@@ -120,6 +125,7 @@ void TCPSocket::cclose() {
 	shutdown(this->connected_sock, SHUT_RDWR);
 	close(this->connected_sock);
 }
+
 /**
  * Return the session destination peer address
  */
@@ -127,6 +133,9 @@ string TCPSocket::fromAddr() {
 	return inet_ntoa(this->peerAddr.sin_addr);
 }
 
+/**
+ * Gets the destination ip and port
+ */
 string TCPSocket::destIpAndPort()
 {
 	string str = fromAddr() + ":";

@@ -1,6 +1,10 @@
+/*
+ * MultipleTCPSocketsListener.cpp
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
 #include "MultipleTCPSocketsListener.h"
-
-using namespace std;
 
 /*
  * Add the given socket to the socket list to be listen on
