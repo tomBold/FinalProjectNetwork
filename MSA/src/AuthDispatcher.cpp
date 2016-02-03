@@ -1,5 +1,5 @@
 /*
- * AuthDispatcher.h
+ * AuthDispatcher.cpp
  *  This class is responsible of authenticating users or registering them.
  *
  *  Created on: Jan 29, 2016
@@ -9,20 +9,11 @@
 #include "AuthDispatcher.h"
 
 AuthDispatcher::AuthDispatcher(TCPMessengerServer* tcpMessengerServer) {
-	this->isRunning = true;
 	this->tcpMessengerServer = tcpMessengerServer;
-	this->multiSocketListener = new ExtendedMultipleTCPSocketListener();
 	this->start();
 }
 
 AuthDispatcher::~AuthDispatcher() {
-	delete this->multiSocketListener;
-
-	// Delete the map sockets
-	for (std::map<string, TCPSocket*>::const_iterator it =
-			this->sockets.begin(); it != this->sockets.end(); it++) {
-		delete it->second;
-	}
 }
 
 /*
@@ -34,32 +25,12 @@ void AuthDispatcher::addSocket(TCPSocket* socket) {
 }
 
 /*
- * Delete socket by socket
- */
-void AuthDispatcher::deleteSocket(TCPSocket* socket) {
-	this->deleteSocket(socket->destIpAndPort());
-}
-
-/*
  * Delete socket by ip and port
  */
 void AuthDispatcher::deleteSocket(string ipAndPort) {
 	map<string, TCPSocket*>::iterator it = this->sockets.find(ipAndPort);
 	this->multiSocketListener->removeSocket(it->second);
 	this->sockets.erase(it);
-}
-
-/**
- * Retrieve messages from peers
- */
-void AuthDispatcher::run() {
-	while (this->isRunning) {
-		TCPSocket* currSocket = this->multiSocketListener->listenToSocket();
-
-		if (currSocket != NULL) {
-			this->handleSocket(currSocket);
-		}
-	}
 }
 
 /*
@@ -128,20 +99,6 @@ void AuthDispatcher::handleSocket(TCPSocket* socket) {
 		break;
 	}
 	}
-}
-
-/*
- * Get sockets vector
- */
-vector<TCPSocket*> AuthDispatcher::getSockets() {
-	vector<TCPSocket*> socketsVec;
-
-	for (std::map<string, TCPSocket*>::const_iterator it =
-			this->sockets.begin(); it != this->sockets.end(); it++) {
-		socketsVec.push_back(it->second);
-	}
-
-	return socketsVec;
 }
 
 /*

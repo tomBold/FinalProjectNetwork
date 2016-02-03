@@ -9,6 +9,7 @@
 #include "Room.h"
 #include <set>
 #include "ServerIO.h"
+#include "Dispatcher.h"
 
 #ifndef TCPMESSENGERDISPATCHER_H_
 #define TCPMESSENGERDISPATCHER_H_
@@ -16,15 +17,14 @@
 class Broker;
 class Room;
 
-class TCPMessengerDispatcher : public MThread{
-	map<string, TCPSocket*> sockets;
-	ExtendedMultipleTCPSocketListener* multiSocketListener;
+class TCPMessengerDispatcher : public Dispatcher{
 	set<Broker*> brokers;
 	set<Room*> rooms;
-	bool isRunning;
 
 	void clean();
 public:
+	using Dispatcher::deleteSocket;
+
 	map<string, string> peersIpToUser;
 	map<string, string> userToPeersIp;
 	map<string, string> peersIpToPort;
@@ -43,11 +43,6 @@ public:
 	void addSocket(TCPSocket* socket);
 
 	/*
-	 * Delete socket by socket
-	 */
-	void deleteSocket(TCPSocket* socket);
-
-	/*
 	 * Delete socket by key
 	 */
 	void deleteSocket(string socketKey);
@@ -56,11 +51,6 @@ public:
 	 * Print the sockets keys
 	 */
 	void printKeys();
-
-	/**
-	 * Retrieve messages from peers
-	 */
-	void run();
 
 	/*
 	 * Handle socket - gets the socket's command and executes it
@@ -75,7 +65,7 @@ public:
 	/**
 	 * Gets sockets
 	 */
-	vector<TCPSocket*> getSockets();
+	//vector<TCPSocket*> getSockets();
 
 	/**
 	 * Create session

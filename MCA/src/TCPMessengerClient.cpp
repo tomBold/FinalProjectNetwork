@@ -6,7 +6,7 @@
  */
 
 #include "TCPMessengerClient.h"
-
+using namespace std;
 TCPMessengerClient::TCPMessengerClient() {
 	this->socket = NULL;
 	setStatus(DISCONNECTED);
@@ -199,8 +199,7 @@ void TCPMessengerClient::run() {
 		}
 		case (PORT_INIT_REQ): {
 			ServerIO::sendCommandToPeer(this->socket, PORT_INIT_RES);
-			ServerIO::sendDataToPeer(this->socket,
-					to_string(this->udpMessenger->getPort()));
+			ServerIO::sendDataToPeer(this->socket, to_string(this->udpMessenger->getPort()));
 			break;
 		}
 		case (ALREADY_CONNECTED_RES): {
@@ -250,9 +249,9 @@ void TCPMessengerClient::run() {
 			break;
 		}
 		case (SESSION_ESTABLISHED): {
-			setStatus(BROKER);
 			this->currentConversation = ServerIO::readDataFromPeer(
 					this->socket);
+			setStatus(BROKER);
 			break;
 		}
 		case (NEW_MESSAGE_DST_RES): {

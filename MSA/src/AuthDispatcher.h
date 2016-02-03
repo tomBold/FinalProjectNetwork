@@ -18,21 +18,20 @@
 #include "TCPMessengerProtocol.h"
 #include "TCPMessengerServer.h"
 #include "ServerIO.h"
+#include "Dispatcher.h"
 
 using namespace std;
 
 class TCPMessengerServer;
 
-class AuthDispatcher: public MThread {
+class AuthDispatcher: public Dispatcher {
 private:
-	map<string, TCPSocket*> sockets;
-	ExtendedMultipleTCPSocketListener* multiSocketListener;
 	TCPMessengerServer* tcpMessengerServer;
-	bool isRunning;
 
 	void getUserAndPasswordFromSocket(TCPSocket* socket, string* name, string* password);
 
 public:
+	 using Dispatcher::deleteSocket;
 	/*
 	 * CTOR
 	 */
@@ -49,29 +48,14 @@ public:
 	void addSocket(TCPSocket* socket);
 
 	/*
-	 * Delete socket by socket
-	 */
-	void deleteSocket(TCPSocket* socket);
-
-	/*
 	 * Delete socket by ip and port
 	 */
 	void deleteSocket(string ipAndPort);
-
-	/**
-	 * Retrieve commands from peers
-	 */
-	void run();
 
 	/*
 	 * Handle socket - gets the socket's command and executes it
 	 */
 	void handleSocket(TCPSocket* socket);
-
-	/*
-	 * Get the sockets
-	 */
-	vector<TCPSocket*> getSockets();
 
 	/**
 	 * Check if the socket exists

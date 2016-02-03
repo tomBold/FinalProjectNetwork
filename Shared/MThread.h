@@ -3,7 +3,6 @@
 
 #include <pthread.h>
 
-
 class MThread{
 public:
 	pthread_t threadId;

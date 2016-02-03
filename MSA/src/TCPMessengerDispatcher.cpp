@@ -45,13 +45,6 @@ void TCPMessengerDispatcher::addSocket(TCPSocket* socket) {
 }
 
 /*
- * Delete socket by socket
- */
-void TCPMessengerDispatcher::deleteSocket(TCPSocket* socket) {
-	this->deleteSocket(socket->destIpAndPort());
-}
-
-/*
  * Delete socket by ip and port
  */
 void TCPMessengerDispatcher::deleteSocket(string socketKey) {
@@ -67,19 +60,6 @@ void TCPMessengerDispatcher::printKeys() {
 			this->sockets.begin(); it != this->sockets.end(); it++) {
 		string key = it->first;
 		cout << key << endl;
-	}
-}
-
-/**
- * Retrieve commands from peers
- */
-void TCPMessengerDispatcher::run() {
-	while (this->isRunning) {
-		TCPSocket* currSocket = this->multiSocketListener->listenToSocket();
-
-		if (currSocket != NULL) {
-			this->handleSocket(currSocket);
-		}
 	}
 }
 
@@ -195,20 +175,6 @@ void TCPMessengerDispatcher::handleSocketCommand(TCPSocket* socket,
 		break;
 	}
 	}
-}
-
-/*
- * Get sockets vector
- */
-vector<TCPSocket*> TCPMessengerDispatcher::getSockets() {
-	vector<TCPSocket*> socketsVec;
-
-	for (std::map<string, TCPSocket*>::const_iterator it =
-			this->sockets.begin(); it != this->sockets.end(); it++) {
-		socketsVec.push_back(it->second);
-	}
-
-	return socketsVec;
 }
 
 /*
