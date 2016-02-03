@@ -1,12 +1,17 @@
 /*
  * UDPSocket.cpp
  *
+ * Implements a UDP Socket.
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
 
 #include "UDPSocket.h"
 
+/**
+ * Ctor to create a UDP socket by port
+ */
 UDPSocket::UDPSocket(int port) {
 	/**
 	 * int socket(int domain, int type, int protocol);
@@ -17,24 +22,24 @@ UDPSocket::UDPSocket(int port) {
 	 */
 	socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
 
-	// clear the s_in struct
+	// Clear the s_in struct
 	bzero((char *) &s_in, sizeof(s_in)); /* They say you must do this    */
 
-	//sets the sin address
+	// Sets the sin address
 	s_in.sin_family = (short) AF_INET;
 	s_in.sin_addr.s_addr = htonl(INADDR_ANY); /* WILDCARD */
 	s_in.sin_port = htons((u_short) port);
 
 	fsize = sizeof(from);
 
-	//bind the socket on the specified address
+	// Bind the socket on the specified address
 	if (bind(socket_fd, (struct sockaddr *) &s_in, sizeof(s_in)) < 0) {
 		perror("Error naming channel");
 	}
 }
 
 /**
- * Try to read
+ * Try to read a message in a specific length
  */
 int UDPSocket::recv(char* buffer, int length) {
 	return recvfrom(socket_fd, buffer, length, 0, (struct sockaddr *) &from,
@@ -42,20 +47,24 @@ int UDPSocket::recv(char* buffer, int length) {
 }
 
 /**
- * Send a message
+ * Send a message to specific ip and port
  */
 int UDPSocket::sendTo(string msg, string ip, int port) {
+	// Clear the s_in struct
 	struct sockaddr_in toAddr;
 	bzero((char *) &toAddr, sizeof(toAddr));
+
+	// Sets the sin address
 	toAddr.sin_family = AF_INET;
 	toAddr.sin_addr.s_addr = inet_addr(ip.data());
 	toAddr.sin_port = htons(port);
+
 	return sendto(socket_fd, msg.data(), msg.length(), 0,
 			(struct sockaddr *) &toAddr, sizeof(toAddr));
 }
 
 /**
- * Replay a message to the last sender
+ * Replay a message to the last sender.
  */
 int UDPSocket::reply(string msg) {
 	return sendto(socket_fd, msg.data(), msg.length(), 0,
@@ -63,7 +72,7 @@ int UDPSocket::reply(string msg) {
 }
 
 /*
- * Close
+ * Close the UDP socket
  */
 void UDPSocket::cclose() {
 	shutdown(socket_fd, SHUT_RDWR);
@@ -71,7 +80,7 @@ void UDPSocket::cclose() {
 }
 
 /**
- * Gets the from address
+ * Gets the sender address
  */
 string UDPSocket::fromAddr() {
 	return inet_ntoa(from.sin_addr);
@@ -85,7 +94,7 @@ int UDPSocket::getPort() {
 	socklen_t len = sizeof(sin);
 
 	if (getsockname(this->socket_fd, (struct sockaddr *) &sin, &len) == -1) {
-		perror("Error in get sock name");
+		perror("Error in get socket name");
 		return -1;
 	} else {
 		return ntohs(sin.sin_port);
@@ -93,7 +102,7 @@ int UDPSocket::getPort() {
 }
 
 /**
- * Gets destination ip and port
+ * Gets the destination ip and port.
  */
 string UDPSocket::destIpAndPort() {
 	string str = fromAddr() + ":";

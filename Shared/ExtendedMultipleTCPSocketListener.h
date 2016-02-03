@@ -1,6 +1,8 @@
 /*
  * ExtendedMultipleTCPSocketListener.h
  *
+ * Extending the multiple TCP socket listener.
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
@@ -25,12 +27,12 @@ public:
 	virtual ~ExtendedMultipleTCPSocketListener();
 
 	/*
-	 * Add the given socket to the socket list to be listen on
+	 * Add the given socket to the socket list to be listen on.
 	 */
 	void addSocket(TCPSocket* socket);
 
 	/*
-	 * Set the given sockets to the socket list to be listen on
+	 * Set the given sockets to the socket list to be listen on.
 	 */
 	void addSockets(vector<TCPSocket*> socketVec);
 
@@ -41,7 +43,7 @@ public:
 	TCPSocket* listenToSocket();
 
 	/**
-	 * This method remove socket
+	 * This method remove socket.
 	 */
 	void removeSocket(TCPSocket* socket);
 };

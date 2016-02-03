@@ -1,6 +1,8 @@
 /*
  * UDPSocket.h
  *
+ * Implements a UDP Socket.
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
@@ -21,37 +23,41 @@
 
 using namespace std;
 
-class UDPSocket{
-	struct sockaddr_in  s_in;
+class UDPSocket {
+	struct sockaddr_in s_in;
 	struct sockaddr_in from;
 	unsigned int fsize;
 	int socket_fd;
 
 public:
+
+	/**
+	 * Ctor to create a UDP socket by port
+	 */
 	UDPSocket(int port = 9999);
 
 	/**
-	 * Try to read
+	 * Try to read a message in a specific length
 	 */
 	int recv(char* buffer, int length);
 
 	/**
-	 * Send a message
+	 * Send a message to specific ip and port
 	 */
 	int sendTo(string msg, string ip, int port);
 
 	/**
-	 * Replay a message to the last sender
+	 * Replay a message to the last sender.
 	 */
 	int reply(string msg);
 
-	/**
-	 * Close
+	/*
+	 * Close the UDP socket
 	 */
 	void cclose();
 
 	/**
-	 * Gets the from address
+	 * Gets the sender address
 	 */
 	string fromAddr();
 
@@ -61,7 +67,7 @@ public:
 	int getPort();
 
 	/**
-	 * Get the destination io and port
+	 * Gets the destination ip and port.
 	 */
 	string destIpAndPort();
 };

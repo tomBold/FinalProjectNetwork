@@ -1,7 +1,7 @@
 /*
  * ServerIO.cpp
  *
- * Handles the reading and writing to and from the server
+ * Handles the reading and writing to and from the server.
  *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
@@ -36,7 +36,6 @@ string ServerIO::readDataFromPeer(TCPSocket* peer) {
 
 	if (rc < 0) {
 		perror("Error receiving socket");
-
 		return "";
 	}
 

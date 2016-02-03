@@ -1,6 +1,8 @@
 /*
  * Dispatcher.h
  *
+ * Manages user requests.
+ *
  *  Created on: Feb 3, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
@@ -13,12 +15,13 @@
 #include <vector>
 #include <map>
 #include "ExtendedMultipleTCPSocketListener.h"
+#include "Types.h"
 
 using namespace std;
 
 class Dispatcher: public MThread {
 protected:
-	map<string, TCPSocket*> sockets;
+	map<ip_and_port, TCPSocket*> sockets;
 	ExtendedMultipleTCPSocketListener* multiSocketListener;
 	bool isRunning;
 public:
@@ -38,7 +41,7 @@ public:
 	/*
 	 * Delete socket by ip and port
 	 */
-	virtual void deleteSocket(string ipAndPort) = 0;
+	virtual void deleteSocket(ip_and_port ipAndPort) = 0;
 
 	/**
 	 * Retrieve commands from peers
@@ -51,7 +54,7 @@ public:
 	virtual void handleSocket(TCPSocket* socket) = 0;
 
 	/*
-	 * Get the sockets
+	 * Get the dispatchers' sockets
 	 */
 	vector<TCPSocket*> getSockets();
 

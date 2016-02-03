@@ -1,6 +1,8 @@
 /*
  * ExtendedMultipleTCPSocketListener.cpp
  *
+ * Extending the multiple TCP socket listener.
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
@@ -17,7 +19,7 @@ ExtendedMultipleTCPSocketListener::~ExtendedMultipleTCPSocketListener() {
 }
 
 /*
- * Add the given socket to the socket list to be listen on
+ * Add the given socket to the socket list to be listen on.
  */
 void ExtendedMultipleTCPSocketListener::addSocket(TCPSocket* socket) {
 	this->sockets.insert(socket);
@@ -25,11 +27,12 @@ void ExtendedMultipleTCPSocketListener::addSocket(TCPSocket* socket) {
 }
 
 /*
- * Set the given sockets to the socket list to be listen on
+ * Set the given sockets to the socket list to be listen on.
  */
 void ExtendedMultipleTCPSocketListener::addSockets(
 		vector<TCPSocket*> socketVec) {
 	vector<TCPSocket*>::iterator it;
+
 	for (it = socketVec.begin(); it != socketVec.end(); it++) {
 		TCPSocket* socket = *it;
 		this->addSocket(socket);
@@ -45,7 +48,7 @@ TCPSocket* ExtendedMultipleTCPSocketListener::listenToSocket() {
 }
 
 /**
- * This method remove socket
+ * This method remove socket from the socket list to be listen on.
  */
 void ExtendedMultipleTCPSocketListener::removeSocket(TCPSocket* socket) {
 	MultipleTCPSocketsListener* old = this->multipleTCPSocketsListener;

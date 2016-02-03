@@ -1,13 +1,16 @@
 /*
  * TCPMessengerDispatcher.cpp
  *
- *  Created on: Dec 16, 2015
- *      Author: Tom Boldan and Gal Schlezinger
+ * Manages login user requests.
+ *
+ *  Created on: Feb 3, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
  */
 
 #include "TCPMessengerDispatcher.h"
 
 TCPMessengerDispatcher::TCPMessengerDispatcher() {
+	// Initialize properties
 	this->isRunning = true;
 	this->multiSocketListener = new ExtendedMultipleTCPSocketListener();
 	this->start();
@@ -24,18 +27,20 @@ TCPMessengerDispatcher::~TCPMessengerDispatcher() {
 }
 
 /*
- * Add socket to the map and the multiple tcp socket listener
+ * Add socket to the map and the multiple tcp socket listener.
  */
 void TCPMessengerDispatcher::addSocket(TCPSocket* socket, user_name name,
 		port port) {
+	// Initialize maps
 	this->peerIpToUser[socket->destIpAndPort()] = name;
 	this->userToPeerIp[name] = socket->destIpAndPort();
 	this->peerIpToPort[socket->destIpAndPort()] = port;
+
 	this->addSocket(socket);
 }
 
 /*
- * Add socket to the map and the multiple tcp socket listener
+ * Add socket to the map and the multiple tcp socket listener.
  */
 void TCPMessengerDispatcher::addSocket(TCPSocket* socket) {
 	this->sockets[socket->destIpAndPort()] = socket;
@@ -47,9 +52,9 @@ void TCPMessengerDispatcher::addSocket(TCPSocket* socket) {
 /*
  * Delete socket by ip and port
  */
-void TCPMessengerDispatcher::deleteSocket(string socketKey) {
-	this->multiSocketListener->removeSocket(this->sockets[socketKey]);
-	this->sockets.erase(this->sockets.find(socketKey));
+void TCPMessengerDispatcher::deleteSocket(ip_and_port ipAndPort) {
+	this->multiSocketListener->removeSocket(this->sockets[ipAndPort]);
+	this->sockets.erase(this->sockets.find(ipAndPort));
 }
 
 /*
@@ -79,14 +84,14 @@ void TCPMessengerDispatcher::createBroker(TCPSocket* firstSocket,
 }
 
 /*
- * Check if the socket exists in the sockets map
+ * Check if the socket exists in the sockets map.
  */
 bool TCPMessengerDispatcher::isSocketExists(TCPSocket* socket) {
 	return this->sockets.find(socket->destIpAndPort()) != this->sockets.end();
 }
 
 /*
- * Handle socket - gets the socket's command and executes it
+ * Handle socket - gets the socket's command and executes it.
  */
 void TCPMessengerDispatcher::handleSocket(TCPSocket* socket) {
 	if (!this->isSocketExists(socket)) {
@@ -96,9 +101,12 @@ void TCPMessengerDispatcher::handleSocket(TCPSocket* socket) {
 	this->handleSocketCommand(socket, ServerIO::readCommandFromPeer(socket));
 }
 
+/*
+ * Gets the socket's command and executes it.
+ */
 void TCPMessengerDispatcher::handleSocketCommand(TCPSocket* socket,
 		int command) {
-	string name = this->peerIpToUser[socket->destIpAndPort()];
+	string name = this->getUserByPeerIp(socket->destIpAndPort());
 
 	switch (command) {
 	case (CLOSE_SESSION_WITH_PEER): {
@@ -171,24 +179,27 @@ void TCPMessengerDispatcher::handleSocketCommand(TCPSocket* socket,
 		break;
 	}
 	default: {
-		cout << "Command " << command << " not found" << endl;
+		cout << "Command " << command << " not found." << endl;
 		break;
 	}
 	}
 }
 
-/*
- * Create session
+/**
+ * Create session between two users.
  */
-void TCPMessengerDispatcher::createSession(TCPSocket* socket, user_name peerName) {
-	if (!isUserConnected(peerName) || this->isUserBusy(peerName)) {
+void TCPMessengerDispatcher::createSession(TCPSocket* socket,
+		user_name userName) {
+	// Check if the wanted user to start communicate with is connected and if
+	// the user is not in other session or room.
+	if (!isUserConnected(userName) || this->isUserBusy(userName, false)) {
 		ServerIO::sendCommandToPeer(socket, SESSION_REFUSED);
 		return;
 	}
 
-	string peerIP = this->userToPeerIp[peerName];
+	string peerIP = this->getPeerIpByUser(userName);
 
-	// If the socket try to connect to itself
+	// Check if the socket try to connect to itself.
 	if (socket->destIpAndPort() == peerIP) {
 		ServerIO::sendCommandToPeer(socket, SESSION_REFUSED);
 	} else {
@@ -197,12 +208,12 @@ void TCPMessengerDispatcher::createSession(TCPSocket* socket, user_name peerName
 	}
 }
 
-/*
- * Handle disconnect client
+/**
+ * Disconnect a client.
  */
 void TCPMessengerDispatcher::disconnectClient(TCPSocket* socket) {
 	string ip = socket->destIpAndPort();
-	string name = this->peerIpToUser[ip];
+	string name = this->getUserByPeerIp(ip);
 
 	this->deleteSocket(socket);
 	socket->cclose();
@@ -213,10 +224,13 @@ void TCPMessengerDispatcher::disconnectClient(TCPSocket* socket) {
 	this->peerIpToUser.erase(ip);
 }
 
+/**
+ * Close broker.
+ */
 void TCPMessengerDispatcher::closeBroker(Broker* broker) {
 	broker->areBothPeersConnected = false;
 
-	// Adding back
+	// Adding the user back to the free connected users map.
 	this->addSocket(broker->firstSocket);
 	this->addSocket(broker->secondSocket);
 
@@ -226,14 +240,18 @@ void TCPMessengerDispatcher::closeBroker(Broker* broker) {
 	CLOSE_SESSION_WITH_PEER);
 }
 
+/**
+ * Create a new room.
+ */
 bool TCPMessengerDispatcher::createRoom(room_name roomName, TCPSocket* admin) {
+	// Check if the room name is already exists.
 	if (this->roomExists(roomName)) {
 		return false;
 	}
 
-	Room* room = new Room(roomName, this->peerIpToUser[admin->destIpAndPort()],
-			admin, this);
-
+	// Creates the new room.
+	Room* room = new Room(roomName,
+			this->getUserByPeerIp(admin->destIpAndPort()), admin, this);
 	this->rooms.insert(room);
 	this->deleteSocket(admin);
 	room->start();
@@ -241,29 +259,41 @@ bool TCPMessengerDispatcher::createRoom(room_name roomName, TCPSocket* admin) {
 	return true;
 }
 
+/**
+ * Close room.
+ */
 void TCPMessengerDispatcher::closeRoom(Room* room) {
 	room->roomIsOpen = false;
 
 	map<string, TCPSocket*> users = room->users;
 
+	// Add back all the rooms' users to the free connected users map.
 	for (map<string, TCPSocket*>::const_iterator it = users.begin();
 			it != users.end(); it++) {
 		this->addSocket(it->second);
 	}
 }
 
+/**
+ * Leave room.
+ */
 void TCPMessengerDispatcher::leaveRoom(TCPSocket* socket) {
 	this->addSocket(socket);
 }
 
+/**
+ * Join room.
+ */
 bool TCPMessengerDispatcher::joinRoom(room_name roomName, TCPSocket* socket) {
 	Room* room = this->roomExists(roomName);
 
+	// Check if the room exists.
 	if (!room) {
 		return this->createRoom(roomName, socket);
 	}
 
-	if (!room->join(this->peerIpToUser[socket->destIpAndPort()], socket)) {
+	// Try to join the room.
+	if (!room->join(this->getUserByPeerIp(socket->destIpAndPort()), socket)) {
 		return false;
 	}
 
@@ -274,6 +304,9 @@ bool TCPMessengerDispatcher::joinRoom(room_name roomName, TCPSocket* socket) {
 	return true;
 }
 
+/**
+ * Get the room if the room exists, otherwise return NULL.
+ */
 Room* TCPMessengerDispatcher::roomExists(room_name roomName) {
 	set<Room*>::iterator it;
 	for (it = this->rooms.begin(); it != this->rooms.end(); it++) {
@@ -287,22 +320,35 @@ Room* TCPMessengerDispatcher::roomExists(room_name roomName) {
 	return NULL;
 }
 
-bool TCPMessengerDispatcher::isUserBusy(user_name name) {
+/**
+ * return if the user is in active room or broker.
+ */
+bool TCPMessengerDispatcher::isUserBusy(user_name name, bool forceLeaveUser) {
+	// Check if the user is in active room.
 	set<Room*>::iterator it;
 	for (it = this->rooms.begin(); it != this->rooms.end(); it++) {
 		Room* room = *it;
 
 		if (room->exists(name)) {
+			if (forceLeaveUser) {
+				room->leave(name);
+			}
+
 			return true;
 		}
 	}
 
+	// Check if the user is in active broker.
 	set<Broker*>::iterator itB;
 	string ip = this->userToPeerIp[name];
 	for (itB = this->brokers.begin(); itB != this->brokers.end(); itB++) {
 		Broker* broker = *itB;
 
 		if (broker->isUserInBroker(ip)) {
+			if (forceLeaveUser) {
+				this->closeBroker(broker);
+			}
+
 			return true;
 		}
 	}
@@ -310,32 +356,20 @@ bool TCPMessengerDispatcher::isUserBusy(user_name name) {
 	return false;
 }
 
+/**
+ * Force user to leave his active communication (room or broker).
+ */
 void TCPMessengerDispatcher::forceLeaveUser(user_name name) {
-	set<Room*>::iterator it;
-	for (it = this->rooms.begin(); it != this->rooms.end(); it++) {
-		Room* room = *it;
-
-		if (room->exists(name)) {
-			room->leave(name);
-			return;
-		}
-	}
-
-	set<Broker*>::iterator itB;
-	string ip = this->userToPeerIp[name];
-	for (itB = this->brokers.begin(); itB != this->brokers.end(); itB++) {
-		Broker* broker = *itB;
-
-		if (broker->isUserInBroker(ip)) {
-			this->closeBroker(broker);
-			return;
-		}
-	}
+	this->isUserBusy(name, true);
 }
 
+/**
+ * Get the rooms' names.
+ */
 string TCPMessengerDispatcher::getRoomsNames() {
 	string roomsNames = "";
 	set<Room*>::iterator it;
+
 	for (it = this->rooms.begin(); it != this->rooms.end(); it++) {
 		Room* room = *it;
 		if (roomsNames != "") {
@@ -348,19 +382,27 @@ string TCPMessengerDispatcher::getRoomsNames() {
 	return roomsNames;
 }
 
+/**
+ * Gets the connected users.
+ */
 string TCPMessengerDispatcher::getConnectUsers() {
 	string result = "";
+
 	for (map<string, string>::const_iterator it = this->userToPeerIp.begin();
 			it != this->userToPeerIp.end(); it++) {
 		if (result != "") {
 			result += ",";
 		}
+
 		result += it->first;
 	}
 
 	return result;
 }
 
+/**
+ * Gets the brockers.
+ */
 string TCPMessengerDispatcher::getAllBrokers() {
 	string result = "";
 
@@ -372,6 +414,7 @@ string TCPMessengerDispatcher::getAllBrokers() {
 			result += "\n";
 		}
 
+		// Building the description conversation.
 		result += this->peerIpToUser[broker->firstSocket->destIpAndPort()]
 				+ "<>"
 				+ this->peerIpToUser[broker->secondSocket->destIpAndPort()];
@@ -380,19 +423,25 @@ string TCPMessengerDispatcher::getAllBrokers() {
 	return result;
 }
 
+/**
+ * Shutdown
+ */
 void TCPMessengerDispatcher::shutdown() {
+	// Close the rooms.
 	for (set<Room*>::iterator itR = this->rooms.begin();
 			itR != this->rooms.end(); itR++) {
 		Room* room = *itR;
 		room->close(room->admin);
 	}
 
+	// CLose the brokers.
 	for (set<Broker*>::iterator itB = this->brokers.begin();
 			itB != this->brokers.end(); itB++) {
 		Broker* broker = *itB;
 		this->closeBroker(broker);
 	}
 
+	// Disconnect the clients.
 	for (map<string, TCPSocket*>::const_iterator it = this->sockets.begin();
 			it != this->sockets.end(); it++) {
 		ServerIO::sendCommandToPeer(it->second, DISCONNECT_CLIENTS);
@@ -402,33 +451,55 @@ void TCPMessengerDispatcher::shutdown() {
 	this->isRunning = false;
 }
 
+/**
+ * Gets the user peer to peer address.
+ */
 string TCPMessengerDispatcher::getUserP2PAddress(TCPSocket* socket) {
 	return socket->fromAddr() + ":"
 			+ this->peerIpToPort[socket->destIpAndPort()] + ":"
 			+ this->peerIpToUser[socket->destIpAndPort()];
 }
 
+/**
+ * Return if the user connected.
+ */
 bool TCPMessengerDispatcher::isUserConnected(user_name name) {
 	return this->userToPeerIp.find(name) != this->userToPeerIp.end();
 }
 
+/**
+ * Delete room.
+ */
 void TCPMessengerDispatcher::deleteRoom(Room* room) {
 	this->rooms.erase(room);
 	delete room;
 }
 
+/**
+ * Delete broker.
+ */
 void TCPMessengerDispatcher::deleteBroker(Broker* broker) {
 	this->brokers.erase(broker);
 	delete broker;
 }
 
+/**
+ * Gets user by peer ip and port.
+ */
 string TCPMessengerDispatcher::getUserByPeerIp(ip_and_port peerIp) {
 	return this->peerIpToUser[peerIp];
 }
 
+/**
+ * Gets peer ip and port by user.
+ */
 string TCPMessengerDispatcher::getPeerIpByUser(user_name user) {
 	return this->userToPeerIp[user];
 }
+
+/**
+ * Gets port by peer ip and port.
+ */
 string TCPMessengerDispatcher::getPortByPeerIp(ip_and_port peerIp) {
 	return this->peerIpToPort[peerIp];
 }
