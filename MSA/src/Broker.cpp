@@ -1,5 +1,5 @@
 /*
- * Broker.h
+ * Broker.cpp
  * This class handles the commands of the peer to peer communications
  *
  *  Created on: Dec 18, 2015

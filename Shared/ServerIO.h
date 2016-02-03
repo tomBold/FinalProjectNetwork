@@ -1,7 +1,7 @@
 /*
  * ServerIO.h
  *
- * Handles the reading and writing to and from the server
+ * Handles the reading and writing to and from the server.
  *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger

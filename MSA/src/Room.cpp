@@ -1,5 +1,5 @@
 /*
- * Room
+ * Room.cpp
  * This class represents a chat room
  *
  *  Created on: Jan 29, 2016

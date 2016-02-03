@@ -39,7 +39,7 @@ void printInstructions() {
 	cout << "help" << endl;
 }
 
-// ********** MSA *********
+// ********** MSA **********
 int main() {
 
 	TCPMessengerServer* server = new TCPMessengerServer();

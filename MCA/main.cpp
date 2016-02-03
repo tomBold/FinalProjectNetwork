@@ -7,9 +7,14 @@
 
 using namespace std;
 
+/**
+ * We will store the client globally for cleaning it up.
+ */
 TCPMessengerClient* globalClient = NULL;
 
-// ********** MCA *********//
+/*
+ * Handles termination signals for cleanups.
+ */
 void handleSignal(int signal) {
 	try {
 		if (globalClient != NULL) {
@@ -18,6 +23,7 @@ void handleSignal(int signal) {
 	} catch (int e) {
 	}
 
+	// Kill with the correct exit code
 	exit(signal);
 }
 
@@ -44,12 +50,12 @@ void printInstructions() {
 	cout << "help" << endl;
 }
 
+// ********** MCA **********
 int main() {
 	TCPMessengerClient* client = new TCPMessengerClient();
 	globalClient = client;
 
-	// Set the terminate signal and the abort signal
-	// to actually disconnect
+	// Register to SIGTERM, SIGABRT and SIGINT signals
 	signal(SIGTERM, handleSignal);
 	signal(SIGABRT, handleSignal);
 	signal(SIGINT, handleSignal);

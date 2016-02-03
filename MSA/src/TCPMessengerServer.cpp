@@ -1,5 +1,5 @@
 /*
- * TCPMessengerServer.h
+ * TCPMessengerServer.cpp
  *
  * Listens to the port and moves peers to their dispatchers.
  *
@@ -10,11 +10,9 @@
 #include "TCPMessengerServer.h"
 #include "TCPMessengerProtocol.h"
 
-/***********************   TCPMessengerServer implementation ******************************/
-
 /**
-	 * Build the Messenger server
-	 */
+ * Build the Messenger server
+ */
 TCPMessengerServer::TCPMessengerServer() {
 	this->serverSocket = new TCPSocket(MSNGR_PORT);
 	this->dispatcher = new TCPMessengerDispatcher();
@@ -23,8 +21,8 @@ TCPMessengerServer::TCPMessengerServer() {
 }
 
 /**
-	 * Close the server and disconnect all the users
-	 */
+ * Close the server and disconnect all the users
+ */
 void TCPMessengerServer::close() {
 	this->dispatcher->shutdown();
 	this->authDispatcher->shutdown();
@@ -130,7 +128,7 @@ string TCPMessengerServer::getRoomsNames() {
 /**
  * A string representation of all the room users
  */
-string TCPMessengerServer::getRoomsUsers(room_name roomName){
+string TCPMessengerServer::getRoomsUsers(room_name roomName) {
 	Room* room = dispatcher->roomExists(roomName);
 
 	if (room) {

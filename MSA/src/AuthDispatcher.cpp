@@ -1,5 +1,5 @@
 /*
- * AuthDispatcher.h
+ * AuthDispatcher.cpp
  *
  * This class is responsible of handling all the unauthenticated users
  * by letting them authenticate or register.

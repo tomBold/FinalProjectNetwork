@@ -1,5 +1,5 @@
 /*
- * MThread.h
+ * MThread.cpp
  *
  * Represents a thread handling class for our applications.
  * For using a thread, we just need to extend MThread, implement run().
