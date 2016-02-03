@@ -35,7 +35,7 @@
 								<option id="gnu.c.compiler.option.include.paths.1354951511" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Shared}&quot;"/>
 								</option>
-								<option id="gnu.c.compiler.option.misc.other.466552134" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
+								<option id="gnu.c.compiler.option.misc.other.466552134" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 " valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1860830788" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.673993353" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
@@ -47,7 +47,7 @@
 								<option id="gnu.cpp.link.option.paths.847215327" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Shared/Debug}&quot;"/>
 								</option>
-								<option id="gnu.cpp.link.option.flags.684664117" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-std=c++11" valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.684664117" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1655796872" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -55,10 +55,27 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.base.2076897895" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
 								<option id="gnu.both.asm.option.include.paths.1255174386" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SharedLib}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Shared}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1028374757" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.435140563.573414495" name="/" resourcePath="src">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.base.674243304" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base" unusedChildren="">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.base.639354557" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.1987878830"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1317222893" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1469526958">
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1640634879" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.823761247" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base.946208398">
+								<option id="gnu.c.compiler.option.misc.other.1355874301" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0" valueType="string"/>
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.2035673777" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.444553637" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base.673993353"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.960465054" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base.823201716"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.base.1922484753" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base.2076897895">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1490959302" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
@@ -136,6 +153,8 @@
 			<resource resourceType="PROJECT" workspacePath="/MCA"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.435140563;cdt.managedbuild.config.gnu.cross.exe.debug.435140563.;cdt.managedbuild.tool.gnu.cpp.compiler.base.1469526958;cdt.managedbuild.tool.gnu.cpp.compiler.input.748198259">
@@ -157,6 +176,4 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>
