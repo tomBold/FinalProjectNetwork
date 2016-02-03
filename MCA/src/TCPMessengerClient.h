@@ -1,6 +1,8 @@
 /*
  * TCPMessengerClient.h
  *
+ * Handle the communication between the MCA app to the server.
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */

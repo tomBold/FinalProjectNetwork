@@ -94,6 +94,12 @@ string Users::getAllUsers()
 	string result = "";
 
 	vector<string> names = getAllNames();
+
+	if (names.size() == 0)
+	{
+		return "There is no users."
+	}
+
 	for (unsigned int i = 0; i < names.size(); i++) {
 		if (i != 0)
 		{
@@ -103,6 +109,6 @@ string Users::getAllUsers()
 		result +=  names[i];
 	}
 
-	return result;
+	return "Users: " + result;
 }
 

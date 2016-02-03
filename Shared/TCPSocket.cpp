@@ -8,7 +8,7 @@
 #include "TCPSocket.h"
 
 /**
- * Creates a TCP socket without listening
+ * Constructor to create a secondary server socket to communicate with a remote peer
  */
 TCPSocket::TCPSocket(int connected_sock, struct sockaddr_in serverAddr,
 		struct sockaddr_in peerAddr) {
@@ -18,7 +18,7 @@ TCPSocket::TCPSocket(int connected_sock, struct sockaddr_in serverAddr,
 }
 
 /**
- * Creates a TCP socket server
+ * Constructor to create a TCP server socket.
  */
 TCPSocket::TCPSocket(int port) {
 	// Open TCP socket
@@ -28,7 +28,8 @@ TCPSocket::TCPSocket(int port) {
 	}
 
 	int enable = 1;
-	if (setsockopt(this->connected_sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0){
+	if (setsockopt(this->connected_sock, SOL_SOCKET, SO_REUSEADDR, &enable,
+			sizeof(int)) < 0) {
 		perror("setsockopt(SO_REUSEADDR) failed");
 	}
 
@@ -47,7 +48,8 @@ TCPSocket::TCPSocket(int port) {
 }
 
 /**
- * Creates a TCP Socket client
+ * Constructor to creates TCP client socket
+ * and connect it to the remote peer in the given ip and port.
  */
 TCPSocket::TCPSocket(string peerIp, int port) {
 	// Open TCP socket
@@ -136,8 +138,7 @@ string TCPSocket::fromAddr() {
 /**
  * Gets the destination ip and port
  */
-string TCPSocket::destIpAndPort()
-{
+string TCPSocket::destIpAndPort() {
 	string str = fromAddr() + ":";
 	char buff[10];
 	sprintf(buff, "%d", ntohs(peerAddr.sin_port));

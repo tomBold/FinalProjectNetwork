@@ -33,11 +33,17 @@ UDPSocket::UDPSocket(int port) {
 	}
 }
 
+/**
+ * Try to read
+ */
 int UDPSocket::recv(char* buffer, int length) {
 	return recvfrom(socket_fd, buffer, length, 0, (struct sockaddr *) &from,
 			&fsize);
 }
 
+/**
+ * Send a message
+ */
 int UDPSocket::sendTo(string msg, string ip, int port) {
 	struct sockaddr_in toAddr;
 	bzero((char *) &toAddr, sizeof(toAddr));
@@ -48,20 +54,32 @@ int UDPSocket::sendTo(string msg, string ip, int port) {
 			(struct sockaddr *) &toAddr, sizeof(toAddr));
 }
 
+/**
+ * Replay a message to the last sender
+ */
 int UDPSocket::reply(string msg) {
 	return sendto(socket_fd, msg.data(), msg.length(), 0,
 			(struct sockaddr *) &from, sizeof(from));
 }
 
+/*
+ * Close
+ */
 void UDPSocket::cclose() {
 	shutdown(socket_fd, SHUT_RDWR);
 	close(socket_fd);
 }
 
+/**
+ * Gets the from address
+ */
 string UDPSocket::fromAddr() {
 	return inet_ntoa(from.sin_addr);
 }
 
+/**
+ * Gets the port
+ */
 int UDPSocket::getPort() {
 	struct sockaddr_in sin;
 	socklen_t len = sizeof(sin);

@@ -1,7 +1,7 @@
 /*
  * UDPMessenger.h
  *
- * It's handle the peer to peer communication
+ * It's handle the peer to peer communication.
  *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
@@ -35,7 +35,7 @@ public:
 	void send(string msg);
 
 	/**
-	 * close the messenger and all related objects (socket)
+	 * close the messenger
 	 */
 	void close();
 

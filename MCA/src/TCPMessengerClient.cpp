@@ -64,6 +64,7 @@ bool TCPMessengerClient::disconnect() {
 	if (this->isConnected()) {
 		ServerIO::sendCommandToPeer(this->socket, DISCONNECT_FROM_SERVER_REQ);
 		setStatus(DISCONNECTED);
+
 		this->currentConversation = "";
 		this->isRunning = false;
 		this->udpMessenger->close();

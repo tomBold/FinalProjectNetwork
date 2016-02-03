@@ -49,27 +49,17 @@ int main() {
 		cin >> command;
 
 		if (command == "lu") {
-			cout << "Users: " << Users::getAllUsers() << endl;
+			cout << Users::getAllUsers() << endl;
 		} else if (command == "lcu") {
-			cout << "Connected users: " << server->dispatcher->getConnectUsers()
-					<< endl;
+			cout << server->getConnectUsers() << endl;
 		} else if (command == "ls") {
-			cout << "All sessionts: " << server->dispatcher->getAllBrokers()
-					<< endl;
+			cout << server->getAllBrokers() << endl;
 		} else if (command == "lr") {
-			cout << "All rooms names: " << server->dispatcher->getRoomsNames()
-					<< endl;
+			cout << server->getRoomsNames() << endl;
 		} else if (command == "lru") {
 			string roomName = "";
 			cin >> roomName;
-			Room* room = server->dispatcher->roomExists(roomName);
-
-			if (server->dispatcher->roomExists(roomName)) {
-				cout << "Room " << roomName << " users "
-						<< room->getRoomsUsers() << endl;
-			} else {
-				cout << "Room " + roomName + " does not exist" << endl;
-			}
+			cout << server->getRoomsUsers(roomName);
 		} else if (command == "x") {
 			server->close();
 			isRunning = false;

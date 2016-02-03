@@ -1,3 +1,10 @@
+/*
+ * MThread.cpp
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #include "MThread.h"
 #include <iostream>
 #include <stdio.h>

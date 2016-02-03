@@ -1,3 +1,10 @@
+/*
+ * MThread.h
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #ifndef MTHREAD_H_
 #define MTHREAD_H_
 

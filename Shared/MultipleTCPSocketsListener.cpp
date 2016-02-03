@@ -22,14 +22,15 @@ void MultipleTCPSocketsListener::addSockets(vector<TCPSocket*> socketVec) {
 }
 
 /*
- * This method checks to see if any of the previous given sockets are ready for reading
- * It returns one of the Sockets that are ready.
+ * This method checks to see if any of the previous given sockets are ready for reading.
+ * It returns one of the sockets that are ready.
  */
 TCPSocket* MultipleTCPSocketsListener::listenToSocket() {
 	fd_set rfds;
 	FD_ZERO(&rfds);
 	struct timeval tv;
 
+	// Set time out
 	tv.tv_sec = 1;
 	tv.tv_usec = 0;
 	int maxSocketFd = 0;
@@ -43,7 +44,7 @@ TCPSocket* MultipleTCPSocketsListener::listenToSocket() {
 						sockets[i]->connected_sock : maxSocketFd;
 	}
 
-	// Perform the select
+	// Perform the select on rdfs (the socket set)
 	int selectNum = select(maxSocketFd + 1, &rfds, NULL, NULL, &tv);
 
 	if (selectNum < 0) {

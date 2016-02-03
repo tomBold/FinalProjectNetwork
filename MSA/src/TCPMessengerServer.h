@@ -29,14 +29,13 @@ using namespace std;
 
 class TCPMessengerServer : public MThread{
 	TCPSocket* serverSocket;
-
 	AuthDispatcher* authDispatcher;
+	TCPMessengerDispatcher* dispatcher;
 
 public:
 	/**
 	 * Build the Messenger server
 	 */
-	TCPMessengerDispatcher* dispatcher;
 	TCPMessengerServer();
 	~TCPMessengerServer();
 
@@ -55,5 +54,13 @@ public:
 	void userLogin(TCPSocket* peer, string name);
 
 	bool isUserConnected(string name);
+
+	string getConnectUsers();
+
+	string getAllBrokers();
+
+	string getRoomsNames();
+
+	string getRoomsUsers(string roomName);
 };
 #endif

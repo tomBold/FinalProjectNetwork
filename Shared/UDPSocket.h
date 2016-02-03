@@ -31,14 +31,38 @@ public:
 	UDPSocket(int port = 9999);
 
 	/**
-	 *
+	 * Try to read
 	 */
 	int recv(char* buffer, int length);
+
+	/**
+	 * Send a message
+	 */
 	int sendTo(string msg, string ip, int port);
+
+	/**
+	 * Replay a message to the last sender
+	 */
 	int reply(string msg);
+
+	/**
+	 * Close
+	 */
 	void cclose();
+
+	/**
+	 * Gets the from address
+	 */
 	string fromAddr();
+
+	/**
+	 * Gets the port
+	 */
 	int getPort();
+
+	/**
+	 * Get the destination io and port
+	 */
 	string destIpAndPort();
 };
 

@@ -71,3 +71,42 @@ bool TCPMessengerServer::isUserConnected(string name) {
 			!= this->dispatcher->userToPeersIp.end();
 }
 
+string TCPMessengerServer::getConnectUsers() {
+	string users = this->dispatcher->getConnectUsers();
+
+	if (users.empty()) {
+		return "There is no connected users.";
+	}
+
+	return "Connected users: " + users;
+}
+
+string TCPMessengerServer::getAllBrokers() {
+	string brokers = this->dispatcher->getAllBrokers();
+
+	if (brokers.empty()) {
+		return "There is no sessions.";
+	}
+
+	return "Sessions: " + brokers;
+}
+
+string TCPMessengerServer::getRoomsNames() {
+	string rooms = this->dispatcher->getRoomsNames();
+
+	if (rooms.empty()) {
+		return "There is no rooms";
+	}
+
+	return "Rooms: " + rooms;
+}
+
+string TCPMessengerServer::getRoomsUsers(string roomName){
+	Room* room = dispatcher->roomExists(roomName);
+
+	if (room) {
+		return "Room " + roomName + " users: " + room->getRoomsUsers();
+	}
+
+	return "Room " + roomName + " does not exist.";
+}
