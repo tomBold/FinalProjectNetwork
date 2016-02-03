@@ -1,6 +1,8 @@
 /*
  * TCPSocket.h
  *
+ * Implements a TCP class to wrap the C TCP socket libraries
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
@@ -41,7 +43,7 @@ public:
 	TCPSocket(int port);
 
 	/**
-	 * Constructor to creates TCP client socket
+	 * Constructor to create a TCP client socket
 	 * and connect it to the remote peer in the given ip and port.
 	 */
 	TCPSocket(string peerIp, int port);
@@ -53,23 +55,23 @@ public:
 	TCPSocket* listenAndAccept();
 
 	/**
-	 * Read from socket into the given buffer up to the buffer given length.
+	 * Reads from socket into the given buffer up to the buffer given length.
 	 * return the number of bytes read
 	 */
 	int recv(char* buffer, int length);
 
 	/**
-	 * send the given buffer to the socket
+	 * Sends the given buffer to the socket
 	 */
 	int send(const char* msg, int len);
 
 	/**
-	 * close the socket and free all resources
+	 * Closes the socket and free all resources
 	 */
 	void cclose();
 
 	/**
-	 * return the address of the connected peer
+	 * Returns the address of the connected peer
 	 */
 	string fromAddr();
 

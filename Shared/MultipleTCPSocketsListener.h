@@ -1,7 +1,9 @@
 /*
  * MultipleTCPSocketsListener.h
  *
- * Listen to
+ * Provides an interface to listen to multiple sockets and get the first socket
+ * that can be read from.
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
@@ -21,7 +23,10 @@
 
 using namespace std;
 
-class MultipleTCPSocketsListener{
+class MultipleTCPSocketsListener {
+	/*
+	 * Sockets to listen to
+	 */
 	vector<TCPSocket*> sockets;
 
 public:

@@ -7,8 +7,14 @@
 
 using namespace std;
 
+/**
+ * We will store the server globally for cleaning it up.
+ */
 TCPMessengerServer* globalServer = NULL;
 
+/*
+ * Handles termination signals for cleanups.
+ */
 void handleSignal(int signal) {
 	try {
 		if (globalServer != NULL) {
@@ -17,6 +23,7 @@ void handleSignal(int signal) {
 	} catch (int e) {
 	}
 
+	// Kill with the correct exit code
 	exit(signal);
 }
 
@@ -38,6 +45,7 @@ int main() {
 	TCPMessengerServer* server = new TCPMessengerServer();
 	globalServer = server;
 
+	// Register to SIGTERM, SIGABRT and SIGINT signals
 	signal(SIGTERM, handleSignal);
 	signal(SIGABRT, handleSignal);
 	signal(SIGINT, handleSignal);

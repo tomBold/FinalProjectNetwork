@@ -1,10 +1,12 @@
-//============================================================================
-// Name        : TCP Messenger Server
-// Author      : Tom Boldan and Gal Schlezinger
-// Version     :
-// Copyright   :
-// Description : TCP Messenger application
-//============================================================================
+/*
+ * TCPMessengerServer.h
+ *
+ * Listens to the port and moves peers to their dispatchers.
+ *
+ *  Created on: Jan 30, 2016
+ *      Author: Tom Boldan & Gal Schlezinger
+ */
+
 #pragma once
 
 #ifndef TCPMESSENGERSERVER_H__
@@ -27,7 +29,7 @@ class AuthDispatcher;
 
 using namespace std;
 
-class TCPMessengerServer : public MThread{
+class TCPMessengerServer: public MThread {
 	TCPSocket* serverSocket;
 	AuthDispatcher* authDispatcher;
 	TCPMessengerDispatcher* dispatcher;
@@ -40,27 +42,48 @@ public:
 	~TCPMessengerServer();
 
 	/**
-	 * print out the list of connected clients (for debug)
+	 * Print out the list of connected clients (for debug)
 	 */
 	void listPeers();
 
 	/**
-	 * close the server
+	 * Close the server and disconnect all the users
 	 */
 	void close();
 
+	/**
+	 * Listen and accept peers
+	 */
 	void run();
 
+	/**
+	 * Handle user authenticated
+	 */
 	void userLogin(TCPSocket* peer, string name);
 
+	/**
+	 * Tells whether a user is connected
+	 */
 	bool isUserConnected(string name);
 
+	/**
+	 * A string representation of all the connected users
+	 */
 	string getConnectUsers();
 
+	/**
+	 * A string representation of all the brokers
+	 */
 	string getAllBrokers();
 
+	/**
+	 * A string representation of all the rooms
+	 */
 	string getRoomsNames();
 
+	/**
+	 * A string representation of all the users in a certain room
+	 */
 	string getRoomsUsers(string roomName);
 };
 #endif

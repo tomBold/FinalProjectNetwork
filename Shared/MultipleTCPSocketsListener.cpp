@@ -1,6 +1,9 @@
 /*
  * MultipleTCPSocketsListener.cpp
  *
+ * Provides an interface to listen to multiple sockets and get the first socket
+ * that can be read from.
+ *
  *  Created on: Jan 30, 2016
  *      Author: Tom Boldan & Gal Schlezinger
  */
@@ -66,4 +69,3 @@ TCPSocket* MultipleTCPSocketsListener::listenToSocket() {
 
 	return NULL;
 }
-
