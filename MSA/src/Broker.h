@@ -16,6 +16,7 @@
 #include "TCPMessengerProtocol.h"
 #include "TCPMessengerDispatcher.h"
 #include "ServerIO.h"
+#include "Types.h"
 
 class Broker: public MThread
 {
@@ -35,7 +36,7 @@ public:
 	/**
 	 * Check if the user ip is in the broker
 	 */
-	bool isUserInBroker(string ip);
+	bool isUserInBroker(ip_and_port ip);
 
 	/**
 	 * Run the commands between peers

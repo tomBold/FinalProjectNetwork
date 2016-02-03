@@ -17,6 +17,8 @@
 #include "ExtendedMultipleTCPSocketListener.h"
 #include "ServerIO.h"
 #include <map>
+#include "Types.h"
+
 using namespace std;
 
 class Room: public MThread {
@@ -24,34 +26,34 @@ private:
 	TCPMessengerDispatcher* dispatcher;
 	ExtendedMultipleTCPSocketListener* multiSocketListener;
 public:
-	string admin;
-	string name;
-	map<string, TCPSocket*> users;
+	user_name admin;
+	room_name name;
+	map<user_name, TCPSocket*> users;
 	bool roomIsOpen;
 
-	Room(string name, string admin, TCPSocket* adminSocket,
+	Room(room_name name, user_name admin, TCPSocket* adminSocket,
 			TCPMessengerDispatcher* dispatcher);
 	virtual ~Room();
 
 	/**
 	 * Client leaves room
 	 */
-	bool leave(string name);
+	bool leave(user_name name);
 
 	/**
 	 * Client joins room
 	 */
-	bool join(string user, TCPSocket* userSocket);
+	bool join(user_name user, TCPSocket* userSocket);
 
 	/**
 	 * Client tries to close room
 	 */
-	bool close(string user);
+	bool close(user_name user);
 
 	/**
 	 * Check if user is participant this room
 	 */
-	bool exists(string name);
+	bool exists(user_name name);
 
 	/**
 	 * Get commands from users
@@ -61,12 +63,12 @@ public:
 	/**
 	 * Get other users ips
 	 */
-	string getOtherUsersIps(string name);
+	string getOtherUsersIps(user_name name);
 
 	/**
 	 * Send the new destination to the rooms' users
 	 */
-	void sendMsgDest(string name);
+	void sendMsgDest(user_name name);
 
 	/**
 	 * Get textual representation of the user list

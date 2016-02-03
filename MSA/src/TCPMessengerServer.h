@@ -22,6 +22,7 @@
 #include "TCPMessengerDispatcher.h"
 #include "AuthDispatcher.h"
 #include "ServerIO.h"
+#include "Types.h"
 
 class AuthDispatcher;
 
@@ -51,9 +52,9 @@ public:
 
 	void run();
 
-	void userLogin(TCPSocket* peer, string name);
+	void userLogin(TCPSocket* peer, user_name name);
 
-	bool isUserConnected(string name);
+	bool isUserConnected(user_name name);
 
 	string getConnectUsers();
 
@@ -61,6 +62,6 @@ public:
 
 	string getRoomsNames();
 
-	string getRoomsUsers(string roomName);
+	string getRoomsUsers(room_name roomName);
 };
 #endif

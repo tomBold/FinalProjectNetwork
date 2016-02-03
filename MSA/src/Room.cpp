@@ -8,7 +8,7 @@
 
 #include "Room.h"
 
-Room::Room(string name, string admin, TCPSocket* adminSocket,
+Room::Room(room_name name, user_name admin, TCPSocket* adminSocket,
 		TCPMessengerDispatcher* dispatcher) {
 	this->name = name;
 	this->admin = admin;
@@ -27,7 +27,7 @@ Room::~Room() {
 	delete this->multiSocketListener;
 }
 
-bool Room::leave(string name) {
+bool Room::leave(user_name name) {
 	if (name == this->admin) {
 		return this->close(name);
 	}
@@ -43,7 +43,7 @@ bool Room::leave(string name) {
 	this->multiSocketListener->removeSocket(userLeave);
 
 	// Notify that the user leave the room
-	for (std::map<string, TCPSocket*>::const_iterator it = this->users.begin();
+	for (map<string, TCPSocket*>::const_iterator it = this->users.begin();
 			it != this->users.end(); it++) {
 		TCPSocket* socket = it->second;
 		ServerIO::sendCommandToPeer(socket, USER_LEAVE_ROOM_RES);
@@ -62,7 +62,7 @@ bool Room::leave(string name) {
 	return true;
 }
 
-bool Room::join(string user, TCPSocket* userSocket) {
+bool Room::join(user_name user, TCPSocket* userSocket) {
 	if (exists(name)) {
 		return false;
 	}
@@ -80,7 +80,7 @@ bool Room::join(string user, TCPSocket* userSocket) {
 	return true;
 }
 
-bool Room::close(string user) {
+bool Room::close(user_name user) {
 	if (user != this->admin) {
 		return false;
 	}
@@ -96,7 +96,7 @@ bool Room::close(string user) {
 	return true;
 }
 
-string Room::getOtherUsersIps(string name) {
+string Room::getOtherUsersIps(user_name name) {
 	string ips = "";
 	for (std::map<string, TCPSocket*>::const_iterator it = this->users.begin();
 			it != this->users.end(); it++) {
@@ -113,7 +113,7 @@ string Room::getOtherUsersIps(string name) {
 	return ips;
 }
 
-void Room::sendMsgDest(string name) {
+void Room::sendMsgDest(user_name name) {
 	string ips = this->getOtherUsersIps(name);
 
 	ServerIO::sendCommandToPeer(this->users[name],

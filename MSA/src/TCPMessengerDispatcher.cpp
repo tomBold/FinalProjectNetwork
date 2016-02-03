@@ -17,8 +17,8 @@ TCPMessengerDispatcher::~TCPMessengerDispatcher() {
 	delete this->multiSocketListener;
 
 	// Delete the map sockets
-	for (std::map<string, TCPSocket*>::const_iterator it =
-			this->sockets.begin(); it != this->sockets.end(); it++) {
+	for (map<string, TCPSocket*>::const_iterator it = this->sockets.begin();
+			it != this->sockets.end(); it++) {
 		delete it->second;
 	}
 }
@@ -26,8 +26,8 @@ TCPMessengerDispatcher::~TCPMessengerDispatcher() {
 /*
  * Add socket to the map and the multiple tcp socket listener
  */
-void TCPMessengerDispatcher::addSocket(TCPSocket* socket, string name,
-		string port) {
+void TCPMessengerDispatcher::addSocket(TCPSocket* socket, user_name name,
+		port port) {
 	this->peerIpToUser[socket->destIpAndPort()] = name;
 	this->userToPeerIp[name] = socket->destIpAndPort();
 	this->peerIpToPort[socket->destIpAndPort()] = port;
@@ -56,8 +56,8 @@ void TCPMessengerDispatcher::deleteSocket(string socketKey) {
  * Print the sockets keys
  */
 void TCPMessengerDispatcher::printKeys() {
-	for (std::map<string, TCPSocket*>::const_iterator it =
-			this->sockets.begin(); it != this->sockets.end(); it++) {
+	for (map<string, TCPSocket*>::const_iterator it = this->sockets.begin();
+			it != this->sockets.end(); it++) {
 		string key = it->first;
 		cout << key << endl;
 	}
@@ -180,7 +180,7 @@ void TCPMessengerDispatcher::handleSocketCommand(TCPSocket* socket,
 /*
  * Create session
  */
-void TCPMessengerDispatcher::createSession(TCPSocket* socket, string peerName) {
+void TCPMessengerDispatcher::createSession(TCPSocket* socket, user_name peerName) {
 	if (!isUserConnected(peerName) || this->isUserBusy(peerName)) {
 		ServerIO::sendCommandToPeer(socket, SESSION_REFUSED);
 		return;
@@ -226,7 +226,7 @@ void TCPMessengerDispatcher::closeBroker(Broker* broker) {
 	CLOSE_SESSION_WITH_PEER);
 }
 
-bool TCPMessengerDispatcher::createRoom(string roomName, TCPSocket* admin) {
+bool TCPMessengerDispatcher::createRoom(room_name roomName, TCPSocket* admin) {
 	if (this->roomExists(roomName)) {
 		return false;
 	}
@@ -256,7 +256,7 @@ void TCPMessengerDispatcher::leaveRoom(TCPSocket* socket) {
 	this->addSocket(socket);
 }
 
-bool TCPMessengerDispatcher::joinRoom(string roomName, TCPSocket* socket) {
+bool TCPMessengerDispatcher::joinRoom(room_name roomName, TCPSocket* socket) {
 	Room* room = this->roomExists(roomName);
 
 	if (!room) {
@@ -274,7 +274,7 @@ bool TCPMessengerDispatcher::joinRoom(string roomName, TCPSocket* socket) {
 	return true;
 }
 
-Room* TCPMessengerDispatcher::roomExists(string roomName) {
+Room* TCPMessengerDispatcher::roomExists(room_name roomName) {
 	set<Room*>::iterator it;
 	for (it = this->rooms.begin(); it != this->rooms.end(); it++) {
 		Room* room = *it;
@@ -287,7 +287,7 @@ Room* TCPMessengerDispatcher::roomExists(string roomName) {
 	return NULL;
 }
 
-bool TCPMessengerDispatcher::isUserBusy(string name) {
+bool TCPMessengerDispatcher::isUserBusy(user_name name) {
 	set<Room*>::iterator it;
 	for (it = this->rooms.begin(); it != this->rooms.end(); it++) {
 		Room* room = *it;
@@ -310,7 +310,7 @@ bool TCPMessengerDispatcher::isUserBusy(string name) {
 	return false;
 }
 
-void TCPMessengerDispatcher::forceLeaveUser(string name) {
+void TCPMessengerDispatcher::forceLeaveUser(user_name name) {
 	set<Room*>::iterator it;
 	for (it = this->rooms.begin(); it != this->rooms.end(); it++) {
 		Room* room = *it;
@@ -408,7 +408,7 @@ string TCPMessengerDispatcher::getUserP2PAddress(TCPSocket* socket) {
 			+ this->peerIpToUser[socket->destIpAndPort()];
 }
 
-bool TCPMessengerDispatcher::isUserConnected(string name) {
+bool TCPMessengerDispatcher::isUserConnected(user_name name) {
 	return this->userToPeerIp.find(name) != this->userToPeerIp.end();
 }
 
@@ -422,13 +422,13 @@ void TCPMessengerDispatcher::deleteBroker(Broker* broker) {
 	delete broker;
 }
 
-string TCPMessengerDispatcher::getUserByPeerIp(string peerIp) {
+string TCPMessengerDispatcher::getUserByPeerIp(ip_and_port peerIp) {
 	return this->peerIpToUser[peerIp];
 }
 
-string TCPMessengerDispatcher::getPeerIpByUser(string user) {
+string TCPMessengerDispatcher::getPeerIpByUser(user_name user) {
 	return this->userToPeerIp[user];
 }
-string TCPMessengerDispatcher::getPortByPeerIp(string peerIp) {
+string TCPMessengerDispatcher::getPortByPeerIp(ip_and_port peerIp) {
 	return this->peerIpToPort[peerIp];
 }

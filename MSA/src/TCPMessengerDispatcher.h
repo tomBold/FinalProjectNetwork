@@ -10,6 +10,7 @@
 #include <set>
 #include "ServerIO.h"
 #include "Dispatcher.h"
+#include "Types.h"
 
 #ifndef TCPMESSENGERDISPATCHER_H_
 #define TCPMESSENGERDISPATCHER_H_
@@ -17,13 +18,15 @@
 class Broker;
 class Room;
 
+using namespace std;
+
 class TCPMessengerDispatcher : public Dispatcher{
 	set<Broker*> brokers;
 	set<Room*> rooms;
 
-	map<string, string> peerIpToUser;
-	map<string, string> userToPeerIp;
-	map<string, string> peerIpToPort;
+	map<ip_and_port, user_name> peerIpToUser;
+	map<user_name, ip_and_port> userToPeerIp;
+	map<ip_and_port, port> peerIpToPort;
 
 	void clean();
 public:
@@ -35,7 +38,7 @@ public:
 	/*
 	 * Add socket to the map and the multiple tcp socket listener
 	 */
-	void addSocket(TCPSocket* socket, string name, string port);
+	void addSocket(TCPSocket* socket, user_name name, port port);
 
 	/*
 	 * Add socket to the map and the multiple tcp socket listener
@@ -45,7 +48,7 @@ public:
 	/*
 	 * Delete socket by key
 	 */
-	void deleteSocket(string socketKey);
+	void deleteSocket(ip_and_port socketKey);
 
 	/*
 	 * Print the sockets keys
@@ -65,29 +68,29 @@ public:
 	/**
 	 * Create session
 	 */
-	void createSession(TCPSocket* socket, string peer);
+	void createSession(TCPSocket* socket, user_name peer);
 	bool isSocketExists(TCPSocket* socket);
 	void disconnectClient(TCPSocket* socket);
 	void handleSocketCommand(TCPSocket* socket, int command);
 	void closeBroker(Broker* broker);
-	bool createRoom(string room, TCPSocket* admin);
+	bool createRoom(room_name room, TCPSocket* admin);
 	void closeRoom(Room* room);
 	void leaveRoom(TCPSocket* socket);
-	bool joinRoom(string roomName, TCPSocket* socket);
-	Room* roomExists(string room);
-	bool isUserBusy(string name);
-	void forceLeaveUser(string name);
+	bool joinRoom(room_name roomName, TCPSocket* socket);
+	Room* roomExists(room_name room);
+	bool isUserBusy(user_name name);
+	void forceLeaveUser(user_name name);
 	string getRoomsNames();
 	string getConnectUsers();
 	string getAllBrokers();
 	void shutdown();
 	string getUserP2PAddress(TCPSocket* socket);
-	bool isUserConnected(string name);
+	bool isUserConnected(user_name name);
 	void deleteRoom(Room* room);
 	void deleteBroker(Broker* broker);
-	string getUserByPeerIp(string peerIp);
-	string getPeerIpByUser(string user);
-	string getPortByPeerIp(string peerIp);
+	string getUserByPeerIp(ip_and_port peerIp);
+	string getPeerIpByUser(user_name user);
+	string getPortByPeerIp(ip_and_port peerIp);
 };
 
 #endif /* TCPMESSENGERDISPATCHER_H_ */

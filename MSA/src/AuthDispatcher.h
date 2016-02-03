@@ -19,6 +19,7 @@
 #include "TCPMessengerServer.h"
 #include "ServerIO.h"
 #include "Dispatcher.h"
+#include "Types.h"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ class AuthDispatcher: public Dispatcher {
 private:
 	TCPMessengerServer* tcpMessengerServer;
 
-	void getUserAndPasswordFromSocket(TCPSocket* socket, string* name, string* password);
+	void getUserAndPasswordFromSocket(TCPSocket* socket, user_name* name, string* password);
 
 public:
 	 using Dispatcher::deleteSocket;
@@ -50,7 +51,7 @@ public:
 	/*
 	 * Delete socket by ip and port
 	 */
-	void deleteSocket(string ipAndPort);
+	void deleteSocket(ip_and_port ipAndPort);
 
 	/*
 	 * Handle socket - gets the socket's command and executes it
@@ -70,7 +71,7 @@ public:
 	/**
 	 * Client login
 	 */
-	void userLogin(TCPSocket* socket, string name);
+	void userLogin(TCPSocket* socket, user_name name);
 
 	/**
 	 * Shutdown
