@@ -14,6 +14,7 @@
 #include "UDPSocket.h"
 #include "MThread.h"
 #include <map>
+#include "Types.h"
 #include <vector>
 #include "Utilities/Strings.h"
 
@@ -22,7 +23,7 @@ using namespace std;
 class UDPMessenger: public MThread {
 private:
 	bool isRunning;
-	map<string, string> ipAndPortToUsers;
+	map<ip_and_port, user_name> ipAndPortToUsers;
 public:
 	UDPSocket* mainSocket;
 
