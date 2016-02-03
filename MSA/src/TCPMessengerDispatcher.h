@@ -36,8 +36,6 @@ class TCPMessengerDispatcher : public Dispatcher{
 	map<ip_and_port, user_name> peerIpToUser;
 	map<user_name, ip_and_port> userToPeerIp;
 	map<ip_and_port, port> peerIpToPort;
-
-	void clean();
 public:
 	using Dispatcher::deleteSocket;
 

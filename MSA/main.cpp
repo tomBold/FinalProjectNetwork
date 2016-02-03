@@ -68,7 +68,7 @@ int main() {
 		} else if (command == "lru") {
 			string roomName = "";
 			cin >> roomName;
-			cout << server->getRoomsUsers(roomName);
+			cout << server->getRoomsUsers(roomName) << endl;
 		} else if (command == "x") {
 			server->close();
 			isRunning = false;
