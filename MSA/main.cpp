@@ -28,6 +28,7 @@ void printInstructions() {
 	cout << "lr - list all rooms" << endl;
 	cout << "lru <room name> - list all users in this room" << endl;
 	cout << "x - shutdown" << endl;
+	cout << "help" << endl;
 }
 
 // ********** MSA *********
@@ -50,26 +51,30 @@ int main() {
 		if (command == "lu") {
 			cout << "Users: " << Users::getAllUsers() << endl;
 		} else if (command == "lcu") {
-			cout << server->dispatcher->getConnectUsers() << endl;
+			cout << "Connected users: " << server->dispatcher->getConnectUsers()
+					<< endl;
 		} else if (command == "ls") {
-			cout << server->dispatcher->getAllBrokers() << endl;
+			cout << "All sessionts: " << server->dispatcher->getAllBrokers()
+					<< endl;
 		} else if (command == "lr") {
-			cout << server->dispatcher->getRoomsNames() << endl;
-		}
-
-		else if (command == "lru") {
+			cout << "All rooms names: " << server->dispatcher->getRoomsNames()
+					<< endl;
+		} else if (command == "lru") {
 			string roomName = "";
 			cin >> roomName;
 			Room* room = server->dispatcher->roomExists(roomName);
 
 			if (server->dispatcher->roomExists(roomName)) {
-				cout << room->getRoomsUsers() << endl;
+				cout << "Room " << roomName << " users "
+						<< room->getRoomsUsers() << endl;
 			} else {
 				cout << "Room " + roomName + " does not exist" << endl;
 			}
 		} else if (command == "x") {
 			server->close();
 			isRunning = false;
+		} else if (command == "help") {
+			printInstructions();
 		} else {
 			cout << "Wrong input" << endl;
 			printInstructions();

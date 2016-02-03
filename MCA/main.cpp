@@ -40,6 +40,7 @@ void printInstructions() {
 			<< "l - print the current status of the client (connected to “xyz”/not connected)"
 			<< endl;
 	cout << "x - close the app" << endl;
+	cout << "help" << endl;
 }
 
 int main() {
@@ -112,7 +113,10 @@ int main() {
 			getline(cin, msg);
 
 			client->send(msg);
+		} else if (command == "help") {
+			printInstructions();
 		} else {
+			cout << "Wrong input" << endl;
 			printInstructions();
 		}
 	}
