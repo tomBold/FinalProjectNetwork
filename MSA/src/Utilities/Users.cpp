@@ -97,7 +97,7 @@ string Users::getAllUsers()
 
 	if (names.size() == 0)
 	{
-		return "There is no users."
+		return "There is no users.";
 	}
 
 	for (unsigned int i = 0; i < names.size(); i++) {
