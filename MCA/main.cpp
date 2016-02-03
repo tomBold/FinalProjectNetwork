@@ -71,7 +71,7 @@ int main() {
 
 			client->login(name, password);
 		} else if (command == "l") {
-			cout << "User status: " << client->getStatus() << endl;
+			client->printStatus();
 		} else if (command == "register") {
 			string name = "";
 			string password = "";

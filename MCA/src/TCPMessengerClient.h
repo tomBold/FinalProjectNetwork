@@ -64,8 +64,9 @@ public:
 	bool isActiveRoom();
 	bool closeActiveSession();
 	bool send(string msg);
-	string getStatus();
+	void printStatus();
 	void run();
+	void setStatus(int status);
 };
 
 #endif /* TCPMESSENGERCLIENT_H_ */

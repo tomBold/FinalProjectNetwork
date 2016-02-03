@@ -9,7 +9,7 @@
 
 TCPMessengerClient::TCPMessengerClient() {
 	this->socket = NULL;
-	this->status = DISCONNECTED;
+	setStatus(DISCONNECTED);
 	this->udpMessenger = NULL;
 	this->currentConversation = "";
 	this->isRunning = false;
@@ -25,7 +25,7 @@ TCPMessengerClient::~TCPMessengerClient() {
 		delete this->socket;
 	}
 
-	this->status = DISCONNECTED;
+	setStatus(DISCONNECTED);
 }
 
 bool TCPMessengerClient::connect(string ip) {
@@ -36,7 +36,7 @@ bool TCPMessengerClient::connect(string ip) {
 
 	this->socket = new TCPSocket(ip, MSNGR_PORT);
 	this->udpMessenger = new UDPMessenger();
-	this->status = AUTH;
+	setStatus(AUTH);
 	this->start();
 
 	return true;
@@ -49,7 +49,7 @@ bool TCPMessengerClient::isConnected() {
 bool TCPMessengerClient::disconnect() {
 	if (this->isConnected()) {
 		ServerIO::sendCommandToPeer(this->socket, DISCONNECT_FROM_SERVER_REQ);
-		this->status = DISCONNECTED;
+		setStatus(DISCONNECTED);
 		this->currentConversation = "";
 		this->isRunning = false;
 		this->udpMessenger->close();
@@ -150,12 +150,15 @@ bool TCPMessengerClient::closeRoom(string room) {
 bool TCPMessengerClient::exitRoom() {
 	return this->closeActiveSession();
 }
+
 bool TCPMessengerClient::isActiveBroker() {
 	return this->status == BROKER;
 }
+
 bool TCPMessengerClient::isActiveRoom() {
 	return this->status == ROOM;
 }
+
 bool TCPMessengerClient::closeActiveSession() {
 	if (this->isActiveBroker() || this->isActiveRoom()) {
 		ServerIO::sendCommandToPeer(this->socket, CLOSE_SESSION_WITH_PEER);
@@ -172,7 +175,6 @@ bool TCPMessengerClient::send(string msg) {
 	}
 
 	cout << "There is no active session" << endl;
-
 	return false;
 }
 
@@ -184,11 +186,11 @@ void TCPMessengerClient::run() {
 
 		switch (command) {
 		case (LOGIN_FAILED): {
-			cout << "login failed" << endl;
+			cout << "Login failed" << endl;
 			break;
 		}
 		case (USER_ALREADY_EXISTS_RES): {
-			cout << "user already exists" << endl;
+			cout << "User already exists" << endl;
 			break;
 		}
 		case (PORT_INIT_REQ): {
@@ -198,15 +200,14 @@ void TCPMessengerClient::run() {
 			break;
 		}
 		case (ALREADY_CONNECTED_RES): {
-			cout << "user already connected" << endl;
+			cout << "User already connected" << endl;
 
 			break;
 		}
 		case (IN_DISPATCHER): {
-			cout << "You are in the waiting room" << endl;
-
-			this->status = DISPATCHER;
+			setStatus(DISPATCHER);
 			this->currentConversation = "";
+
 			break;
 		}
 		case (SUCCESSFULLY_LOGIN_RES): {
@@ -245,13 +246,9 @@ void TCPMessengerClient::run() {
 			break;
 		}
 		case (SESSION_ESTABLISHED): {
-			this->status = BROKER;
+			setStatus(BROKER);
 			this->currentConversation = ServerIO::readDataFromPeer(
 					this->socket);
-
-			cout << "Session establish with " << this->currentConversation
-					<< endl;
-
 			break;
 		}
 		case (NEW_MESSAGE_DST_RES): {
@@ -263,7 +260,7 @@ void TCPMessengerClient::run() {
 		case (IN_EMPTY_ROOM): {
 			this->currentConversation = ServerIO::readDataFromPeer(
 					this->socket);
-			this->status = ROOM;
+			setStatus(ROOM);
 			cout << "You are in empty room " << this->currentConversation
 					<< endl;
 			break;
@@ -278,10 +275,7 @@ void TCPMessengerClient::run() {
 		case (SUCCESSFULLY_JOIN_ROOM): {
 			this->currentConversation = ServerIO::readDataFromPeer(
 					this->socket);
-			this->status = ROOM;
-
-			cout << "Successfully join the room " << this->currentConversation
-					<< endl;
+			setStatus(ROOM);
 			break;
 		}
 		case (USER_JOIN_ROOM_RES): {
@@ -297,8 +291,7 @@ void TCPMessengerClient::run() {
 			break;
 		}
 		case (DISCONNECT_CLIENTS): {
-			cout << "Disconnected" << endl;
-			this->status = DISCONNECTED;
+			setStatus(DISCONNECTED);
 			this->currentConversation = "";
 			this->isRunning = false;
 			this->udpMessenger->close();
@@ -319,26 +312,33 @@ void TCPMessengerClient::run() {
 	}
 }
 
-string TCPMessengerClient::getStatus() {
+void TCPMessengerClient::printStatus() {
+	string statusDescription = "unknown status";
+
 	switch (this->status) {
 	case (DISCONNECTED): {
-		return "disconnected";
+		statusDescription = "disconnected";
+		break;
 	}
 	case (AUTH): {
-		return "waiting for credentials";
+		statusDescription = "waiting for credentials";
+		break;
 	}
 	case (DISPATCHER): {
-		return "connected to server " + this->getServerIp();
+		statusDescription = "connected to server " + this->getServerIp();
+		break;
 	}
 	case (BROKER): {
-		return "chatting with " + this->getConversation();
+		statusDescription = "chatting with " + this->getConversation();
+		break;
 	}
 	case (ROOM): {
-		return "in room " + this->getConversation();
+		statusDescription = "in room " + this->getConversation();
+		break;
 	}
 	}
 
-	return "unknown status";
+	cout << "Current status: " << statusDescription << endl;
 }
 
 bool TCPMessengerClient::sendCommand(int command) {
@@ -349,4 +349,11 @@ bool TCPMessengerClient::sendCommand(int command) {
 
 	ServerIO::sendCommandToPeer(this->socket, command);
 	return true;
+}
+
+void TCPMessengerClient::setStatus(int status) {
+	if (this->status != status) {
+		this->status = status;
+		printStatus();
+	}
 }
